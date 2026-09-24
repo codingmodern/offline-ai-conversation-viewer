@@ -4,6 +4,12 @@
   "version": "0.1.0",
   "type": "module",
   "description": "Offline, client-side viewer for AI chat export files (JSON).",
+  "license": "MIT",
+  "author": "M...D",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codingmodern/offline-ai-conversation-viewer.git"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
