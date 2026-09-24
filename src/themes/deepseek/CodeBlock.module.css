@@ -1,0 +1,50 @@
+/* The block keeps its own dark background in both light and dark mode
+   (`ui-context.md` §4.6 → Code Blocks: «پس‌زمینه‌ی تیره‌ی مجزا»). */
+.block {
+  margin: 0;
+  overflow: hidden;
+  background: var(--deepseek-code-bg);
+  border: 1px solid var(--deepseek-border-default);
+  border-radius: var(--deepseek-radius-surface);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.25rem 0.5rem 0.25rem 0.75rem;
+  color: var(--deepseek-text-muted);
+  font-size: 0.75rem;
+}
+
+.language {
+  overflow-wrap: anywhere;
+}
+
+.pre {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  /* Code is LTR content in an RTL-locked app; force the line box left-to-right
+     so long lines read and overflow in the expected direction (same rule as
+     ImportFileList's file names). */
+  direction: ltr;
+  text-align: left;
+  overflow-x: auto;
+  /* Long lines WRAP (see `.code`) instead of scroll-clipping; the height cap
+     is purely a rendering guard for pathological dumps — not a UX toggle.
+     65rem ≈ 50 lines at 0.8125rem × 1.6. */
+  max-height: 65rem;
+  overflow-y: auto;
+}
+
+.code {
+  font-family: var(--deepseek-font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--deepseek-code-text);
+  /* pre-wrap keeps newlines/indentation while wrapping long lines; `anywhere`
+     breaks unbroken tokens. direction/text-align are inherited from `.pre`. */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

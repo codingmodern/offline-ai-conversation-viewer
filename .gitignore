@@ -1,0 +1,34 @@
+node_modules/
+dist/
+coverage/
+*.local
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# TS build info
+*.tsbuildinfo
+
+# Test runner console dumps
+vitest-out.txt
+
+# Real Claude export stays local-only (privacy) — see context/fixtures/claude/README.md
+context/fixtures/claude/*
+!context/fixtures/claude/README.md
+context/fixtures/gemini/*
+!context/fixtures/gemini/README.md
+# Reserved for the future real ChatGPT export (privacy) — see
+# context/fixtures/chatgpt/README.md. Only the README is committed.
+context/fixtures/chatgpt/*
+!context/fixtures/chatgpt/README.md

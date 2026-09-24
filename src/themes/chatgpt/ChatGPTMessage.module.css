@@ -1,0 +1,248 @@
+/* One message row (11b). Copied from Claude's `ClaudeMessage.module.css` and
+   re‑tokened to `--chatgpt-*` — themes never import across folders. Two
+   spec‑driven departures from Claude:
+     - actions `.row:hover .actions` / `.row:focus-within .actions` reveal on
+       pointer devices (§4.3 Message Actions); on touch‑only surfaces they are
+       always visible (`@media (hover: none)`). jsdom has no hover, so the token
+       test pins the un‑revealed base opacity.
+     - the user row pins `direction: rtl` explicitly (the app is RTL‑locked at
+       index.html, and the row keeps its geometry even if an ancestor ever
+       changes) and places the bubble on the inline start = physical right. */
+.row {
+  margin: 0;
+}
+
+.userRow {
+  display: flex;
+  justify-content: flex-start;
+  direction: rtl;
+}
+
+/* Assistant branch of the text rows: a plain vertical column stack — no
+   cross‑axis anchor, so the body and action row both span the full column and
+   Persian text starts at the inline start (physical right). */
+.assistantRow {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Unit 03 unknown‑role edge case: simplified, generic, quiet. */
+.unknownRole {
+  color: var(--chatgpt-text-secondary);
+}
+
+.unknownBadge {
+  display: inline-block;
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--chatgpt-text-muted);
+}
+
+/* Unsupported fragment with no body — self‑naming placeholder chip. */
+.unsupported {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--chatgpt-text-secondary);
+  background: var(--chatgpt-bg-elevated);
+  border: 1px dashed var(--chatgpt-border-default);
+  border-radius: var(--chatgpt-radius-surface);
+}
+
+/* User bubble + its action row, stacked on that same right edge. */
+.userMessage {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  min-width: 0;
+  max-width: 70%;
+}
+
+.userBubbleWrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.userBubble {
+  padding: 0.625rem 1rem;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--chatgpt-bubble-user-text);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  background: var(--chatgpt-bubble-user-bg);
+  border-radius: var(--chatgpt-radius-bubble);
+}
+
+/* 11b FR-3 (collapsed long user message): cap the visible height. The bubble
+   itself doesn't change — just the wrapper's clamped window. */
+.userBubbleWrapperCollapsed {
+  max-height: 14rem;
+}
+
+.userBubbleCollapsed {
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.expandButton {
+  margin-top: 0.25rem;
+  font: inherit;
+  font-size: 0.75rem;
+  color: var(--chatgpt-text-secondary);
+  background: none;
+  border: none;
+  border-radius: var(--shell-radius-inline);
+  cursor: pointer;
+}
+
+.expandButton:hover {
+  color: var(--chatgpt-accent-primary);
+}
+
+/* Action row shared by user and assistant rows. */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-top: 0.25rem;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+
+/* §4.3 Message Actions reveal: pointer hover (mouse/trackpad) or keyboard
+   focus-within. `@media (hover: none)` keeps the button always visible on
+   touch-only surfaces (FR-8 touch fallback). jsdom never hovers, so the unit
+   test asserts the base `opacity: 0`. */
+.row:hover .actions,
+.row:focus-within .actions {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .actions {
+    opacity: 1;
+  }
+}
+
+.actionDate {
+  font-size: 0.75rem;
+  color: var(--chatgpt-text-muted);
+}
+
+/* Assistant message body — renders sanitized Markdown from `markdown.ts`. */
+.assistantBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.assistantText {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--chatgpt-bubble-assistant-text);
+  overflow-wrap: anywhere;
+}
+
+.assistantText > p {
+  margin: 0 0 0.75rem;
+}
+
+.assistantText > p:last-child {
+  margin-bottom: 0;
+}
+
+.assistantText h1,
+.assistantText h2,
+.assistantText h3,
+.assistantText h4,
+.assistantText h5,
+.assistantText h6 {
+  margin: 1rem 0 0.5rem;
+  font-size: 1em;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.assistantText ul,
+.assistantText ol {
+  margin: 0 0 0.75rem;
+  padding-inline-start: 1.5rem;
+}
+
+.assistantText li {
+  margin-bottom: 0.25rem;
+}
+
+.assistantText blockquote {
+  margin: 0 0 0.75rem;
+  padding: 0.25rem 0.875rem;
+  color: var(--chatgpt-text-secondary);
+  border-inline-start: 2px solid var(--chatgpt-border-default);
+}
+
+/* Inline `<code>` chip — uses the inline-bg token (a neutral grey). */
+.assistantText code {
+  padding: 0.1rem 0.3rem;
+  font-family: var(--chatgpt-font-mono);
+  font-size: 0.9em;
+  color: var(--chatgpt-code-text);
+  background: var(--chatgpt-code-inline-bg);
+  border-radius: var(--shell-radius-inline);
+}
+
+/* marked's own fallback <pre> (indented/HTML code, not routed to CodeBlock). */
+.assistantText pre {
+  margin: 0 0 0.75rem;
+  padding: 0.75rem 1rem;
+  direction: ltr;
+  text-align: left;
+  overflow-x: auto;
+  color: var(--chatgpt-code-text);
+  background: var(--chatgpt-code-bg);
+  border-radius: var(--chatgpt-radius-surface);
+}
+
+.assistantText pre code {
+  padding: 0;
+  color: inherit;
+  background: none;
+}
+
+.assistantText a {
+  color: var(--chatgpt-accent-primary);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.assistantText hr {
+  margin: 1rem 0;
+  border: 0;
+  border-top: 1px solid var(--chatgpt-border-default);
+}
+
+.assistantText table {
+  width: 100%;
+  margin: 0 0 0.75rem;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+
+.assistantText th,
+.assistantText td {
+  padding: 0.375rem 0.625rem;
+  border: 1px solid var(--chatgpt-border-default);
+  text-align: start;
+}
+
+.assistantText th {
+  font-weight: 600;
+  background: var(--chatgpt-bg-elevated, transparent);
+}

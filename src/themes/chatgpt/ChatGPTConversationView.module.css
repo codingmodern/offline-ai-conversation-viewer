@@ -1,0 +1,58 @@
+/* 11b layout: a single centered column capped at 768px on the neutral page.
+   The page background and column width come from tokens.css via custom props so
+   the theme is self-contained — no value is hardcoded here (FR5/NFR3). The
+   containment contract mirrors Claude's: a full-bleed backdrop (.view, no
+   max-width) carrying the readable measure on .column (48rem + auto margins),
+   and shrinkable flex items so a pathological unbroken string wraps instead of
+   widening the list past the column. */
+.view {
+  display: grid;
+  width: 100%;
+  min-height: 100%;
+  background: var(--chatgpt-bg-base);
+  color: var(--chatgpt-text-primary);
+  font-family: var(--chatgpt-font-sans);
+  box-sizing: border-box;
+}
+
+.column {
+  width: 100%;
+  max-width: 48rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--chatgpt-spacing-message-gap);
+  padding: var(--chatgpt-spacing-container-padding);
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.threadDate {
+  margin: 0;
+  padding: 0.5rem 0;
+  font-size: 0.8125rem;
+  color: var(--chatgpt-text-muted);
+  text-align: center;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  gap: var(--chatgpt-spacing-message-gap);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.messageItem {
+  list-style: none;
+  margin: 0;
+  min-width: 0;
+}
+
+.empty {
+  padding: 1rem 0;
+  font-size: 0.9rem;
+  color: var(--chatgpt-text-secondary);
+  text-align: center;
+}

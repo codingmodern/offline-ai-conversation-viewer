@@ -1,0 +1,110 @@
+[
+  {
+    "id": "aa11bb22-cc33-dd44-ee55-ff6677889900",
+    "title": "Sample conversation with attachments and tool activity",
+    "inserted_at": "2026-08-20T23:23:45.861000+08:00",
+    "updated_at": "2026-08-20T23:25:55.182000+08:00",
+    "mapping": {
+      "root": {
+        "id": "root",
+        "parent": null,
+        "children": ["1"],
+        "message": null
+      },
+      "1": {
+        "id": "1",
+        "parent": "root",
+        "children": ["2"],
+        "message": {
+          "model": "deepseek-chat",
+          "inserted_at": "2026-08-20T23:24:36.688000+08:00",
+          "fragments": [
+            {
+              "type": "FILE",
+              "files": [
+                {
+                  "file_id": "file-0000000000000001",
+                  "file_name": "placeholder-document.pdf",
+                  "file_size": 12345
+                }
+              ]
+            },
+            { "type": "REQUEST", "content": "Sample message content" }
+          ]
+        }
+      },
+      "2": {
+        "id": "2",
+        "parent": "1",
+        "children": ["3"],
+        "message": {
+          "model": "deepseek-chat",
+          "inserted_at": "2026-08-20T23:24:36.682000+08:00",
+          "fragments": [
+            { "type": "THINK", "content": "Sample reasoning content" },
+            { "type": "RESPONSE", "content": "Sample message content" }
+          ]
+        }
+      },
+      "3": {
+        "id": "3",
+        "parent": "2",
+        "children": ["4"],
+        "message": {
+          "model": "deepseek-chat",
+          "inserted_at": "2026-08-20T23:25:04.482000+08:00",
+          "fragments": [{ "type": "REQUEST", "content": "Sample message content" }]
+        }
+      },
+      "4": {
+        "id": "4",
+        "parent": "3",
+        "children": ["5"],
+        "message": {
+          "model": "deepseek-chat",
+          "inserted_at": "2026-08-20T23:25:04.476000+08:00",
+          "fragments": [
+            {
+              "type": "SEARCH",
+              "results": [{ "title": "Placeholder result", "url": "https://example.invalid/a" }]
+            },
+            {
+              "type": "TOOL_SEARCH",
+              "results": [{ "title": "Placeholder result", "url": "https://example.invalid/b" }]
+            },
+            { "type": "TOOL_OPEN" },
+            { "type": "TOOL_FIND" },
+            { "type": "THINK", "content": "Sample reasoning content" },
+            { "type": "RESPONSE", "content": "Sample message content" }
+          ]
+        }
+      },
+      "5": {
+        "id": "5",
+        "parent": "4",
+        "children": [],
+        "message": {
+          "model": "deepseek-chat",
+          "inserted_at": "2026-08-20T23:25:52.537000+08:00",
+          "fragments": [
+            {
+              "type": "FILE",
+              "files": [
+                {
+                  "file_id": "file-0000000000000002",
+                  "file_name": "placeholder-image.png",
+                  "file_size": 67890
+                },
+                {
+                  "file_id": "file-0000000000000003",
+                  "file_name": "placeholder-notes.txt",
+                  "file_size": 4096
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+]

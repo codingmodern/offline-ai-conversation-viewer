@@ -1,0 +1,36 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  max-width: 22rem;
+  padding: 0.625rem 0.875rem;
+  background: var(--deepseek-bg-surface);
+  border: 1px solid var(--deepseek-border-default);
+  border-radius: var(--deepseek-radius-surface);
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--deepseek-accent-primary);
+}
+
+.name {
+  font-size: 0.875rem;
+  overflow-wrap: anywhere;
+}
+
+.size {
+  flex-shrink: 0;
+  margin-inline-start: auto;
+  font-size: 0.75rem;
+  color: var(--deepseek-text-muted);
+}

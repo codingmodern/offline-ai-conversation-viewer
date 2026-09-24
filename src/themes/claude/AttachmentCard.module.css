@@ -1,0 +1,29 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  max-width: 22rem;
+  padding: 0.625rem 0.875rem;
+  background: var(--claude-bg-surface);
+  border: 1px solid var(--claude-border-default);
+  border-radius: var(--claude-radius-surface);
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--claude-accent-primary);
+}
+
+.name {
+  font-size: 0.875rem;
+  overflow-wrap: anywhere;
+}

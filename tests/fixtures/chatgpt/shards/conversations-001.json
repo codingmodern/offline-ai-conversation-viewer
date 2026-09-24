@@ -1,0 +1,41 @@
+[
+  {
+    "id": "shard-b1",
+    "conversation_id": "shard-b1",
+    "title": "قطعه سه",
+    "create_time": 1750090000.0,
+    "update_time": 1750090100.0,
+    "current_node": "s-b1-a",
+    "mapping": {
+      "s-b1-r": { "id": "s-b1-r", "message": null, "parent": null, "children": ["s-b1-u"] },
+      "s-b1-u": {
+        "id": "s-b1-u",
+        "message": {
+          "id": "m-s-b1-u",
+          "author": { "role": "user", "name": null, "metadata": {} },
+          "create_time": 1750090000.0,
+          "content": { "content_type": "text", "parts": ["پیام قطعه سه"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "s-b1-r",
+        "children": ["s-b1-a"]
+      },
+      "s-b1-a": {
+        "id": "s-b1-a",
+        "message": {
+          "id": "m-s-b1-a",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750090001.0,
+          "content": { "content_type": "text", "parts": ["پاسخ قطعه سه"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "s-b1-u",
+        "children": []
+      }
+    }
+  }
+]

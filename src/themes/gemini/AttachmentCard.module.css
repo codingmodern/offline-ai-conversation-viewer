@@ -1,0 +1,32 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  max-width: 22rem;
+  padding: 0.625rem 0.875rem;
+  background: var(--gemini-bg-surface);
+  border: 1px solid var(--gemini-border-default);
+  border-radius: var(--gemini-radius-surface);
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--gemini-accent-primary);
+}
+
+.name {
+  font-size: 0.875rem;
+  /* File names are LTR identifiers inside an RTL-locked app; the paragraph
+     direction stays natural so a mixed name wraps sensibly, but an unbroken
+     name must never widen the column. */
+  overflow-wrap: anywhere;
+}

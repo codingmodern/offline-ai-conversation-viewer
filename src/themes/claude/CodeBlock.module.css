@@ -1,0 +1,54 @@
+/* The block keeps its own dark charcoal background in both light and dark mode
+   (`ui-context.md` §4.4 → Code Blocks). The Copy button inside the bar inherits
+   the bar's muted colour via `.bar` (the button itself uses `color: inherit`). */
+.block {
+  margin: 0;
+  overflow: hidden;
+  background: var(--claude-code-bg);
+  border: 1px solid var(--claude-border-default);
+  border-radius: var(--claude-radius-surface);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.25rem 0.5rem 0.25rem 0.75rem;
+  color: rgb(255 255 255 / 55%);
+  font-size: 0.75rem;
+}
+
+.language {
+  overflow-wrap: anywhere;
+}
+
+.pre {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  /* Code is LTR content (identifiers, paths, logs) inside an RTL-locked app;
+     force the line box left-to-right so long lines read and overflow in the
+     expected direction (same rule as ImportFileList's file names). */
+  direction: ltr;
+  text-align: left;
+  overflow-x: auto;
+  /* 09b follow-up (bug 2): long lines now WRAP (see `.code`) instead of
+     scroll-clipping; the height cap exists purely so a pathological dump
+     cannot stall rendering — it is not a UX toggle, and there is no inner
+     "show more". 65rem ≈ 50 lines at 0.8125rem × 1.6 (border-box, so the
+     cap lands a hair under 50 — fine for a perf guard). */
+  max-height: 65rem;
+  overflow-y: auto;
+}
+
+.code {
+  font-family: var(--claude-font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--claude-code-text);
+  /* pre-wrap keeps the code's own newlines/indentation while wrapping long
+     lines; `anywhere` breaks unbroken tokens (minified blobs, long paths).
+     direction/text-align are inherited from `.pre`. */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

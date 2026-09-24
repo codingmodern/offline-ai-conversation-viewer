@@ -1,0 +1,60 @@
+/* One assistant reasoning/tool cluster, collapsed into a single <details>.
+   Mirrors Claude's ActivityGroup module with --chatgpt-* tokens (themes never
+   import across folders). The summary is the only affordance; the group opens
+   by default so reasoning is readable inline (FR-4). */
+.group {
+  overflow: hidden;
+  max-width: 100%;
+  min-width: 0;
+  margin: 0;
+}
+
+/* Firefox defaults <details>[open] > summary to a block that breaks RTL;
+   reset to inline-flex to lock right alignment. */
+.summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.5rem;
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--chatgpt-text-secondary);
+  list-style: none;
+  cursor: pointer;
+  border-radius: var(--chatgpt-radius-surface);
+}
+
+.chevron {
+  flex-shrink: 0;
+  transition: transform 0.12s ease;
+  color: var(--chatgpt-text-secondary);
+}
+
+/* Rotate the chevron when open (Firefox needs `[open]` too, not just :hover). */
+.group[open] .chevron,
+.details-open .chevron {
+  transform: rotate(180deg);
+}
+
+.summaryText {
+  overflow-wrap: anywhere;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--chatgpt-spacing-message-gap);
+  padding: 0.25rem 0 0;
+  margin: 0;
+}
+
+/* Members share the group's transparent background — a single hairline
+   separates them so a run reads as ONE card, never a stack of bordered boxes
+   (FR5, mirroring Claude's ActivityGroup). */
+.body > :not(:first-child) {
+  border-top: 1px solid var(--chatgpt-border-default);
+}
+
+.summary::-webkit-details-marker {
+  display: none;
+}

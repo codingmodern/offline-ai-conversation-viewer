@@ -1,0 +1,76 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgb(0 0 0 / 45%);
+}
+
+.dialog {
+  width: 100%;
+  max-width: 26rem;
+  padding: 1.25rem;
+  background: var(--shell-bg-elevated);
+  border: 1px solid var(--shell-border-default);
+  border-radius: var(--shell-radius-modal);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 20%);
+}
+
+.title {
+  margin: 0 0 0.5rem;
+  font-size: 1.0625rem;
+}
+
+.description {
+  margin: 0 0 1.25rem;
+  color: var(--shell-text-secondary);
+  font-size: 0.9375rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-start;
+}
+
+.cancel,
+.confirm,
+.destructive {
+  padding: 0.4375rem 1rem;
+  font: inherit;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  border: 1px solid var(--shell-border-default);
+  border-radius: var(--shell-radius-inline);
+}
+
+.cancel {
+  color: var(--shell-text-primary);
+  background: var(--shell-bg-base);
+}
+
+.cancel:hover {
+  background: var(--shell-bg-hover);
+}
+
+.confirm {
+  color: var(--shell-bg-base);
+  background: var(--shell-state-info);
+  border-color: var(--shell-state-info);
+}
+
+/* Destructive actions are colour-coded *and* worded explicitly, so colour is
+   never the only signal (`ui-context.md` §6). */
+.destructive {
+  color: var(--shell-bg-base);
+  background: var(--shell-state-error);
+  border-color: var(--shell-state-error);
+}
+
+.confirm:hover,
+.destructive:hover {
+  filter: brightness(0.94);
+}

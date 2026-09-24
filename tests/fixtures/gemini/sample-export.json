@@ -1,0 +1,111 @@
+[
+  {
+    "header": "برنامه‌های Gemini",
+    "title": "Hello there",
+    "time": "2025-03-02T09:15:00.000Z",
+    "products": ["برنامه‌های Gemini"],
+    "details": [
+      {
+        "name": "https://gemini.google.com/app/sample-conv-a",
+        "url": "https://gemini.google.com/app/sample-conv-a"
+      }
+    ],
+    "activityControls": ["فعالیت برنامه‌های Gemini"],
+    "safeHtmlItem": [
+      { "html": "<p>Hi <strong>friend</strong>! Ask me anything.</p>" }
+    ]
+  },
+  {
+    "header": "برنامه‌های Gemini",
+    "title": "درخواست: کوتاه",
+    "time": "2025-03-02T08:02:00.000Z",
+    "products": ["برنامه‌های Gemini"],
+    "details": [
+      {
+        "name": "https://gemini.google.com/app/sample-conv-d",
+        "url": "https://gemini.google.com/app/sample-conv-d"
+      }
+    ],
+    "activityControls": ["فعالیت برنامه‌های Gemini"],
+    "safeHtmlItem": [{ "html": "<p>پاسخ کوتاه.</p>" }]
+  },
+  {
+    "header": "برنامه‌های Gemini",
+    "title": "درخواست: حالا یک نسخه‌ی ۱۶:۹ بساز",
+    "time": "2025-03-02T08:05:00.000Z",
+    "products": ["برنامه‌های Gemini"],
+    "details": [
+      {
+        "name": "https://gemini.google.com/app/sample-conv-c",
+        "url": "https://gemini.google.com/app/sample-conv-c"
+      }
+    ],
+    "activityControls": ["فعالیت برنامه‌های Gemini"],
+    "subtitles": [{ "name": "۱ تصویر تولید شد." }],
+    "attachedFiles": ["poster-42.png"],
+    "safeHtmlItem": [
+      { "html": "<p>تصویر ساخته شد.</p>" }
+    ]
+  },
+  {
+    "header": "برنامه‌های Gemini",
+    "title": "درخواست: این تصویر را بررسی کن",
+    "time": "2025-03-02T08:00:00.000Z",
+    "products": ["برنامه‌های Gemini"],
+    "details": [
+      {
+        "name": "https://gemini.google.com/app/sample-conv-c",
+        "url": "https://gemini.google.com/app/sample-conv-c"
+      }
+    ],
+    "activityControls": ["فعالیت برنامه‌های Gemini"],
+    "subtitles": [
+      { "name": "۱ فایل پیوست شد." },
+      { "name": "-  shot-01.jpg", "url": "shot-01-9f2c.jpg" }
+    ],
+    "attachedFiles": ["shot-01.jpg"],
+    "imageFile": "shot-01.jpg",
+    "safeHtmlItem": [
+      {
+        "html": "<p>تصویر را دیدم و <strong>نکته‌ی مهم</strong> را برجسته کردم.</p>"
+      }
+    ]
+  },
+  {
+    "header": "برنامههای Gemini",
+    "title": "درخواست: آیا پیش‌نویس‌های جایگزین هم در خروجی ذخیره می‌شوند؟",
+    "time": "2025-03-01T14:30:00.000Z",
+    "products": ["برنامههای Gemini"],
+    "details": [
+      {
+        "name": "https://gemini.google.com/app/sample-conv-b",
+        "url": "https://gemini.google.com/app/sample-conv-b"
+      }
+    ],
+    "activityControls": ["فعالیت برنامه‌های Gemini"],
+    "safeHtmlItem": [
+      { "html": "<p>بله، هر دو پیش‌نویس در خروجی ثبت می‌شوند.</p>" },
+      {
+        "html": "<p>در خروجی فقط پاسخ‌های ثبت‌شده می‌آیند؛ پیش‌نویس جایگزین جداگانه نشان داده می‌شود.</p>"
+      }
+    ]
+  },
+  {
+    "header": "برنامه‌های Gemini",
+    "title": "درخواست: چطور می‌توانم خروجی کامل گفتگوهایم را بگیرم و بعد آن را در یک برنامه‌ی آفلاین بخوانم without losing formatting?",
+    "time": "2025-03-01T14:20:00.000Z",
+    "products": ["برنامه‌های Gemini"],
+    "details": [
+      {
+        "name": "https://gemini.google.com/app/sample-conv-b",
+        "url": "https://gemini.google.com/app/sample-conv-b"
+      }
+    ],
+    "activityControls": ["فعالیت برنامههای Gemini"],
+    "safeHtmlItem": [
+      {
+        "html": "<h3>۱. خروجی گرفتن</h3>\n<p>یک مسیر <strong>استاندارد</strong> و یک مسیر <em>سریع</em> وجود دارد.</p>\n<ul>\n<li>ذخیره به PDF با <code>Ctrl + P</code></li>\n<li>خروجی رسمی از <a href=\"https://takeout.google.com\">takeout.google.com</a></li>\n</ul>\n<ol>\n<li>روی <strong>Deselect all</strong> کلیک کنید.</li>\n<li>بخش Gemini Apps را تیک بزنید.</li>\n</ol>\n<pre><code>[Service]\nEnvironment=&quot;HTTP_PROXY=http://127.0.0.1:2080&quot;\n</code></pre>\n<hr>\n<blockquote>\n<p><strong>نکته:</strong> فایل JSON فقط نام پیوست‌ها را دارد، نه خود فایل‌ها.</p>\n</blockquote>"
+      }
+    ]
+  }
+]

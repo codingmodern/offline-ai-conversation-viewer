@@ -1,0 +1,50 @@
+.zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2.5rem 1.5rem;
+  background: var(--shell-bg-surface);
+  border: 2px dashed var(--shell-border-default);
+  border-radius: var(--shell-radius-modal);
+  text-align: center;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease;
+}
+
+/* Dragging state (`ui-context.md` §3 — Import Zone: Idle / Dragging / Parsing / Error). */
+.dragging {
+  border-color: var(--shell-state-info);
+  background: var(--shell-bg-hover);
+}
+
+.title {
+  margin: 0;
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+
+.hint {
+  margin: 0;
+  color: var(--shell-text-secondary);
+  font-size: 0.875rem;
+}
+
+.button {
+  padding: 0.5rem 1.25rem;
+  background: var(--shell-bg-elevated);
+  color: var(--shell-text-primary);
+  border: 1px solid var(--shell-border-default);
+  border-radius: var(--shell-radius-pill);
+  font: inherit;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: var(--shell-bg-hover);
+}
+
+.input {
+  display: none;
+}

@@ -1,0 +1,135 @@
+[
+  {
+    "id": "branch-conv",
+    "conversation_id": "branch-conv",
+    "title": "شاخهها",
+    "create_time": 1750010000.0,
+    "update_time": 1750010100.0,
+    "current_node": "a-active-2",
+    "mapping": {
+      "root": { "id": "root", "message": null, "parent": null, "children": ["u1"] },
+      "u1": {
+        "id": "u1",
+        "message": {
+          "id": "m-u1",
+          "author": { "role": "user", "name": null, "metadata": {} },
+          "create_time": 1750010000.0,
+          "content": { "content_type": "text", "parts": ["سؤال اصلی"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "root",
+        "children": ["a-first", "a-active", "a-last"]
+      },
+      "a-first": {
+        "id": "a-first",
+        "message": {
+          "id": "m-a-first",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750010010.0,
+          "content": { "content_type": "text", "parts": ["شاخه‌ی اول"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "u1",
+        "children": []
+      },
+      "a-active": {
+        "id": "a-active",
+        "message": {
+          "id": "m-a-active",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750010020.0,
+          "content": { "content_type": "text", "parts": ["شاخه‌ی فعال"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "u1",
+        "children": ["a-active-2"]
+      },
+      "a-active-2": {
+        "id": "a-active-2",
+        "message": {
+          "id": "m-a-active-2",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750010030.0,
+          "content": { "content_type": "text", "parts": ["ادامه‌ی شاخه‌ی فعال"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "a-active",
+        "children": []
+      },
+      "a-last": {
+        "id": "a-last",
+        "message": {
+          "id": "m-a-last",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750010040.0,
+          "content": { "content_type": "text", "parts": ["شاخه‌ی آخر"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "u1",
+        "children": []
+      }
+    }
+  },
+  {
+    "id": "branch-fallback",
+    "conversation_id": "branch-fallback",
+    "title": "بدون current_node",
+    "create_time": 1750020000.0,
+    "update_time": 1750020100.0,
+    "mapping": {
+      "b-root": { "id": "b-root", "message": null, "parent": null, "children": ["b1"] },
+      "b1": {
+        "id": "b1",
+        "message": {
+          "id": "m-b1",
+          "author": { "role": "user", "name": null, "metadata": {} },
+          "create_time": 1750020000.0,
+          "content": { "content_type": "text", "parts": ["پرسش"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "b-root",
+        "children": ["b-old", "b-new"]
+      },
+      "b-old": {
+        "id": "b-old",
+        "message": {
+          "id": "m-b-old",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750020010.0,
+          "content": { "content_type": "text", "parts": ["شاخه‌ی قدیمی"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "b1",
+        "children": []
+      },
+      "b-new": {
+        "id": "b-new",
+        "message": {
+          "id": "m-b-new",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750020020.0,
+          "content": { "content_type": "text", "parts": ["آخرین شاخه"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "b1",
+        "children": []
+      }
+    }
+  }
+]

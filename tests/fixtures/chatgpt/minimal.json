@@ -1,0 +1,102 @@
+[
+  {
+    "id": "conversation-uuid",
+    "conversation_id": "conversation-uuid",
+    "title": "عنوان گفتگو",
+    "create_time": 1750000000.123,
+    "update_time": 1750000100.456,
+    "is_archived": false,
+    "is_starred": false,
+    "default_model_slug": "gpt-5",
+    "current_node": "node-uuid-3",
+    "mapping": {
+      "node-uuid-1": {
+        "id": "node-uuid-1",
+        "message": {
+          "id": "message-uuid-1",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1750000000.123,
+          "update_time": null,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "سلام"
+            ]
+          },
+          "status": "finished_successfully",
+          "end_turn": true,
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all",
+          "channel": null
+        },
+        "parent": null,
+        "children": [
+          "node-uuid-2"
+        ]
+      },
+      "node-uuid-2": {
+        "id": "node-uuid-2",
+        "message": {
+          "id": "message-uuid-2",
+          "author": {
+            "role": "assistant",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1750000005.456,
+          "update_time": null,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "سلام! چطور می‌توانم کمک کنم؟"
+            ]
+          },
+          "status": "finished_successfully",
+          "end_turn": true,
+          "weight": 1.0,
+          "metadata": {
+            "model_slug": "gpt-5"
+          },
+          "recipient": "all",
+          "channel": null
+        },
+        "parent": "node-uuid-1",
+        "children": [
+          "node-uuid-3"
+        ]
+      },
+      "node-uuid-3": {
+        "id": "node-uuid-3",
+        "message": {
+          "id": "message-uuid-3",
+          "author": {
+            "role": "user",
+            "name": null,
+            "metadata": {}
+          },
+          "create_time": 1750000010.789,
+          "update_time": null,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "ساختار conversations.json چیست؟"
+            ]
+          },
+          "status": "finished_successfully",
+          "end_turn": true,
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all",
+          "channel": null
+        },
+        "parent": "node-uuid-2",
+        "children": []
+      }
+    }
+  }
+]

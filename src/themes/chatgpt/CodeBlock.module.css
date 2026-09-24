@@ -1,0 +1,44 @@
+/* The block keeps its own dark charcoal background in both modes (§4.3). The
+   Copy button in the bar inherits the muted colour via `.bar`. */
+.block {
+  margin: 0;
+  overflow: hidden;
+  background: var(--chatgpt-code-bg);
+  border: 1px solid var(--chatgpt-border-default);
+  border-radius: var(--chatgpt-radius-surface);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.25rem 0.5rem 0.25rem 0.75rem;
+  color: rgb(255 255 255 / 55%);
+  font-size: 0.75rem;
+}
+
+.language {
+  overflow-wrap: anywhere;
+}
+
+.pre {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  /* Code is LTR content inside the RTL-locked app; force the line box
+     left-to-right so long lines read and overflow in the expected direction. */
+  direction: ltr;
+  text-align: left;
+  overflow-x: auto;
+  max-height: 65rem;
+  overflow-y: auto;
+}
+
+.code {
+  font-family: var(--chatgpt-font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--chatgpt-code-text);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

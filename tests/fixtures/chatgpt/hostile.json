@@ -1,0 +1,168 @@
+[
+  {
+    "id": "hostile-valid-1",
+    "conversation_id": "hostile-valid-1",
+    "title": "سالم یک",
+    "create_time": 1750060000.0,
+    "update_time": 1750060100.0,
+    "current_node": "hv1-a",
+    "mapping": {
+      "hv1-r": { "id": "hv1-r", "message": null, "parent": null, "children": ["hv1-u"] },
+      "hv1-u": {
+        "id": "hv1-u",
+        "message": {
+          "id": "m-hv1-u",
+          "author": { "role": "user", "name": null, "metadata": {} },
+          "create_time": 1750060000.0,
+          "content": { "content_type": "text", "parts": ["اول"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "hv1-r",
+        "children": ["hv1-a"]
+      },
+      "hv1-a": {
+        "id": "hv1-a",
+        "message": {
+          "id": "m-hv1-a",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750060001.0,
+          "content": { "content_type": "text", "parts": ["دوم"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "hv1-u",
+        "children": []
+      }
+    }
+  },
+  {
+    "id": "hostile-no-mapping",
+    "conversation_id": "hostile-no-mapping",
+    "title": "بدون mapping",
+    "create_time": 1750061000.0,
+    "update_time": 1750061000.0
+  },
+  {
+    "id": "hostile-cycle",
+    "conversation_id": "hostile-cycle",
+    "title": "حلقه و والد گم‌شده",
+    "create_time": 1750062000.0,
+    "update_time": 1750062100.0,
+    "current_node": "unknown-node",
+    "mapping": {
+      "k-root": { "id": "k-root", "message": null, "parent": null, "children": ["k-a"] },
+      "k-a": {
+        "id": "k-a",
+        "message": {
+          "id": "m-k-a",
+          "author": { "role": "user", "name": null, "metadata": {} },
+          "create_time": 1750062000.0,
+          "content": { "content_type": "text", "parts": ["پیام اصلی"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "k-root",
+        "children": ["k-b"]
+      },
+      "k-b": {
+        "id": "k-b",
+        "message": {
+          "id": "m-k-b",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750062001.0,
+          "content": { "content_type": "text", "parts": ["پاسخ اصلی"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "k-a",
+        "children": ["k-c"]
+      },
+      "k-c": {
+        "id": "k-c",
+        "message": {
+          "id": "m-k-c",
+          "author": { "role": "user", "name": null, "metadata": {} },
+          "create_time": 1750062002.0,
+          "content": { "content_type": "text", "parts": ["ویرایش"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "k-b",
+        "children": ["k-d"]
+      },
+      "k-d": {
+        "id": "k-d",
+        "message": {
+          "id": "m-k-d",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750062003.0,
+          "content": { "content_type": "text", "parts": ["شاخه‌ی حلقه‌ای"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "k-c",
+        "children": ["k-c"]
+      },
+      "k-orphan": {
+        "id": "k-orphan",
+        "message": {
+          "id": "m-k-orphan",
+          "author": { "role": "user", "name": null, "metadata": {} },
+          "create_time": 1750062004.0,
+          "content": { "content_type": "text", "parts": ["زیرشاخه‌ی جدا"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "k-missing",
+        "children": []
+      }
+    }
+  },
+  {
+    "id": "hostile-valid-2",
+    "conversation_id": "hostile-valid-2",
+    "title": "سالم دو",
+    "create_time": 1750070000.0,
+    "update_time": 1750070100.0,
+    "current_node": "hv2-a",
+    "mapping": {
+      "hv2-r": { "id": "hv2-r", "message": null, "parent": null, "children": ["hv2-u"] },
+      "hv2-u": {
+        "id": "hv2-u",
+        "message": {
+          "id": "m-hv2-u",
+          "author": { "role": "user", "name": null, "metadata": {} },
+          "create_time": 1750070000.0,
+          "content": { "content_type": "text", "parts": ["سوم"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "hv2-r",
+        "children": ["hv2-a"]
+      },
+      "hv2-a": {
+        "id": "hv2-a",
+        "message": {
+          "id": "m-hv2-a",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750070001.0,
+          "content": { "content_type": "text", "parts": ["چهارم"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "hv2-u",
+        "children": []
+      }
+    }
+  }
+]

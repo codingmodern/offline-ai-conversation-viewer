@@ -1,0 +1,94 @@
+/*
+ * Gemini theme tokens (`ui-context.md` §4.5, categories of §4.1).
+ *
+ * Values come from §4.5's palette (Material 3 Expressive / «Neural Expressive»):
+ * a Google-blue accent on soft blue-white surfaces in light mode and a warm
+ * dark grey — never pure black — in dark mode. Only free system fonts are used
+ * (§4.2), so the Google Sans / Roboto families are named with local fallbacks
+ * instead of being bundled.
+ *
+ * Light/dark follows the app-wide setting the same way the Shell does
+ * (`prefers-color-scheme`): this theme introduces no separate control.
+ *
+ * Two deliberate readings of the sheet, both noted here rather than hidden:
+ *  - §4.5 describes the light base as a soft blue-white *gradient*. A gradient
+ *    is a landing-surface flourish; the conversation surface (`.view`) paints
+ *    the flat base colour so text contrast is predictable everywhere, and
+ *    §4.5's `~#F0F4F9` tone is used as `--gemini-bg-surface` (its own
+ *    documented role: sidebar/card tone) for the attachment cards.
+ *  - `--gemini-link-text` is a token of its own because §4.5's brand blue
+ *    (#4285F4) reaches only ~3.6:1 on white: brand/decoration may use it, but
+ *    body links must clear §13's AA floor, so they use Google's darker link
+ *    blue (#1A73E8, ~4.5:1) — the colour Gemini itself uses for links.
+ */
+:root {
+  /* `#1e1f20` in dark mode is the sheet's "warm dark grey, not pure black". */
+  --gemini-bg-base: #ffffff;
+  --gemini-bg-surface: #f0f4f9;
+  --gemini-bg-elevated: #ffffff;
+
+  --gemini-text-primary: #1f1f1f;
+  --gemini-text-secondary: #5f6368;
+  /* A touch darker than Google Grey 600 so small secondary text clears AA. */
+  --gemini-text-muted: #74777b;
+
+  --gemini-bubble-user-bg: #e8eef9;
+  --gemini-bubble-user-text: #1f1f1f;
+  /* §4.5: the model's answer is not a bubble in either mode — it is the page. */
+  --gemini-bubble-assistant-bg: transparent;
+  --gemini-bubble-assistant-text: #1f1f1f;
+
+  --gemini-accent-primary: #4285f4;
+  --gemini-accent-hover: #3367d6;
+  --gemini-link-text: #1a73e8;
+
+  --gemini-border-default: #dadce0;
+  --gemini-error-text: #d93025;
+
+  /* Code keeps Gemini's own two-mode treatment: a light grey slab in light
+     mode, an ultra-dark one in dark mode (never the page colour in either). */
+  --gemini-code-bg: #f1f3f4;
+  --gemini-code-text: #1f1f1f;
+
+  --gemini-font-sans: Roboto, 'Google Sans', 'Segoe UI', system-ui, sans-serif;
+  --gemini-font-mono: 'Roboto Mono', ui-monospace, 'Cascadia Mono', monospace;
+
+  /* §4.5's bubble range is 16–24px; 20px is the middle of that range. */
+  --gemini-radius-bubble: 20px;
+  --gemini-radius-surface: 16px;
+  /* §4.5's pill radius. The draft chip is the one surface in this unit that
+     uses it — the export renders no input box, so nothing else does. */
+  --gemini-radius-input: 9999px;
+
+  /* §4.5 asks for "medium, with more space around visual elements". */
+  --gemini-spacing-message-gap: 2.5rem;
+  --gemini-spacing-container-padding: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --gemini-bg-base: #1e1f20;
+    --gemini-bg-surface: #282a2c;
+    --gemini-bg-elevated: #333537;
+
+    --gemini-text-primary: #e3e3e3;
+    --gemini-text-secondary: #9aa0a6;
+    --gemini-text-muted: #8e918f;
+
+    --gemini-bubble-user-bg: #3b3f45;
+    --gemini-bubble-user-text: #e3e3e3;
+    --gemini-bubble-assistant-bg: transparent;
+    --gemini-bubble-assistant-text: #e3e3e3;
+
+    /* §4.5: "the same, brightness balanced" — Google's dark-mode blue. */
+    --gemini-accent-primary: #8ab4f8;
+    --gemini-accent-hover: #aecbfa;
+    --gemini-link-text: #8ab4f8;
+
+    --gemini-border-default: #3c4043;
+    --gemini-error-text: #f28b82;
+
+    --gemini-code-bg: #131314;
+    --gemini-code-text: #e3e3e3;
+  }
+}

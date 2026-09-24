@@ -1,0 +1,96 @@
+/*
+ * Shell design tokens (`ui-context.md` §2, §5, §6).
+ * Only Shell tokens live here — provider themes are added in later units.
+ */
+:root {
+  color-scheme: light dark;
+
+  --shell-bg-base: #ffffff;
+  --shell-bg-surface: #f7f8fa;
+  --shell-bg-elevated: #ffffff;
+  --shell-bg-hover: #eef0f4;
+  --shell-text-primary: #14161a;
+  --shell-text-secondary: #565b66;
+  --shell-text-muted: #8b8f9a;
+  --shell-border-default: #dfe2e8;
+  --shell-state-error: #b42318;
+  --shell-state-warning: #b54708;
+  --shell-state-success: #067647;
+  --shell-state-info: #175cd3;
+  /* Platform brand accents (Unit 08 picker only — never theme-dependent). */
+  --brand-chatgpt: #10a37f;
+  --brand-claude: #d97757;
+  --brand-deepseek: #4d6bfe;
+  --brand-gemini: linear-gradient(135deg, #4285f4 0%, #9b72cb 100%);
+  /* Solid fallback for SVG `fill`, which cannot consume the gradient above. */
+  --brand-gemini-solid: #6a8af2;
+
+
+  --shell-font-sans: system-ui, -apple-system, 'Segoe UI', Tahoma, sans-serif;
+  --shell-font-mono: ui-monospace, 'Cascadia Mono', 'Courier New', monospace;
+
+  --shell-radius-inline: 4px;
+  --shell-radius-card: 8px;
+  --shell-radius-modal: 12px;
+  --shell-radius-pill: 9999px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --shell-bg-base: #16181d;
+    --shell-bg-surface: #1c1f25;
+    --shell-bg-elevated: #23272f;
+    --shell-bg-hover: #2a2f38;
+    --shell-text-primary: #eceef2;
+    --shell-text-secondary: #a9aeb8;
+
+    --shell-text-muted: #7d828d;
+    --shell-border-default: #333944;
+    --shell-state-error: #fda29b;
+    --shell-state-warning: #fdb022;
+    --shell-state-success: #75e0a7;
+    --shell-state-info: #84caff;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--shell-bg-base);
+  color: var(--shell-text-primary);
+  font-family: var(--shell-font-sans);
+  line-height: 1.6;
+}
+
+/* Visible focus ring on every interactive element (`ui-context.md` §6). */
+:focus-visible {
+  outline: 2px solid var(--shell-state-info);
+  outline-offset: 2px;
+}
+
+/* Screen-reader-only helper for live region announcements. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

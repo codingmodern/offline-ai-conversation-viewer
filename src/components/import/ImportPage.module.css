@@ -1,0 +1,45 @@
+.page {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+}
+
+/*
+  Back to the library. Only rendered when there is somewhere to return to, so it
+  never appears on the very first import.
+*/
+.back {
+  margin: 0 0 1rem;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid var(--shell-border-default);
+  border-radius: var(--shell-radius-inline);
+  background: transparent;
+  color: var(--shell-text-secondary);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.back:hover {
+  background: var(--shell-bg-hover);
+  color: var(--shell-text-primary);
+}
+
+/* Focus ring comes from the global `:focus-visible` rule in `styles/shell.css`. */
+
+.heading {
+  margin: 0 0 0.25rem;
+  font-size: 1.375rem;
+}
+
+.subheading {
+  margin: 0 0 1.5rem;
+  color: var(--shell-text-secondary);
+  font-size: 0.9375rem;
+}
+
+.summary {
+  margin: 1rem 0 0;
+  color: var(--shell-text-secondary);
+  font-size: 0.875rem;
+}

@@ -1,0 +1,74 @@
+/*
+ * DeepSeek theme tokens (`ui-context.md` §4.1, §4.6).
+ *
+ * Values follow the corrected, screenshot-verified §4.6 (ADR #17):
+ *   - dark user bubble is neutral gray `#2a2a2a` — no blue tint;
+ *   - there is deliberately no separate Thinking-background token: the Thinking
+ *     section renders directly on the base background and is distinguished only
+ *     by `--deepseek-thinking-text` and its numbered-list structure.
+ *
+ * Light/dark follows the app-wide setting the same way the Shell does
+ * (`prefers-color-scheme`) — this unit introduces no separate control.
+ * Only free fonts (Inter if locally installed, otherwise the system stack)
+ * and no official assets are used (`ui-context.md` §4.2).
+ */
+:root {
+  --deepseek-bg-base: #ffffff;
+  --deepseek-bg-surface: #f7f7f8;
+  --deepseek-bg-elevated: #ffffff;
+
+  --deepseek-text-primary: #1a1a1a;
+  --deepseek-text-secondary: #6b7280;
+  --deepseek-text-muted: #9ca3af;
+
+  --deepseek-bubble-user-bg: #eff3ff;
+  --deepseek-bubble-user-text: #1a1a1a;
+  --deepseek-bubble-assistant-bg: transparent;
+  --deepseek-bubble-assistant-text: #1a1a1a;
+
+  --deepseek-accent-primary: #4d6bfe;
+  --deepseek-accent-hover: #3f57d4;
+
+  --deepseek-thinking-text: #6b7280;
+
+  /* Code blocks keep their own dark background in both modes (§4.6 → Code Blocks). */
+  --deepseek-code-bg: #0d0d0d;
+  --deepseek-code-text: #e8e8e8;
+
+  --deepseek-border-default: #e5e7eb;
+
+  --deepseek-font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Tahoma, sans-serif;
+  --deepseek-font-mono: ui-monospace, 'Cascadia Mono', 'Courier New', monospace;
+
+  --deepseek-radius-bubble: 12px;
+  --deepseek-radius-surface: 8px;
+
+  --deepseek-spacing-message-gap: 1.5rem;
+  --deepseek-spacing-container-padding: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --deepseek-bg-base: #1a1a1a;
+    --deepseek-bg-surface: #141414;
+    --deepseek-bg-elevated: #242424;
+
+    --deepseek-text-primary: #e8e8e8;
+    --deepseek-text-secondary: #9ca3af;
+    --deepseek-text-muted: #6b7280;
+
+    /* ADR #17: neutral gray — the real user bubble has no blue tint. */
+    --deepseek-bubble-user-bg: #2a2a2a;
+    --deepseek-bubble-user-text: #e8e8e8;
+    --deepseek-bubble-assistant-bg: transparent;
+    --deepseek-bubble-assistant-text: #e8e8e8;
+
+    /* Same hue, brightness balanced for dark surfaces (§4.6). */
+    --deepseek-accent-primary: #5f7bff;
+    --deepseek-accent-hover: #829aff;
+
+    --deepseek-thinking-text: #9ca3af;
+
+    --deepseek-border-default: #2e2e2e;
+  }
+}

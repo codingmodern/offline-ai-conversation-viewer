@@ -1,0 +1,44 @@
+/* The themed surface owns its own background and typography so the provider
+   theme — not the Shell — dominates the conversation region
+   (`ui-context.md` §1). Single column, centred, readable measure. */
+.view {
+  min-height: 100%;
+  font-family: var(--deepseek-font-sans);
+  color: var(--deepseek-text-primary);
+  background: var(--deepseek-bg-base);
+}
+
+/* Centred readable measure carried by the content; the surface behind it
+   (.view) keeps the theme base colour edge-to-edge so no shell
+   background shows around the column on wide windows. */
+.column {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: var(--deepseek-spacing-container-padding);
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  gap: var(--deepseek-spacing-message-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.messageItem {
+  margin: 0;
+  /* Column-flex child: let the row shrink below its content's intrinsic
+     width so a pathological unbroken string wraps (overflow-wrap on the
+     message content already folds it) instead of widening the list past
+     the column. */
+  min-width: 0;
+}
+
+.empty {
+  margin: 0;
+  padding: 3rem 0;
+  font-size: 0.9375rem;
+  color: var(--deepseek-text-muted);
+  text-align: center;
+}

@@ -1,0 +1,16 @@
+/* The content area's own independent scroll region (Shell structural rule):
+   the MetadataPanel above stays fixed while messages scroll beneath it, and
+   switching conversations resets scrollTop to 0 (see ConversationStage.tsx). */
+.stage {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Holds vertical space during the brief record read so the layout does not
+   collapse between selection and first render. */
+.loading {
+  min-height: 12rem;
+}

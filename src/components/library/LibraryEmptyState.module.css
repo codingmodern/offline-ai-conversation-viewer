@@ -1,0 +1,36 @@
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.title {
+  margin: 0 0 0.5rem;
+  font-size: 1.125rem;
+}
+
+.text {
+  max-width: 30rem;
+  margin: 0 0 1.25rem;
+  color: var(--shell-text-secondary);
+  font-size: 0.9375rem;
+}
+
+.action {
+  padding: 0.5rem 1.25rem;
+  font: inherit;
+  font-size: 0.9375rem;
+  color: var(--shell-bg-base);
+  cursor: pointer;
+  background: var(--shell-state-info);
+  border: 1px solid var(--shell-state-info);
+  border-radius: var(--shell-radius-inline);
+}
+
+.action:hover {
+  filter: brightness(0.94);
+}

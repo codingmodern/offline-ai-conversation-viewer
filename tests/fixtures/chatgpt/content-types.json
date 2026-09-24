@@ -1,0 +1,263 @@
+[
+  {
+    "id": "content-types-conv",
+    "conversation_id": "content-types-conv",
+    "title": "انواع محتوا",
+    "create_time": 1750030000.0,
+    "update_time": 1750030500.0,
+    "current_node": "u5",
+    "mapping": {
+      "r": { "id": "r", "message": null, "parent": null, "children": ["u1"] },
+      "u1": {
+        "id": "u1",
+        "message": {
+          "id": "m-u1",
+          "author": { "role": "user", "name": null, "metadata": {} },
+          "create_time": 1750030000.0,
+          "content": { "content_type": "text", "parts": ["یک تصویر بساز"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "r",
+        "children": ["m1"]
+      },
+      "m1": {
+        "id": "m1",
+        "message": {
+          "id": "m-m1",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750030001.0,
+          "content": {
+            "content_type": "multimodal_text",
+            "parts": [
+              "این تصویر است",
+              {
+                "content_type": "image_asset_pointer",
+                "asset_pointer": "file-service://file-abc",
+                "width": 1024,
+                "height": 1024
+              }
+            ]
+          },
+          "weight": 1.0,
+          "metadata": { "model_slug": "gpt-5" },
+          "recipient": "all"
+        },
+        "parent": "u1",
+        "children": ["t1"]
+      },
+      "t1": {
+        "id": "t1",
+        "message": {
+          "id": "m-t1",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750030002.0,
+          "content": { "content_type": "code", "text": "print(\"hi\")", "parts": [] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "m1",
+        "children": ["t2"]
+      },
+      "t2": {
+        "id": "t2",
+        "message": {
+          "id": "m-t2",
+          "author": { "role": "tool", "name": "python", "metadata": {} },
+          "create_time": 1750030003.0,
+          "content": { "content_type": "execution_output", "text": "hi" },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "t1",
+        "children": ["t3"]
+      },
+      "t3": {
+        "id": "t3",
+        "message": {
+          "id": "m-t3",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750030004.0,
+          "content": { "content_type": "computer_output", "text": "screenshot.png" },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "t2",
+        "children": ["r1"]
+      },
+      "r1": {
+        "id": "r1",
+        "message": {
+          "id": "m-r1",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750030005.0,
+          "content": {
+            "content_type": "thoughts",
+            "thoughts": [
+              { "summary": "بررسی درخواست", "content": "ابتدا فایل را می‌خوانم" },
+              { "summary": "نتیجه‌گیری" }
+            ]
+          },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "t3",
+        "children": ["r2"]
+      },
+      "r2": {
+        "id": "r2",
+        "message": {
+          "id": "m-r2",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750030006.0,
+          "content": { "content_type": "reasoning_recap", "text": "خلاصه‌ی استدلال" },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "r1",
+        "children": ["t4"]
+      },
+      "t4": {
+        "id": "t4",
+        "message": {
+          "id": "m-t4",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750030007.0,
+          "content": { "content_type": "tether_browsing_display", "text": "صفحه‌ی وب" },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "r2",
+        "children": ["cm"]
+      },
+      "cm": {
+        "id": "cm",
+        "message": {
+          "id": "m-cm",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750030008.0,
+          "content": { "content_type": "text", "parts": ["در حال بررسی…"] },
+          "weight": 1.0,
+          "channel": "commentary",
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "t4",
+        "children": ["u4"]
+      },
+      "u4": {
+        "id": "u4",
+        "message": {
+          "id": "m-u4",
+          "author": { "role": "user", "name": null, "metadata": {} },
+          "create_time": 1750030009.0,
+          "content": { "content_type": "text", "parts": ["فایل را ببین"] },
+          "weight": 1.0,
+          "metadata": {
+            "attachments": [
+              { "id": "file-1", "name": "resume.pdf", "size": 1234 },
+              { "foo": "bar" }
+            ]
+          },
+          "recipient": "all"
+        },
+        "parent": "cm",
+        "children": ["sw"]
+      },
+      "sw": {
+        "id": "sw",
+        "message": {
+          "id": "m-sw",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750030010.0,
+          "content": {
+            "content_type": "super_widget",
+            "parts": [{ "content_type": "super_widget", "widget_id": "w1" }]
+          },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "u4",
+        "children": ["un"]
+      },
+      "un": {
+        "id": "un",
+        "message": {
+          "id": "m-un",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750030011.0,
+          "content": { "content_type": "mystery_card", "parts": [] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "sw",
+        "children": ["ctxx"]
+      },
+      "ctxx": {
+        "id": "ctxx",
+        "message": {
+          "id": "m-ctxx",
+          "author": { "role": "user", "name": null, "metadata": {} },
+          "create_time": 1750030012.0,
+          "content": { "content_type": "user_editable_context", "parts": ["دستور سفارشی"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "un",
+        "children": ["ctxm"]
+      },
+      "ctxm": {
+        "id": "ctxm",
+        "message": {
+          "id": "m-ctxm",
+          "author": { "role": "user", "name": null, "metadata": {} },
+          "create_time": 1750030013.0,
+          "content": { "content_type": "model_editable_context", "parts": ["حافظه"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "ctxx",
+        "children": ["tt"]
+      },
+      "tt": {
+        "id": "tt",
+        "message": {
+          "id": "m-tt",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750030014.0,
+          "content": { "content_type": "text", "parts": ["{\"prompt\":\"a cat\"}"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "dalle"
+        },
+        "parent": "ctxm",
+        "children": ["u5"]
+      },
+      "u5": {
+        "id": "u5",
+        "message": {
+          "id": "m-u5",
+          "author": { "role": "user", "name": null, "metadata": {} },
+          "create_time": 1750030015.0,
+          "content": { "content_type": "text", "parts": ["پایان"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "tt",
+        "children": []
+      }
+    }
+  }
+]

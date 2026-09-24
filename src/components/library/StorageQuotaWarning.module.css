@@ -1,0 +1,8 @@
+.warning {
+  margin: 0;
+  padding: 0.625rem 1rem;
+  color: var(--shell-state-warning);
+  font-size: 0.875rem;
+  background: var(--shell-bg-surface);
+  border-block-end: 1px solid var(--shell-border-default);
+}

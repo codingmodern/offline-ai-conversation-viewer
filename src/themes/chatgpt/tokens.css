@@ -1,0 +1,77 @@
+/*
+ * ChatGPT theme tokens (`ui-context.md` §4.3, amended by 11b-0).
+ *
+ * Color-only, neutral palette (§4.1's "no provider colour" rule): the page is
+ * `#FFFFFF`/`#212121`, surfaces are lighter/darker grey, the user bubble is a
+ * neutral grey (`#F4F4F4`/`#2F2F2F`) — not blue. The blue seen in the owner's
+ * screenshots is a personal accent setting, not a product default, so no blue
+ * token is added (11b FR-1 / ADR-M). §4.3's avatar rows were removed once the
+ * real screenshots showed no model avatar.
+ *
+ * Light/dark follows the app-wide setting the same way the Shell and the other
+ * themes do (`prefers-color-scheme`); this theme introduces no separate control.
+ * jsdom has no layout engine, so the light/dark presence is locked by
+ * `tests/themes/chatgpt.tokens.test.ts`, which splits this sheet at the dark
+ * marker and asserts every token appears in both halves.
+ */
+:root {
+  --chatgpt-bg-base: #ffffff;
+  --chatgpt-bg-surface: #f9f9f9;
+  --chatgpt-bg-elevated: #ffffff;
+
+  --chatgpt-text-primary: #0d0d0d;
+  --chatgpt-text-secondary: #6e6e80;
+  --chatgpt-text-muted: #6e6e80;
+
+  --chatgpt-bubble-user-bg: #f4f4f4;
+  --chatgpt-bubble-user-text: #0d0d0d;
+  /* No bubble for the assistant — its text lives directly on the page. */
+  --chatgpt-bubble-assistant-bg: transparent;
+  --chatgpt-bubble-assistant-text: #0d0d0d;
+
+  --chatgpt-accent-primary: #10a37f;
+  --chatgpt-accent-hover: #0d8a6c;
+  --chatgpt-border-default: #e5e5e5;
+
+  /* Code stays a permanently dark slab in both modes (§4.3). */
+  --chatgpt-code-bg: #0d0d0d;
+  --chatgpt-code-text: #ececec;
+  /* The inline-code chip reuses the user-bubble neutrals — see the token test's
+     pairwise-distinctness note: it is intentionally close to the bubble bg and
+     is NOT asserted distinct from it (unlike Claude's tool card). */
+  --chatgpt-code-inline-bg: #f4f4f4;
+
+  --chatgpt-font-sans: system-ui, -apple-system, 'Segoe UI', Tahoma, sans-serif;
+  --chatgpt-font-mono: ui-monospace, 'Cascadia Mono', 'Courier New', monospace;
+
+  --chatgpt-radius-bubble: 18px;
+  --chatgpt-radius-surface: 8px;
+  --chatgpt-spacing-message-gap: 1.5rem;
+  --chatgpt-spacing-container-padding: 1rem;
+  --chatgpt-max-content-width: 48rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --chatgpt-bg-base: #212121;
+    --chatgpt-bg-surface: #171717;
+    --chatgpt-bg-elevated: #2f2f2f;
+
+    --chatgpt-text-primary: #ececec;
+    --chatgpt-text-secondary: #b4b4b4;
+    --chatgpt-text-muted: #b4b4b4;
+
+    --chatgpt-bubble-user-bg: #2f2f2f;
+    --chatgpt-bubble-user-text: #ececec;
+    --chatgpt-bubble-assistant-bg: transparent;
+    --chatgpt-bubble-assistant-text: #ececec;
+
+    --chatgpt-accent-primary: #10a37f;
+    --chatgpt-accent-hover: #0d8a6c;
+    --chatgpt-border-default: #3a3a3a;
+
+    --chatgpt-code-bg: #0d0d0d;
+    --chatgpt-code-text: #ececec;
+    --chatgpt-code-inline-bg: #2f2f2f;
+  }
+}

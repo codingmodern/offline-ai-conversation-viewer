@@ -1,0 +1,262 @@
+/* One message row. Standard AI-chat convention - the user bubble on the
+   *physical* right, assistant content on the same inline-start edge -
+   holds in both themes of this RTL-locked app (index.html dir="rtl"),
+   where the flex inline start IS the right edge. The user row therefore
+   pins `direction: rtl` explicitly (Session 18, user-tested: the row
+   keeps its RTL geometry even if an ancestor dir ever changes) and uses
+   flex-start (the previous flex-end pushed the bubble to the physical
+   left, contradicting the real DeepSeek UI and this module's own
+   docstring - same root cause as the Claude theme's 09b row-1 fix), and
+   the assistant branch mirrors it with `.assistantRow` below; the 09b
+   row-2 flush-left anchor (`align-items: flex-end`) was removed after
+   manual DevTools testing, so assistant content is a full-width column
+   stack like the user row. */
+.row {
+  margin: 0;
+}
+
+.userRow {
+  display: flex;
+  justify-content: flex-start;
+  /* Pinned explicitly (user-tested, Session 18): the row keeps its RTL
+     geometry - the inline start stays the physical right edge even if an
+     ancestor dir ever changes. Deliberately scoped to THIS row only;
+     `.assistantRow` stays a bare column stack. */
+  direction: rtl;
+}
+
+/* Assistant branch of the text rows: a plain vertical stack - the column
+   container only, with NO cross-axis anchor. The previous `align-items:
+   flex-end` (09b row 2's flush-left reading) shrank every child to
+   fit-content and pinned it to the inline end (the physical LEFT in
+   dir="rtl"), which kept the Copy/date action row hugging the left edge
+   on every assistant message and pulled short replies' text block left
+   as well. Manual DevTools testing removed the anchor for good: with
+   the default `stretch` the body and the action row span the full
+   column width, so the Persian text starts at the inline start
+   (physical right) and `.actions` - a plain flex row with no
+   justify-content - packs its Copy button and date right under that
+   same edge. (A row-direction `justify-content: flex-end` would instead
+   lay `.assistantBody` and `.actions` out side by side, destroying the
+   vertical stack - don't.) The text inside keeps its natural RTL flow -
+   no text-align override. Unknown roles (Unit 03's simplified
+   rendering) keep the plain full-width `.row` block and must not take
+   this class. */
+.assistantRow {
+  display: flex;
+  flex-direction: column;
+}
+
+/* User bubble + its action row, stacked on that same right edge. Action row
+   uses the same `.actions` class the assistant row uses, so the user copy
+   button is pixel-identical to the assistant one (post-Unit-06 refinement,
+   ADR #20). */
+.userMessage {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  /* Belt-and-braces for the unbroken-string edge case: `overflow-wrap:
+     anywhere` already folds long runs into min-content sizing (CSS Text 3),
+     but an explicit `min-width: 0` keeps this flex item shrinkable even on
+     engines that skip that fold - a pathological URL then wraps instead of
+     overflowing the column. */
+  min-width: 0;
+  max-width: 80%;
+}
+
+.userBubble {
+  padding: 0.625rem 1rem;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--deepseek-bubble-user-text);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  background: var(--deepseek-bubble-user-bg);
+  border-radius: var(--deepseek-radius-bubble);
+}
+
+/* Unit 09d: long user messages collapse after 6 lines (claude.ai parity).
+   `.userBubbleWrapper` is the positioning context for the fade; the plain
+   `.userBubble` above stays untouched so short messages render exactly as
+   before (Validation: no max-height/overflow on non-overflowing content).
+   6 lines × line-height 1.7 = 10.2em — both themes share the bubble type
+   scale, so both themes share this threshold. Fade is physical
+   `to bottom`, independent of RTL/LTR. */
+.userBubbleWrapper {
+  position: relative;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.userBubbleCollapsed {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  line-clamp: 6;
+  overflow: hidden;
+  /* Safety net for engines without line-clamp support. */
+  max-height: 10.2em;
+}
+
+.userBubbleWrapperCollapsed::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 3.5em;
+  pointer-events: none;
+  border-radius: 0 0 var(--deepseek-radius-bubble) var(--deepseek-radius-bubble);
+  background: linear-gradient(to bottom, transparent, var(--deepseek-bubble-user-bg) 85%);
+}
+
+.expandButton {
+  align-self: flex-start;
+  padding: 0;
+  margin-top: 0.25rem;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--deepseek-accent-primary);
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.expandButton:hover {
+  color: var(--deepseek-accent-hover);
+  text-decoration: underline;
+}
+
+.assistantBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  color: var(--deepseek-bubble-assistant-text);
+}
+
+/* Renders sanitized Markdown produced by `markdown.ts`. The inner DOM is
+   whatever marked emitted (paragraphs, lists, blockquotes…), so descendants
+   below carry the actual layout. `white-space: pre-wrap` is intentionally
+   gone — marked already converts single newlines to `<br>`, and re-applying
+   it would double-space. */
+.assistantText {
+  font-size: 0.9375rem;
+  line-height: 1.8;
+  color: var(--deepseek-bubble-assistant-text);
+  overflow-wrap: anywhere;
+}
+
+.assistantText > p {
+  margin: 0 0 0.75rem;
+}
+
+.assistantText > p:last-child {
+  margin-bottom: 0;
+}
+
+.assistantText h1,
+.assistantText h2,
+.assistantText h3,
+.assistantText h4,
+.assistantText h5,
+.assistantText h6 {
+  margin: 1rem 0 0.5rem;
+  font-size: 1em;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.assistantText ul,
+.assistantText ol {
+  margin: 0 0 0.75rem;
+  padding-inline-start: 1.5rem;
+}
+
+.assistantText li {
+  margin-bottom: 0.25rem;
+}
+
+.assistantText blockquote {
+  margin: 0 0 0.75rem;
+  padding: 0.25rem 0.875rem;
+  color: var(--deepseek-text-secondary);
+  border-inline-start: 2px solid var(--deepseek-border-default);
+}
+
+.assistantText code {
+  padding: 0.1rem 0.3rem;
+  font-family: var(--shell-font-mono);
+  font-size: 0.9em;
+  color: var(--deepseek-code-text);
+  background: var(--deepseek-code-bg);
+  border-radius: var(--shell-radius-inline);
+}
+
+.assistantText pre {
+  margin: 0 0 0.75rem;
+  padding: 0.75rem 1rem;
+  /* Fenced code routes to CodeBlock; this pre is marked's fallback. Its
+     content is LTR code in an RTL-locked app, so force the line box
+     left-to-right (ImportFileList precedent). */
+  direction: ltr;
+  text-align: left;
+  overflow-x: auto;
+  color: var(--deepseek-code-text);
+  background: var(--deepseek-code-bg);
+  border-radius: var(--deepseek-radius-surface);
+}
+
+.assistantText pre code {
+  padding: 0;
+  background: none;
+}
+
+.assistantText a {
+  color: var(--deepseek-accent-primary);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.assistantText hr {
+  margin: 1rem 0;
+  border: 0;
+  border-top: 1px solid var(--deepseek-border-default);
+}
+
+.assistantText table {
+  width: 100%;
+  margin: 0 0 0.75rem;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+
+.assistantText th,
+.assistantText td {
+  padding: 0.375rem 0.625rem;
+  border: 1px solid var(--deepseek-border-default);
+  text-align: start;
+}
+
+.assistantText th {
+  font-weight: 600;
+  background: var(--deepseek-bg-surface, transparent);
+}
+
+.actions {
+  display: flex;
+  gap: 0.25rem;
+  margin-top: 0.375rem;
+}
+
+/* Unit 03's unknown-role edge case: simplified, generic, quiet. */
+.unknownRole {
+  color: var(--deepseek-text-secondary);
+}
+
+.unknownBadge {
+  display: inline-block;
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--deepseek-text-muted);
+}

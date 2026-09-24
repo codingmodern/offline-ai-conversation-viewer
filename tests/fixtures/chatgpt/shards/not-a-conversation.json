@@ -1,0 +1,6 @@
+{
+  "type": "chatgpt-export-manifest",
+  "synthetic": true,
+  "note": "Synthetic non-conversation JSON shipped beside the shard fixtures: it must fail on its own with the existing unsupported-format error and never block the shards (spec 11 → FR-2, AC 8).",
+  "files": ["conversations-000.json", "conversations-001.json", "not-a-conversation.json"]
+}

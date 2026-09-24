@@ -1,0 +1,124 @@
+/* One tool card: quiet surface, accent border on error, collapsed by default.
+   Visual-only — the card never looks like it can run anything. The card is a
+   column-flex child in the assistant block, and a content-driven <details>
+   won't shrink by itself — max-width: 100% + overflow: hidden keep a huge
+   payload's intrinsic width from pushing the card past the column (it scrolls
+   inside .payload instead). */
+.card {
+  overflow: hidden;
+  max-width: 100%;
+  background: var(--claude-tool-bg);
+  border: 1px solid var(--claude-tool-border);
+  border-radius: var(--claude-radius-surface);
+}
+
+.card[data-tool-state='error'] {
+  border-color: var(--claude-error-text);
+}
+
+/* Embedded variant (spec 09c): inside the unified activity group each tool
+   step is a plain row on the group's own surface — no second border box (ONE
+   card, members separated by hairlines). The red error border moves to a
+   start-edge bar; the «خطا» badge stays in the header row. */
+.cardEmbedded {
+  margin: 0;
+  min-width: 0;
+}
+
+.cardEmbedded[data-tool-state='error'] {
+  border-inline-start: 3px solid var(--claude-error-text);
+}
+
+.summary {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.625rem;
+  font-size: 0.8125rem;
+  color: var(--claude-text-secondary);
+  cursor: pointer;
+  list-style: none;
+}
+
+/* The embedded header row is informational, not a toggle. */
+.summaryEmbedded {
+  cursor: default;
+}
+
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--claude-text-muted);
+}
+
+.name {
+  overflow-wrap: anywhere;
+}
+
+.errorBadge {
+  padding: 0 0.375rem;
+  font-size: 0.6875rem;
+  color: var(--claude-error-text);
+  border: 1px solid var(--claude-error-text);
+  border-radius: var(--shell-radius-inline);
+}
+
+.chevron {
+  flex-shrink: 0;
+  margin-inline-start: auto;
+  color: var(--claude-text-muted);
+  transition: transform 0.15s ease;
+}
+
+.card[open] .chevron {
+  transform: rotate(180deg);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem 0.625rem 0.625rem;
+  border-top: 1px solid var(--claude-tool-border);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.caption {
+  font-size: 0.6875rem;
+  color: var(--claude-text-muted);
+}
+
+.payload {
+  margin: 0;
+  padding: 0.5rem 0.625rem;
+  /* Payloads are LTR content (commands, paths, logs) in an RTL-locked app;
+     force the line box left-to-right (ImportFileList precedent). The inset
+     panel uses --claude-bg-elevated (the spec's modal/artifact token) so it
+     separates from the card instead of colliding with the page base. */
+  direction: ltr;
+  text-align: left;
+  overflow-x: auto;
+  /* 09b follow-up (bug 2): pre-wrap + anywhere already wrap normal content;
+     the height cap is pure rendering performance for huge tool output — not a
+     UX toggle. The card's own <details> summary stays the single
+     expand/collapse control (real-Claude pattern). 60rem ≈ 50 lines at
+     0.75rem × 1.6. */
+  max-height: 60rem;
+  overflow-y: auto;
+  font-family: var(--claude-font-mono);
+  font-size: 0.75rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--claude-text-secondary);
+  background: var(--claude-bg-elevated);
+  border-radius: var(--claude-radius-surface);
+}

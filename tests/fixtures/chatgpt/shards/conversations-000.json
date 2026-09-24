@@ -1,0 +1,80 @@
+[
+  {
+    "id": "shard-a1",
+    "conversation_id": "shard-a1",
+    "title": "قطعه یک",
+    "create_time": 1750080000.0,
+    "update_time": 1750080100.0,
+    "current_node": "s-a1-a",
+    "mapping": {
+      "s-a1-r": { "id": "s-a1-r", "message": null, "parent": null, "children": ["s-a1-u"] },
+      "s-a1-u": {
+        "id": "s-a1-u",
+        "message": {
+          "id": "m-s-a1-u",
+          "author": { "role": "user", "name": null, "metadata": {} },
+          "create_time": 1750080000.0,
+          "content": { "content_type": "text", "parts": ["پیام قطعه یک"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "s-a1-r",
+        "children": ["s-a1-a"]
+      },
+      "s-a1-a": {
+        "id": "s-a1-a",
+        "message": {
+          "id": "m-s-a1-a",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750080001.0,
+          "content": { "content_type": "text", "parts": ["پاسخ قطعه یک"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "s-a1-u",
+        "children": []
+      }
+    }
+  },
+  {
+    "id": "shard-a2",
+    "conversation_id": "shard-a2",
+    "title": "قطعه دو",
+    "create_time": 1750081000.0,
+    "update_time": 1750081100.0,
+    "current_node": "s-a2-a",
+    "mapping": {
+      "s-a2-r": { "id": "s-a2-r", "message": null, "parent": null, "children": ["s-a2-u"] },
+      "s-a2-u": {
+        "id": "s-a2-u",
+        "message": {
+          "id": "m-s-a2-u",
+          "author": { "role": "user", "name": null, "metadata": {} },
+          "create_time": 1750081000.0,
+          "content": { "content_type": "text", "parts": ["پیام قطعه دو"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "s-a2-r",
+        "children": ["s-a2-a"]
+      },
+      "s-a2-a": {
+        "id": "s-a2-a",
+        "message": {
+          "id": "m-s-a2-a",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750081001.0,
+          "content": { "content_type": "text", "parts": ["پاسخ قطعه دو"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "s-a2-u",
+        "children": []
+      }
+    }
+  }
+]

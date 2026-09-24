@@ -1,0 +1,76 @@
+/* Step 1 platform cards (Unit 08). Tokens only — no raw colors here. */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.card,
+.cardSelected {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--shell-border-default);
+  border-radius: var(--shell-radius-card);
+  background: var(--shell-bg-base);
+  color: var(--shell-text-primary);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+.card:hover {
+  background: var(--shell-bg-hover);
+}
+
+.cardSelected,
+.cardSelected:hover {
+  border-color: var(--shell-state-info);
+  background: var(--shell-bg-surface);
+}
+
+.card:focus-visible,
+.cardSelected:focus-visible {
+  outline: 2px solid var(--shell-state-info);
+  outline-offset: 2px;
+}
+
+.iconChip {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border: 1px solid var(--shell-border-default);
+  border-radius: var(--shell-radius-inline);
+  background: var(--shell-bg-surface);
+}
+
+.label {
+  font-weight: 600;
+}
+
+.badge {
+  margin-inline-start: auto;
+  padding: 2px 10px;
+  border-radius: var(--shell-radius-pill);
+  background: var(--shell-bg-surface);
+  border: 1px solid var(--shell-border-default);
+  color: var(--shell-text-muted);
+  font-size: 0.75rem;
+}
+
+.notice {
+  margin: 10px 0 0;
+  color: var(--shell-state-info);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

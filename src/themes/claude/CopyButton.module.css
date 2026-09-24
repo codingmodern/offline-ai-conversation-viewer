@@ -1,0 +1,22 @@
+/* Icon-only action button; inherits the surrounding text colour so it blends
+   into whichever Claude surface it sits on (message actions / code bar). */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-radius: var(--shell-radius-inline);
+  opacity: 0.75;
+}
+
+.button:hover {
+  opacity: 1;
+  color: var(--claude-accent-hover);
+}

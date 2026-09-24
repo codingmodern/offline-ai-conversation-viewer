@@ -1,0 +1,59 @@
+/* One tool/Search step inside the unified activity group (11b FR‑5). It is a
+   static row on the shared tool surface — header + optional input/output
+   sections — with no own toggle (the group's <details> is the only toggle). */
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding: 0.375rem 0.4rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+  color: var(--chatgpt-text-secondary);
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--chatgpt-accent-primary);
+}
+
+.name {
+  font-weight: 600;
+}
+
+.caption {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--chatgpt-text-muted);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* Payload inset on the elevated surface — not the page base (collision lock).
+   Same intent as Claude's ToolBlock.payload: a self-scrolling inset so a huge
+   tool dump can't widen or push the group past the column. */
+.payload {
+  margin: 0;
+  padding: 0.5rem 0.625rem;
+  max-height: 60rem;
+  overflow-x: auto;
+  font-family: var(--chatgpt-font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--chatgpt-code-text);
+  background: var(--chatgpt-bg-elevated);
+  border-radius: var(--chatgpt-radius-surface);
+  /* LTR line box inside the RTL-locked app (ImportFileList precedent). */
+  direction: ltr;
+  text-align: left;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

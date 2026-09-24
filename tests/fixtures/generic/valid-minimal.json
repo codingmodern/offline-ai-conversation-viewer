@@ -1,0 +1,7 @@
+{
+  "title": "نمونه گفتگو",
+  "messages": [
+    { "role": "user", "content": "سلام" },
+    { "role": "assistant", "content": "سلام! چطور می‌توانم کمک کنم؟" }
+  ]
+}

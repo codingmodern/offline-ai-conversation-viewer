@@ -1,0 +1,271 @@
+/* One message row. Claude's own UI keeps the user bubble on the
+   *physical* right in both text directions (the real-UI screenshots
+   behind 09b-claude-theme-visual-fix.md row 1). This app is RTL-locked
+   (index.html dir="rtl"), where the flex inline start *is* the right
+   edge. The user row pins `direction: rtl` explicitly (Session 18,
+   user-tested: the row keeps its RTL geometry even if an ancestor dir
+   ever changes) and uses flex-start = the inline start. The assistant
+   branch is a full-width column stack (`.assistantRow` below); its old
+   09b row-2 flush-left anchor (`align-items: flex-end`) was removed
+   after manual DevTools testing, so assistant content now shares the
+   user bubble's inline-start edge instead of hugging the inline end. */
+.row {
+  margin: 0;
+}
+
+.userRow {
+  display: flex;
+  justify-content: flex-start;
+  /* Pinned explicitly (user-tested, Session 18): the row keeps its RTL
+     geometry - the inline start stays the physical right edge even if an
+     ancestor dir ever changes. Deliberately scoped to THIS row only;
+     `.assistantRow` stays a bare column stack. */
+  direction: rtl;
+}
+
+/* Assistant branch of the text rows: a plain vertical stack - the column
+   container only, with NO cross-axis anchor. The previous `align-items:
+   flex-end` (09b row 2's flush-left reading) shrank every child to
+   fit-content and pinned it to the inline end (the physical LEFT in
+   dir="rtl"), which kept the Copy/date action row hugging the left edge
+   on every assistant message and pulled short replies' text block left
+   as well. Manual DevTools testing removed the anchor for good: with
+   the default `stretch` the body and the action row span the full
+   column width, so the Persian text starts at the inline start
+   (physical right) and `.actions` - a plain flex row with no
+   justify-content - packs its Copy button and date right under that
+   same edge. (A row-direction `justify-content: flex-end` would instead
+   lay `.assistantBody` and `.actions` out side by side, destroying the
+   vertical stack - don't.) The text inside keeps its natural RTL flow -
+   no text-align override. Unknown roles (Unit 03's simplified
+   rendering) keep the plain full-width `.row` block and must not take
+   this class. */
+.assistantRow {
+  display: flex;
+  flex-direction: column;
+}
+
+/* User bubble + its action row, stacked on that same right edge. The action
+   row reuses `.actions`, so the user copy button stays pixel-identical to the
+   assistant one (ADR #21 keeps Copy on the user bubble — a documented
+   deviation from 09b FR5's assistant-only rule). */
+.userMessage {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  /* Belt-and-braces for the unbroken-string edge case: `overflow-wrap:
+     anywhere` already folds long runs into min-content sizing (CSS Text 3),
+     but an explicit `min-width: 0` keeps this flex item shrinkable even on
+     engines that skip that fold - a pathological URL then wraps instead of
+     overflowing the column. */
+  min-width: 0;
+  /* 09b row 1: the bubble caps at roughly 60–70% of the column width. */
+  max-width: 70%;
+}
+
+.userBubble {
+  padding: 0.625rem 1rem;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--claude-bubble-user-text);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  background: var(--claude-bubble-user-bg);
+  border-radius: var(--claude-radius-bubble);
+}
+
+/* Unit 09d: long user messages collapse after 6 lines (claude.ai parity).
+   `.userBubbleWrapper` is the positioning context for the fade; the plain
+   `.userBubble` above stays untouched so short messages render exactly as
+   before (Validation: no max-height/overflow on non-overflowing content).
+   6 lines × line-height 1.7 = 10.2em — both themes share the bubble type
+   scale, so both themes share this threshold. Fade is physical
+   `to bottom`, independent of RTL/LTR. */
+.userBubbleWrapper {
+  position: relative;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.userBubbleCollapsed {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  line-clamp: 6;
+  overflow: hidden;
+  /* Safety net for engines without line-clamp support. */
+  max-height: 10.2em;
+}
+
+.userBubbleWrapperCollapsed::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 3.5em;
+  pointer-events: none;
+  border-radius: 0 0 var(--claude-radius-bubble) var(--claude-radius-bubble);
+  background: linear-gradient(to bottom, transparent, var(--claude-bubble-user-bg) 85%);
+}
+
+.expandButton {
+  align-self: flex-start;
+  padding: 0;
+  margin-top: 0.25rem;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--claude-accent-primary);
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.expandButton:hover {
+  color: var(--claude-accent-hover);
+  text-decoration: underline;
+}
+
+.assistantBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  color: var(--claude-bubble-assistant-text);
+}
+
+/* Renders sanitized Markdown produced by `markdown.ts`. The inner DOM is
+   whatever marked emitted (paragraphs, lists, blockquotes…), so descendants
+   below carry the actual layout. `white-space: pre-wrap` is intentionally
+   gone — marked already converts single newlines to `<br>`, and re-applying
+   it would double-space. */
+.assistantText {
+  font-size: 0.9375rem;
+  line-height: 1.8;
+  color: var(--claude-bubble-assistant-text);
+  overflow-wrap: anywhere;
+}
+
+.assistantText > p {
+  margin: 0 0 0.75rem;
+}
+
+.assistantText > p:last-child {
+  margin-bottom: 0;
+}
+
+.assistantText h1,
+.assistantText h2,
+.assistantText h3,
+.assistantText h4,
+.assistantText h5,
+.assistantText h6 {
+  margin: 1rem 0 0.5rem;
+  font-size: 1em;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.assistantText ul,
+.assistantText ol {
+  margin: 0 0 0.75rem;
+  padding-inline-start: 1.5rem;
+}
+
+.assistantText li {
+  margin-bottom: 0.25rem;
+}
+
+.assistantText blockquote {
+  margin: 0 0 0.75rem;
+  padding: 0.25rem 0.875rem;
+  color: var(--claude-text-secondary);
+  border-inline-start: 2px solid var(--claude-border-default);
+}
+
+.assistantText code {
+  padding: 0.1rem 0.3rem;
+  font-family: var(--claude-font-mono);
+  font-size: 0.9em;
+  color: var(--claude-bubble-assistant-text);
+  background: var(--claude-bg-surface);
+  border-radius: var(--shell-radius-inline);
+}
+
+.assistantText pre {
+  margin: 0 0 0.75rem;
+  padding: 0.75rem 1rem;
+  /* Fenced code normally routes to CodeBlock; this pre is marked's fallback
+     (indented code, raw HTML). Its content is LTR code in an RTL-locked app,
+     so force the line box left-to-right (ImportFileList precedent). */
+  direction: ltr;
+  text-align: left;
+  overflow-x: auto;
+  color: var(--claude-code-text);
+  background: var(--claude-code-bg);
+  border-radius: var(--claude-radius-surface);
+}
+
+.assistantText pre code {
+  padding: 0;
+  color: inherit;
+  background: none;
+}
+
+.assistantText a {
+  color: var(--claude-accent-primary);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.assistantText hr {
+  margin: 1rem 0;
+  border: 0;
+  border-top: 1px solid var(--claude-border-default);
+}
+
+.assistantText table {
+  width: 100%;
+  margin: 0 0 0.75rem;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+
+.assistantText th,
+.assistantText td {
+  padding: 0.375rem 0.625rem;
+  border: 1px solid var(--claude-border-default);
+  text-align: start;
+}
+
+.assistantText th {
+  font-weight: 600;
+  background: var(--claude-bg-surface, transparent);
+}
+
+.actions {
+  display: flex;
+  gap: 0.25rem;
+  margin-top: 0.375rem;
+}
+
+/* The export's own message date beside the copy button (09b row 4). Rendered
+   only when the export carried a parseable timestamp — never derived, never
+   the raw ISO string. */
+.actionDate {
+  align-self: center;
+  font-size: 0.75rem;
+  color: var(--claude-text-muted);
+}
+
+/* Unit 03's unknown-role edge case: simplified, generic, quiet. */
+.unknownRole {
+  color: var(--claude-text-secondary);
+}
+
+.unknownBadge {
+  display: inline-block;
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--claude-text-muted);
+}

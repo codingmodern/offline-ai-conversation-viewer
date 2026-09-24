@@ -1,0 +1,194 @@
+[
+  {
+    "uuid": "conv-0001",
+    "name": "گفتگوی نمونه",
+    "summary": "خلاصه‌ای که خود پلتفرم ثبت کرده است.",
+    "created_at": "2026-08-30T00:20:01.149417Z",
+    "updated_at": "2026-08-30T00:23:03.506758Z",
+    "account": { "uuid": "acct-0001" },
+    "chat_messages": [
+      {
+        "uuid": "msg-0001",
+        "sender": "human",
+        "created_at": "2026-08-30T00:20:01.818347Z",
+        "updated_at": "2026-08-30T00:20:01.818347Z",
+        "text": "سلام",
+        "content": [
+          {
+            "type": "text",
+            "text": "سلام",
+            "citations": [],
+            "start_timestamp": "2026-08-30T00:20:01.818179Z",
+            "stop_timestamp": "2026-08-30T00:20:01.818179Z",
+            "flags": null
+          }
+        ],
+        "attachments": [],
+        "files": [],
+        "parent_message_uuid": "00000000-0000-4000-8000-000000000000"
+      },
+      {
+        "uuid": "msg-0002",
+        "sender": "assistant",
+        "created_at": "2026-08-30T00:20:10.000000Z",
+        "updated_at": "2026-08-30T00:20:10.000000Z",
+        "text": "",
+        "content": [
+          {
+            "type": "thinking",
+            "thinking": "",
+            "summaries": [{ "summary": "پاسخ قدیمی" }],
+            "cut_off": false,
+            "truncated": false,
+            "hidden": true,
+            "thinking_hidden": true,
+            "signature": "sig-stale"
+          },
+          {
+            "type": "text",
+            "text": "پاسخ نسخه‌ی قدیمی",
+            "citations": [],
+            "start_timestamp": "2026-08-30T00:20:10.000000Z",
+            "stop_timestamp": "2026-08-30T00:20:10.000000Z",
+            "flags": null
+          }
+        ],
+        "attachments": [],
+        "files": [],
+        "parent_message_uuid": "msg-0001"
+      },
+      {
+        "uuid": "msg-0003",
+        "sender": "assistant",
+        "created_at": "2026-08-30T00:21:00.000000Z",
+        "updated_at": "2026-08-30T00:21:30.000000Z",
+        "text": "",
+        "content": [
+          {
+            "type": "thinking",
+            "thinking": "ابتدا درخواست را بررسی می‌کنم.\nسپس پاسخ را می‌نویسم.",
+            "summaries": [{ "summary": "بررسی درخواست کاربر." }],
+            "cut_off": false,
+            "truncated": false,
+            "hidden": false,
+            "thinking_hidden": false,
+            "signature": "sig-live"
+          },
+          {
+            "type": "tool_use",
+            "id": "toolu_001",
+            "name": "web_search",
+            "input": { "query": "وضعیت هوا" },
+            "hidden_in_chat": null
+          },
+          {
+            "type": "tool_result",
+            "tool_use_id": "toolu_001",
+            "name": "web_search",
+            "content": [{ "type": "text", "text": "آفتابی است" }],
+            "is_error": false,
+            "structured_content": null
+          },
+          {
+            "type": "text",
+            "text": "پاسخ نهایی با **تأکید**.",
+            "citations": [],
+            "start_timestamp": "2026-08-30T00:21:30.000000Z",
+            "stop_timestamp": "2026-08-30T00:21:30.000000Z",
+            "flags": null
+          }
+        ],
+        "attachments": [],
+        "files": [],
+        "parent_message_uuid": "msg-0001"
+      },
+      {
+        "uuid": "msg-0004",
+        "sender": "human",
+        "created_at": "2026-08-30T00:22:00.000000Z",
+        "updated_at": "2026-08-30T00:22:00.000000Z",
+        "text": "پیام بدون محتوا",
+        "content": [],
+        "attachments": [],
+        "files": [],
+        "parent_message_uuid": "msg-0003"
+      },
+      {
+        "uuid": "msg-0005",
+        "sender": "assistant",
+        "created_at": "2026-08-30T00:23:00.000000Z",
+        "updated_at": "2026-08-30T00:23:00.000000Z",
+        "text": "",
+        "content": [{ "type": "text", "text": "فایل‌ها", "citations": [], "start_timestamp": "2026-08-30T00:23:00.000000Z", "stop_timestamp": "2026-08-30T00:23:00.000000Z", "flags": null }],
+        "attachments": [],
+        "files": [
+          { "file_uuid": "file-0001", "file_name": "" },
+          { "file_uuid": "file-0002", "file_name": "report.png" }
+        ],
+        "parent_message_uuid": "msg-0004"
+      }
+    ]
+  },
+  {
+    "uuid": "conv-0002",
+    "name": "گفتگوی دوم",
+    "summary": "",
+    "created_at": "2026-08-29T10:00:00.000000Z",
+    "updated_at": "2026-08-29T10:05:00.000000Z",
+    "account": { "uuid": "acct-0001" },
+    "chat_messages": [
+      {
+        "uuid": "m2-0001",
+        "sender": "human",
+        "created_at": "2026-08-29T10:00:00.000000Z",
+        "updated_at": "2026-08-29T10:00:00.000000Z",
+        "text": "دوم",
+        "content": [
+          {
+            "type": "thinking",
+            "thinking": "",
+            "summaries": [],
+            "cut_off": false,
+            "truncated": false,
+            "hidden": true,
+            "thinking_hidden": true
+          },
+          {
+            "type": "text",
+            "text": "دوم",
+            "citations": [],
+            "start_timestamp": "2026-08-29T10:00:00.000000Z",
+            "stop_timestamp": "2026-08-29T10:00:00.000000Z",
+            "flags": null
+          }
+        ],
+        "attachments": [],
+        "files": [],
+        "parent_message_uuid": "00000000-0000-4000-8000-000000000000"
+      },
+      {
+        "uuid": "m2-0002",
+        "sender": "assistant",
+        "created_at": "2026-08-29T10:04:00.000000Z",
+        "updated_at": "2026-08-29T10:05:00.000000Z",
+        "text": "",
+        "content": [
+          {
+            "type": "tool_use",
+            "id": "toolu_002",
+            "name": "bash_tool",
+            "input": { "command": "ls" },
+            "hidden_in_chat": null
+          },
+          {
+            "type": "mystery_card",
+            "payload": { "x": 1 }
+          }
+        ],
+        "attachments": [],
+        "files": [],
+        "parent_message_uuid": "m2-0001"
+      }
+    ]
+  }
+]

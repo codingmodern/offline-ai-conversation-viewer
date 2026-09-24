@@ -1,0 +1,74 @@
+.item {
+  display: flex;
+  align-items: stretch;
+  gap: 0.25rem;
+  margin-bottom: 0.125rem;
+  border-radius: var(--shell-radius-card);
+}
+
+.item:hover {
+  background: var(--shell-bg-hover);
+}
+
+/* The active row is marked by contrast *and* by `aria-current`, so the state is
+   never conveyed by colour alone (`ui-context.md` §6). */
+.item[data-active='true'] {
+  background: var(--shell-bg-elevated);
+  box-shadow: inset 0 0 0 1px var(--shell-border-default);
+}
+
+.select {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+  padding: 0.5rem;
+  font: inherit;
+  color: inherit;
+  text-align: start;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  border-radius: var(--shell-radius-card);
+}
+
+.title {
+  overflow: hidden;
+  font-size: 0.9375rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.item[data-active='true'] .title {
+  font-weight: 600;
+}
+
+.meta {
+  display: flex;
+  gap: 0.3125rem;
+  color: var(--shell-text-muted);
+  font-size: 0.75rem;
+}
+
+.platform {
+  color: var(--shell-text-secondary);
+}
+
+.delete {
+  flex-shrink: 0;
+  align-self: center;
+  padding: 0.25rem 0.5rem;
+  font: inherit;
+  font-size: 0.875rem;
+  color: var(--shell-text-muted);
+  cursor: pointer;
+  background: none;
+  border: 0;
+  border-radius: var(--shell-radius-inline);
+}
+
+.delete:hover {
+  color: var(--shell-state-error);
+  background: var(--shell-bg-base);
+}

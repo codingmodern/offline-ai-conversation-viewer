@@ -1,0 +1,110 @@
+[
+  {
+    "id": "citations-conv",
+    "conversation_id": "citations-conv",
+    "title": "ارجاع‌ها",
+    "create_time": 1750040000.0,
+    "update_time": 1750040100.0,
+    "current_node": "a3",
+    "mapping": {
+      "r": { "id": "r", "message": null, "parent": null, "children": ["u1"] },
+      "u1": {
+        "id": "u1",
+        "message": {
+          "id": "m-u1",
+          "author": { "role": "user", "name": null, "metadata": {} },
+          "create_time": 1750040000.0,
+          "content": { "content_type": "text", "parts": ["سلام"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "r",
+        "children": ["a1"]
+      },
+      "a1": {
+        "id": "a1",
+        "message": {
+          "id": "m-a1",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750040001.0,
+          "content": {
+            "content_type": "text",
+            "parts": ["متن اول \uE200cite\uE201 ادامه", "【filecite】پایان"]
+          },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "u1",
+        "children": ["p1"]
+      },
+      "p1": {
+        "id": "p1",
+        "message": {
+          "id": "m-p1",
+          "author": { "role": "user", "name": null, "metadata": {} },
+          "create_time": 1750040002.0,
+          "content": {
+            "content_type": "text",
+            "parts": ["متن فارسی با English mixed و نیم‌فاصله"]
+          },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "a1",
+        "children": ["a2"]
+      },
+      "a2": {
+        "id": "a2",
+        "message": {
+          "id": "m-a2",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750040003.0,
+          "content": {
+            "content_type": "text",
+            "parts": ["نام \uE200entity\uE201 مهم"]
+          },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "p1",
+        "children": ["t1"]
+      },
+      "t1": {
+        "id": "t1",
+        "message": {
+          "id": "m-t1",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750040004.0,
+          "content": {
+            "content_type": "code",
+            "text": "print(\"\uE200cite\uE201\")",
+            "parts": []
+          },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "python"
+        },
+        "parent": "a2",
+        "children": ["a3"]
+      },
+      "a3": {
+        "id": "a3",
+        "message": {
+          "id": "m-a3",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750040005.0,
+          "content": { "content_type": "text", "parts": ["【filecite】متن نهایی"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "t1",
+        "children": []
+      }
+    }
+  }
+]

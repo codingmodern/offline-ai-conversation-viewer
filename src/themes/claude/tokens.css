@@ -1,0 +1,94 @@
+/*
+ * Claude theme tokens (`ui-context.md` §4.4).
+ *
+ * Claude's surface is warm and cream-toned with a single Clay Orange accent
+ * (#C96442) — no blue anywhere. Values below follow §4.4's palette; only free
+ * fonts (system stack) and no official assets are used (§4.2), mirroring the
+ * DeepSeek theme's font policy.
+ *
+ * Light/dark follows the app-wide setting the same way the Shell does
+ * (`prefers-color-scheme`) — this theme introduces no separate control.
+ */
+:root {
+  --claude-bg-base: #ffffff;
+  --claude-bg-surface: #f0eee6;
+  --claude-bg-elevated: #ffffff;
+
+  --claude-text-primary: #1f1e1d;
+  --claude-text-secondary: #6e6b64;
+  --claude-text-muted: #a6a39a;
+
+  --claude-bubble-user-bg: #f0e5df;
+  --claude-bubble-user-text: #1f1e1d;
+  --claude-bubble-assistant-bg: transparent;
+  --claude-bubble-assistant-text: #1f1e1d;
+
+  --claude-accent-primary: #c96442;
+  --claude-accent-hover: #a54f32;
+
+  --claude-thinking-text: #6e6b64;
+
+  /* Tool cards: a deeper warm tint, never the surface or page base — the old
+     value duplicated --claude-bg-surface and the border duplicated
+     --claude-border-default, erasing the card's boundary in both modes. */
+  --claude-tool-bg: #ece9de;
+  --claude-tool-border: #d6d1c3;
+
+  /* Code blocks keep their own dark charcoal background in both modes. */
+  --claude-code-bg: #1f1e1d;
+  --claude-code-text: #f5f4ef;
+
+  --claude-error-text: #b3371f;
+
+  --claude-border-default: #e5e2d9;
+
+  --claude-font-sans: system-ui, -apple-system, 'Segoe UI', Tahoma, sans-serif;
+  --claude-font-mono: ui-monospace, 'Cascadia Mono', 'Courier New', monospace;
+  /* §4.4 reserves a serif for title/branding only — chat text never mixes it
+     in (09b FR4). System serif stack, mirroring the sans font policy: nothing
+     bundled. No component consumes it yet; the theme renders no title today. */
+  --claude-font-serif: Georgia, 'Times New Roman', serif;
+
+  --claude-radius-bubble: 12px;
+  --claude-radius-surface: 8px;
+
+  /* 09b row 8: generous spacing between turns — raised from 1.5rem. */
+  --claude-spacing-message-gap: 2rem;
+  --claude-spacing-container-padding: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Seam fix: matches --shell-bg-base (#16181d) exactly so no seam can
+       appear at any column width. This supersedes 09b row 7 for the base
+       token. Value is locked by claude.tokens.test.ts. */
+    --claude-bg-base: #16181d;
+    --claude-bg-surface: #30302e;
+    --claude-bg-elevated: #3a3a37;
+
+    --claude-text-primary: #f5f4ef;
+    --claude-text-secondary: #b8b5ae;
+    --claude-text-muted: #7d7a73;
+
+    --claude-bubble-user-bg: #393937;
+    --claude-bubble-user-text: #f5f4ef;
+    --claude-bubble-assistant-bg: transparent;
+    --claude-bubble-assistant-text: #f5f4ef;
+
+    /* Same clay hue, brightness balanced for dark surfaces. */
+    --claude-accent-primary: #d97757;
+    --claude-accent-hover: #e59477;
+
+    --claude-thinking-text: #b8b5ae;
+
+    --claude-tool-bg: #343430;
+    --claude-tool-border: #4a4a46;
+
+    --claude-code-bg: #141413;
+    --claude-code-text: #e8e6e1;
+
+    --claude-error-text: #e07856;
+
+    --claude-border-default: #3d3d3a;
+  }
+}

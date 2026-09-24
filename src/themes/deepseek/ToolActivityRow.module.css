@@ -1,0 +1,18 @@
+/* Compact, quiet, decorative: secondary colour, small type, no affordance.
+   Deliberately a div — nothing here may look clickable (FR6: visual only). */
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+  color: var(--deepseek-text-secondary);
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--deepseek-text-muted);
+}
+
+.label {
+  overflow-wrap: anywhere;
+}

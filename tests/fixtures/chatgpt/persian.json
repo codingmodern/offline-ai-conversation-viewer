@@ -1,0 +1,63 @@
+[
+  {
+    "id": "persian-conv",
+    "conversation_id": "persian-conv",
+    "title": "فارسی و کد",
+    "create_time": 1750050000.0,
+    "update_time": 1750050300.0,
+    "current_node": "u2",
+    "mapping": {
+      "r": { "id": "r", "message": null, "parent": null, "children": ["u1"] },
+      "u1": {
+        "id": "u1",
+        "message": {
+          "id": "m-u1",
+          "author": { "role": "user", "name": null, "metadata": {} },
+          "create_time": 1750050000.0,
+          "content": {
+            "content_type": "text",
+            "parts": ["می‌شود و نمی‌شود — آزمون نیم‌فاصله و mixed English text در یک پیام"]
+          },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "r",
+        "children": ["a1"]
+      },
+      "a1": {
+        "id": "a1",
+        "message": {
+          "id": "m-a1",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750050001.0,
+          "content": {
+            "content_type": "text",
+            "parts": [
+              "پاسخ فارسی با کد:\n```python\nprint(\"سلام دنیا\")\n```\nو پایان پاسخ."
+            ]
+          },
+          "weight": 1.0,
+          "metadata": { "model_slug": "gpt-5" },
+          "recipient": "all"
+        },
+        "parent": "u1",
+        "children": ["u2"]
+      },
+      "u2": {
+        "id": "u2",
+        "message": {
+          "id": "m-u2",
+          "author": { "role": "user", "name": null, "metadata": {} },
+          "create_time": 1750050002.0,
+          "content": { "content_type": "text", "parts": ["یک سؤال دیگر"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "a1",
+        "children": []
+      }
+    }
+  }
+]

@@ -1,0 +1,130 @@
+[
+  {
+    "id": "structure-conv",
+    "conversation_id": "structure-conv",
+    "title": "ساختار",
+    "create_time": null,
+    "update_time": null,
+    "default_model_slug": "gpt-5",
+    "mapping": {
+      "root": {
+        "id": "root",
+        "message": null,
+        "parent": null,
+        "children": ["sys"]
+      },
+      "sys": {
+        "id": "sys",
+        "message": {
+          "id": "m-sys",
+          "author": { "role": "system", "name": null, "metadata": {} },
+          "create_time": 1750000200.0,
+          "content": { "content_type": "text", "parts": ["دستور سیستمی"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "root",
+        "children": ["hidden"]
+      },
+      "hidden": {
+        "id": "hidden",
+        "message": {
+          "id": "m-hidden",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750000201.0,
+          "content": { "content_type": "text", "parts": ["پیام پنهان"] },
+          "weight": 1.0,
+          "metadata": { "is_visually_hidden_from_conversation": true },
+          "recipient": "all"
+        },
+        "parent": "sys",
+        "children": ["zero"]
+      },
+      "zero": {
+        "id": "zero",
+        "message": {
+          "id": "m-zero",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750000202.0,
+          "content": { "content_type": "text", "parts": ["وزن صفر"] },
+          "weight": 0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "hidden",
+        "children": ["ctx"]
+      },
+      "ctx": {
+        "id": "ctx",
+        "message": {
+          "id": "m-ctx",
+          "author": { "role": "user", "name": null, "metadata": {} },
+          "create_time": 1750000203.0,
+          "content": { "content_type": "user_editable_context", "parts": ["دستور سفارشی من"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "zero",
+        "children": ["ctx2"]
+      },
+      "ctx2": {
+        "id": "ctx2",
+        "message": {
+          "id": "m-ctx2",
+          "author": { "role": "user", "name": null, "metadata": {} },
+          "create_time": 1750000204.0,
+          "content": { "content_type": "model_editable_context", "parts": ["حافظهی مدل"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "ctx",
+        "children": ["u1"]
+      },
+      "u1": {
+        "id": "u1",
+        "message": {
+          "id": "m-u1",
+          "author": { "role": "user", "name": null, "metadata": {} },
+          "create_time": null,
+          "content": { "content_type": "text", "parts": ["سلام"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "ctx2",
+        "children": ["a1"]
+      },
+      "a1": {
+        "id": "a1",
+        "message": {
+          "id": "m-a1",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": null,
+          "content": { "content_type": "text", "parts": ["سلام! چطور کمکی کنم؟"] },
+          "weight": 1.0,
+          "metadata": {},
+          "recipient": "all"
+        },
+        "parent": "u1",
+        "children": ["a2"]
+      },
+      "a2": {
+        "id": "a2",
+        "message": {
+          "id": "m-a2",
+          "author": { "role": "assistant", "name": null, "metadata": {} },
+          "create_time": 1750000500.5,
+          "content": { "content_type": "text", "parts": ["پاسخ دوم"] },
+          "weight": 1.0,
+          "metadata": { "model_slug": "gpt-5" },
+          "recipient": "all"
+        },
+        "parent": "a1",
+        "children": []
+      }
+    }
+  }
+]

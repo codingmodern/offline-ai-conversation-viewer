@@ -1,0 +1,41 @@
+.results {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Mirrors Sidebar's .list so swapping views never changes scroll behaviour:
+   only this region scrolls, the actions at the foot stay reachable. */
+.list {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.meta {
+  flex-shrink: 0;
+  margin: 0 0.25rem 0.5rem;
+  color: var(--shell-text-secondary);
+  font-size: 0.75rem;
+}
+
+.noResults {
+  flex: 1;
+  padding-inline: 0.25rem;
+}
+
+.noResultsTitle {
+  margin: 0 0 0.25rem;
+  color: var(--shell-text-primary);
+  font-size: 0.875rem;
+}
+
+.noResultsHint {
+  margin: 0;
+  color: var(--shell-text-muted);
+  font-size: 0.8125rem;
+}

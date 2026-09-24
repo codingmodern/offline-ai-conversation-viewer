@@ -1,0 +1,40 @@
+/* File chip row (11b FR-6). Copied from Claude's AttachmentCard module and
+   re‑tokened — themes never import across folders. Uses the elevated surface
+   token so a chip stacked under text sits at the same layer the inline-code
+   chip does (collision lock, ADR-C). */
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.25rem 0 0;
+  margin: 0;
+  list-style: none;
+}
+
+.card {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.625rem;
+  font-size: 0.875rem;
+  line-height: 1.2;
+  color: var(--chatgpt-text-primary);
+  background: var(--chatgpt-bg-elevated);
+  border: 1px solid var(--chatgpt-border-default);
+  border-radius: var(--chatgpt-radius-surface);
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--chatgpt-text-secondary);
+}
+
+.name {
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.size {
+  margin-inline-start: 0.375rem;
+  color: var(--chatgpt-text-secondary);
+}

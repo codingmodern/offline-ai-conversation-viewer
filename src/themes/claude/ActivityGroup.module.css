@@ -1,0 +1,53 @@
+/* The unified activity toggle (spec 09c): one <details> for every contiguous
+   run of thinking/tool traffic in a response, on the same quiet warm surface
+   the standalone tool cards use. Members sit on that surface as rows — the
+   only inner surfaces allowed are the payload insets — so a run reads as ONE
+   card with visual separation, never a stack of cards (FR5). The card lives
+   inside the assistant row, and like ToolBlock a content-driven <details>
+   won't shrink by itself: max-width: 100% + overflow: hidden keep a huge
+   payload from pushing the card past the column (it scrolls in .payload). */
+.group {
+  overflow: hidden;
+  max-width: 100%;
+  min-width: 0;
+  background: var(--claude-tool-bg);
+  border: 1px solid var(--claude-tool-border);
+  border-radius: var(--claude-radius-surface);
+}
+
+.summary {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.625rem;
+  font-size: 0.8125rem;
+  color: var(--claude-text-secondary);
+  cursor: pointer;
+  list-style: none;
+}
+
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.chevron {
+  flex-shrink: 0;
+  color: var(--claude-text-muted);
+  transition: transform 0.15s ease;
+}
+
+.group[open] .chevron {
+  transform: rotate(180deg);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.625rem 0.625rem 0.75rem;
+}
+
+/* Members share the group's surface — only a hairline separates them. */
+.body > :not(:first-child) {
+  border-top: 1px solid var(--claude-tool-border);
+}

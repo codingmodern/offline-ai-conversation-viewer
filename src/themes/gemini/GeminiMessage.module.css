@@ -1,0 +1,260 @@
+/* One message row (`ui-context.md` §4.5).
+ *
+ * Gemini's own UI puts the user's turn in a very light blue bubble with a very
+ * round corner, and leaves the model's answer as the page itself — no bubble
+ * at all. This app is RTL-locked (`index.html` dir="rtl"), so the flex inline
+ * start *is* the physical right edge: the user row pins `direction: rtl`
+ * explicitly (the Session 18 user-tested rule both other themes carry) and
+ * anchors with flex-start, which is the same edge Gemini uses.
+ *
+ * The assistant branch is a plain full-width column stack with NO cross-axis
+ * anchor — the Session 18 decision, applied here from the start: children
+ * stretch, so the answer text starts at the inline start (physical right) and
+ * the action row packs its draft chip, Copy button and date under that same
+ * edge. A row-direction `justify-content` would lay the body and the action row
+ * out side by side, so neither axis anchor may be added.
+ */
+.row {
+  margin: 0;
+}
+
+.userRow {
+  display: flex;
+  justify-content: flex-start;
+  direction: rtl;
+}
+
+.assistantRow {
+  display: flex;
+  flex-direction: column;
+}
+
+/* User bubble + its action row, stacked on that same right edge. */
+.userMessage {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  /* Belt-and-braces for the unbroken-string edge case: an explicit
+     `min-width: 0` keeps this flex item shrinkable even on engines that skip
+     the min-content fold `overflow-wrap: anywhere` triggers. */
+  min-width: 0;
+  /* The bubble caps at roughly 70% of the column width. */
+  max-width: 70%;
+}
+
+.userBubble {
+  padding: 0.625rem 1rem;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--gemini-bubble-user-text);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  background: var(--gemini-bubble-user-bg);
+  border-radius: var(--gemini-radius-bubble);
+}
+
+/* The model's answer: no bubble, full width (`.assistantRow` above carries the
+   layout). Wrapping is `anywhere` only, so mixed Persian/English text keeps its
+   natural bidi flow — text alignment is never overridden. */
+.assistantBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+  font-size: 0.9375rem;
+  line-height: 1.8;
+  color: var(--gemini-bubble-assistant-text);
+}
+
+/* Injected sanitized HTML (`sanitizeHtml.ts`). The inner DOM is whatever the
+   export emitted (paragraphs, lists, headings…), so descendants below carry
+   the actual layout. */
+.assistantText {
+  overflow-wrap: anywhere;
+}
+
+.assistantText > p {
+  margin: 0 0 0.75rem;
+}
+
+.assistantText > p:last-child {
+  margin-bottom: 0;
+}
+
+/* §4.5: answers are structured, so headings carry real hierarchy — Gemini's own
+   rendered answers start at h3 and this app keeps that scale. */
+.assistantText h1,
+.assistantText h2,
+.assistantText h3,
+.assistantText h4,
+.assistantText h5,
+.assistantText h6 {
+  margin: 1.25rem 0 0.5rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.assistantText h1 {
+  font-size: 1.125rem;
+}
+
+.assistantText h2 {
+  font-size: 1.0625rem;
+}
+
+.assistantText h3 {
+  font-size: 1rem;
+}
+
+.assistantText h4,
+.assistantText h5,
+.assistantText h6 {
+  font-size: 0.9375rem;
+}
+
+.assistantText > h3:first-child,
+.assistantText > h4:first-child {
+  margin-top: 0;
+}
+
+.assistantText ul,
+.assistantText ol {
+  margin: 0 0 0.75rem;
+  padding-inline-start: 1.5rem;
+}
+
+.assistantText li {
+  margin-bottom: 0.25rem;
+}
+
+.assistantText li > p {
+  margin: 0;
+}
+
+.assistantText blockquote {
+  margin: 0 0 0.75rem;
+  padding: 0.25rem 0.875rem;
+  color: var(--gemini-text-secondary);
+  border-inline-start: 2px solid var(--gemini-border-default);
+}
+
+/* Inline code (keyboard shortcuts, `.zip`, IP addresses…): the one tag Gemini
+   uses inline inside sentences. */
+.assistantText code {
+  padding: 0.1rem 0.3rem;
+  font-family: var(--gemini-font-mono);
+  font-size: 0.9em;
+  color: var(--gemini-code-text);
+  background: var(--gemini-code-bg);
+  border-radius: var(--gemini-radius-surface);
+}
+
+.assistantText a {
+  color: var(--gemini-link-text);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.assistantText hr {
+  margin: 1rem 0;
+  border: 0;
+  border-top: 1px solid var(--gemini-border-default);
+}
+
+/* A `<pre>` nested deeper than the top level (inside a list item, say) stays in
+   its HTML run and is styled here instead of being lifted into a code block.
+   Its content is LTR code in an RTL-locked app, so force the line box
+   left-to-right (the ImportFileList precedent). */
+.assistantText pre {
+  margin: 0 0 0.75rem;
+  padding: 0.75rem 1rem;
+  direction: ltr;
+  text-align: left;
+  overflow-x: auto;
+  color: var(--gemini-code-text);
+  background: var(--gemini-code-bg);
+  border-radius: var(--gemini-radius-surface);
+}
+
+.assistantText pre code {
+  padding: 0;
+  color: inherit;
+  background: none;
+}
+
+/* A top-level code block, split out of the answer by `splitCodeBlocks`: the
+   block's own surface plus §4.5's Copy bar on top. No language label — the
+   export carries no language (it is pre-rendered HTML, not fenced Markdown), so
+   a label would be invented; «کد» states only that this is code. */
+.codeBlock {
+  margin: 0;
+  overflow: hidden;
+  background: var(--gemini-code-bg);
+  border: 1px solid var(--gemini-border-default);
+  border-radius: var(--gemini-radius-surface);
+}
+
+.codeBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.25rem 0.5rem 0.25rem 0.75rem;
+  color: var(--gemini-text-secondary);
+  font-size: 0.75rem;
+}
+
+.codePre {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  /* Code is LTR content; force the line box left-to-right so long lines read
+     and overflow in the expected direction. The height cap is a perf guard
+     only — there is no "show more" toggle. */
+  direction: ltr;
+  text-align: left;
+  max-height: 65rem;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+.code {
+  font-family: var(--gemini-font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--gemini-code-text);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* Draft chip + Copy + date. §4.5 keeps the message actions always visible at
+   the end of the answer, which is exactly this row. */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-top: 0.375rem;
+}
+
+/* The export's own turn date beside the answer's actions. Rendered only when
+   the export carried a parseable timestamp — never derived, never the raw ISO
+   string (FR10, ADR #26). */
+.actionDate {
+  align-self: center;
+  font-size: 0.75rem;
+  color: var(--gemini-text-muted);
+}
+
+/* Unit 03's unknown-role edge case: simplified, generic, quiet — never a
+   crash. Gemini's parser emits no such message today (a turn is either the
+   user's text or the model's HTML), so this is defensive only. */
+.unknownRole {
+  color: var(--gemini-text-secondary);
+}
+
+.unknownBadge {
+  display: inline-block;
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--gemini-text-muted);
+}
