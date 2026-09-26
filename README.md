@@ -1,154 +1,156 @@
 # Offline AI Conversation Viewer
 
-یک اپلیکیشن وب **کاملاً آفلاین** برای Import، ذخیره‌سازی محلی، و نمایش اصیل (Authentic) مکالمات صادرشده از پلتفرم‌های AI Chat — بدون بک‌اند، بدون آپلود، بدون هیچ درخواست شبکه‌ای.
+[فارسی 🇮🇷](./README.fa.md)
 
-فایل JSON خامی که از یک پلتفرم AI Chat Export کرده‌اید را باز کنید و آن را دقیقاً با همان حس‌وحال بصری پلتفرم اصلی (رنگ، تایپوگرافی، حباب پیام، آیکون) مرور کنید — مثل یک کتابخانه‌ی شخصی از مکالمات.
+A **fully offline** web app to import, locally store, and authentically render conversations exported from AI chat platforms — no backend, no uploads, no network requests of any kind.
+
+Open the raw JSON file exported from an AI chat platform and browse it with the same visual feel as the original platform (colors, typography, message bubbles, icons) — like a personal library of your conversations.
 
 ---
 
-## ⚠️ وضعیت فعلی پروژه
+## ⚠️ Project Status
 
-این پروژه با روش **Spec-Driven Development** و به‌صورت واحد‌به‌واحد (Unit-by-Unit) ساخته شده است. تمام واحدها (Import، Detection، Parsing، Library، Metadata، Theme Rendering، Search، و پشتیبانی چهار پلتفرم) **تکمیل و تست شده‌اند** — ChatGPT با Parser و Theme کامل ولی بر اساس فیکسچر مصنوعی، یعنی **Unverified** تا زمان آزمون با نمونه‌ی Export واقعی:
+This project was built **unit-by-unit** using Spec-Driven Development. Every unit (import, detection, parsing, library, metadata, theme rendering, search, and support for four platforms) is **complete and tested** — ChatGPT has a full parser and theme, but built on synthetic fixtures, so it remains **Unverified** until tested against a real export:
 
-| پلتفرم | Parser | Theme اختصاصی | وضعیت |
+| Platform | Parser | Dedicated theme | Status |
 |---|---|---|---|
-| **DeepSeek** | ✅ | ✅ | کاملاً پشتیبانی می‌شود |
-| **Claude** | ✅ | ✅ | کاملاً پشتیبانی می‌شود |
-| **Gemini** | ✅ | ✅ | کاملاً پشتیبانی می‌شود |
-| **ChatGPT** | ✅ | ✅ | پشتیبانی می‌شود، ولی **تأییدنشده** (Unverified — هنوز با نمونه‌ی Export واقعی آزمون نشده) |
+| **DeepSeek** | ✅ | ✅ | Fully supported |
+| **Claude** | ✅ | ✅ | Fully supported |
+| **Gemini** | ✅ | ✅ | Fully supported |
+| **ChatGPT** | ✅ | ✅ | Supported, but **Unverified** (not yet tested against a real export) |
 
-**چرا ChatGPT تأییدنشده است؟** این پروژه اصل «هرگز ساختار داده یا ظاهر یک پلتفرم را حدس نزن» را جدی می‌گیرد. Parser و Theme سه پلتفرم DeepSeek، Claude و Gemini از نمونه‌ی Export واقعی ساخته شدند؛ ChatGPT فعلاً فقط با فیکسچر مصنوعیِ برگرفته از توصیف مالک پوشش داده شده و تا زمان آزمون با نمونه‌ی Export واقعی، **Unverified** می‌ماند. افزودن پلتفرم جدید، معماری موجود را تغییر نمی‌دهد — فقط یک ماژول جدید اضافه می‌کند (به بخش «افزودن پلتفرم جدید» در پایین مراجعه کنید).
-
----
-
-## ✨ ویژگی‌ها
-
-- **Import خودکار و بدون دخالت کاربر** — فایل JSON را Drag & Drop یا انتخاب کنید؛ پلتفرم مبدا به‌طور کاملاً خودکار تشخیص داده می‌شود (بدون هیچ گزینه‌ی انتخاب دستی).
-- **کتابخانه‌ی محلی پایدار** — مکالمات در IndexedDB مرورگر ذخیره می‌شوند و بین بازدیدها باقی می‌مانند؛ بدون نیاز به Import مجدد.
-- **تشخیص هوشمند تکراری** — Import مجدد یک فایل، رکورد تکراری نمی‌سازد؛ فقط یک خلاصه نمایش می‌دهد.
-- **رندر اصیل هر پلتفرم** — ظاهر بصری (Layout، رنگ، فونت، حباب پیام) بازتولید همان پلتفرم است، بدون کپی هیچ کد یا Asset رسمی.
-- **پنل متادیتا** — عنوان، تاریخ، تعداد پیام هر مکالمه (در صورت وجود در فایل اصلی) نمایش داده می‌شود.
-- **جستجوی سراسری** — جستجو در عنوان و متن تمام مکالمات ذخیره‌شده، بدون هیچ درخواست شبکه‌ای.
-- **حریم خصوصی کامل** — هیچ داده‌ای هرگز از مرورگر شما خارج نمی‌شود.
+**Why is ChatGPT Unverified?** This project takes "never guess a platform's data structure or appearance" seriously. The DeepSeek, Claude, and Gemini parsers and themes were built from real exports; ChatGPT is currently covered only by synthetic fixtures derived from the owner's description, and stays **Unverified** until tested against a real export. Adding a new platform never changes the existing architecture — it only adds a new module (see "Adding a new platform" below).
 
 ---
 
-## 🚫 خارج از Scope
+## ✨ Features
 
-- ویرایش یا ارسال پیام جدید (این اپ فقط **Viewer** است، نه Chat Client)
-- Export مجدد یا تبدیل فرمت
-- هرگونه ارتباط با سرور، API، یا اینترنت
-- احراز هویت یا حساب کاربری
-- فرمت‌های غیر JSON (HTML، ZIP) — فعلاً
+- **Automatic, zero-interaction import** — drag & drop or pick a JSON file; the source platform is detected fully automatically (no manual selection).
+- **Persistent local library** — conversations are stored in the browser's IndexedDB and survive between visits; no need to re-import.
+- **Smart duplicate detection** — re-importing a file never creates a duplicate record; it just shows a summary.
+- **Authentic per-platform rendering** — the visual appearance (layout, color, font, message bubbles) reproduces the original platform, without copying any official code or asset.
+- **Metadata panel** — title, date, and message count per conversation (when present in the source file).
+- **Global search** — search across the title and text of every stored conversation, with no network requests.
+- **Complete privacy** — no data ever leaves your browser.
+
+---
+
+## 🚫 Out of Scope
+
+- Editing or sending new messages (this is a **viewer** only, not a chat client)
+- Re-exporting or format conversion
+- Any server, API, or internet connection
+- Authentication or user accounts
+- Non-JSON formats (HTML, ZIP) — for now
 
 ---
 
 ## 🛠️ Tech Stack
 
-| لایه | تکنولوژی |
+| Layer | Technology |
 |---|---|
-| زبان | TypeScript |
+| Language | TypeScript |
 | UI Framework | React |
 | Build Tool | Vite |
-| ذخیره‌سازی محلی | IndexedDB (از طریق Dexie.js) |
-| استایل | CSS Modules + CSS Custom Properties |
-| تست | Vitest + React Testing Library |
+| Local Storage | IndexedDB (via Dexie.js) |
+| Styling | CSS Modules + CSS Custom Properties |
+| Testing | Vitest + React Testing Library |
 | Lint / Format | ESLint + Prettier |
 
-پروژه **بدون بک‌اند** است؛ خروجی Build کاملاً استاتیک و روی هر Static Host (یا حتی به‌صورت فایل محلی) قابل اجراست.
+The project has **no backend**; the build output is fully static and can run on any static host (or even as local files).
 
 ---
 
-## 🚀 شروع سریع
+## 🚀 Quick Start
 
 ```bash
-# نصب وابستگی‌ها
+# Install dependencies
 npm install
 
-# اجرای محیط توسعه
+# Run the dev server
 npm run dev
 
-# اجرای تست‌ها
+# Run tests
 npm run test
 
-# بررسی Lint
+# Lint
 npm run lint
 
-# Build نسخه‌ی نهایی (استاتیک)
+# Build for production (static)
 npm run build
 ```
 
-### نحوه‌ی استفاده
+### How to use
 
-1. یک فایل Export شده از DeepSeek، Claude، Gemini یا ChatGPT (فرمت JSON) را از طریق File Picker یا Drag & Drop باز کنید.
-2. فایل به‌طور خودکار Validate، پلتفرم آن تشخیص داده، و به کتابخانه اضافه می‌شود.
-3. از Sidebar، مکالمه‌ی موردنظر را انتخاب کنید تا با ظاهر اصیل همان پلتفرم نمایش داده شود.
-4. برای پیدا کردن یک مکالمه‌ی خاص، از نوار جستجوی بالای Sidebar استفاده کنید.
+1. Open a JSON export file from DeepSeek, Claude, Gemini, or ChatGPT, via the file picker or drag & drop.
+2. The file is automatically validated, its platform detected, and it's added to the library.
+3. Pick a conversation from the sidebar to view it in that platform's authentic look.
+4. Use the search bar at the top of the sidebar to find a specific conversation.
 
 ---
 
-## 🏗️ معماری (خلاصه)
+## 🏗️ Architecture (summary)
 
 ```
 src/
-├── parsers/{provider}/   — یک ماژول مستقل برای هر پلتفرم (deepseek، claude، gemini، chatgpt)
-├── detection/            — تشخیص خودکار پلتفرم از روی ساختار JSON (Registry مرکزی)
-├── normalization/        — تبدیل خروجی هر Parser به مدل مشترک UnifiedConversation
-├── storage/              — تنها لایه‌ی مجاز برای تعامل مستقیم با Dexie/IndexedDB
-├── themes/{provider}/    — Token‌ها و کامپوننت‌های بصری اختصاصی هر پلتفرم (deepseek، claude، gemini، chatgpt)
-├── components/           — کامپوننت‌های مشترک (Sidebar، Search، Metadata Panel)
-├── features/             — Orchestration ویژگی‌ها (Import، Library، Search)
-├── types/                — مدل داده‌ی مشترک و Interfaceها
-└── workers/               — Web Worker برای Parse بدون Block کردن UI
+├── parsers/{provider}/   — an independent module per platform (deepseek, claude, gemini, chatgpt)
+├── detection/            — automatic platform detection from JSON structure (central registry)
+├── normalization/        — converts each parser's output to the shared UnifiedConversation model
+├── storage/              — the only layer allowed to talk to Dexie/IndexedDB directly
+├── themes/{provider}/    — per-platform visual tokens and components (deepseek, claude, gemini, chatgpt)
+├── components/           — shared components (sidebar, search, metadata panel)
+├── features/             — feature orchestration (import, library, search)
+├── types/                — shared data model and interfaces
+└── workers/              — a Web Worker for parsing without blocking the UI
 ```
 
-جریان کامل داده:
+Full data flow:
 
 ```
-فایل کاربر → Web Worker (Parse) → Detection (تشخیص پلتفرم) → Parser مربوطه
-  → Normalization (تبدیل به مدل مشترک) → Storage (IndexedDB) → UI (Sidebar + Theme)
+User's file → Web Worker (parse) → Detection (platform recognition) → matching parser
+  → Normalization (conversion to shared model) → Storage (IndexedDB) → UI (sidebar + theme)
 ```
 
-هیچ نقطه‌ای از این جریان به شبکه متصل نمی‌شود. جزئیات کامل معماری، تصمیمات طراحی (ADRها)، و Invariantهای پروژه در `context/architecture.md` و `context/progress-tracker.md` مستند شده‌اند.
+No point in this flow ever touches the network. Full architecture details, design decisions (ADRs), and project invariants are documented in `context/architecture.md` and `context/progress-tracker.md`.
 
 ---
 
-## ➕ افزودن پشتیبانی از یک پلتفرم جدید
+## ➕ Adding Support for a New Platform
 
-معماری این پروژه عمداً طوری طراحی شده که افزودن پلتفرم جدید (مثلاً یک پلتفرم پنجم)، **هیچ تغییری در کد پلتفرم‌های موجود ایجاد نمی‌کند**. مراحل:
+The architecture is deliberately designed so adding a new platform (say, a fifth one) makes **no changes to existing platforms' code**. Steps:
 
-1. یک نمونه‌ی Export واقعی (Anonymized) از پلتفرم موردنظر تهیه کنید.
-2. یک ماژول جدید در `src/parsers/{provider}/` بسازید (`detect()` + `parse()`).
-3. یک Normalizer در `src/normalization/{provider}.ts` برای تبدیل به `UnifiedConversation` بنویسید.
-4. ماژول را در `src/detection/registry.ts` ثبت کنید.
-5. از UI واقعی همان پلتفرم Screenshot بگیرید و مقادیر دقیق (رنگ، فونت، فاصله‌گذاری) را در `context/ui-context.md` مستند کنید.
-6. یک Theme در `src/themes/{provider}/` بر اساس همان مستندات بسازید.
+1. Get a real, anonymized export sample from the target platform.
+2. Create a new module under `src/parsers/{provider}/` (`detect()` + `parse()`).
+3. Write a normalizer in `src/normalization/{provider}.ts` to convert to `UnifiedConversation`.
+4. Register the module in `src/detection/registry.ts`.
+5. Take screenshots of that platform's real UI and document the exact values (color, font, spacing) in `context/ui-context.md`.
+6. Build a theme under `src/themes/{provider}/` based on that documentation.
 
-راهنمای گام‌به‌گام کامل در `docs/parsers.md` موجود است.
+A full step-by-step guide is available in `docs/parsers.md`.
 
 ---
 
-## 📚 مستندات پروژه
+## 📚 Project Documentation
 
-| فایل | محتوا |
+| File | Content |
 |---|---|
-| `context/project-overview.md` | هدف، Scope، Featureها، Deliverables |
-| `context/architecture.md` | Stack، معماری، Storage Model، Invariants |
-| `context/ui-context.md` | Theme هر پلتفرم، رنگ، تایپوگرافی، Layout |
-| `context/code-standards.md` | استانداردهای کدنویسی و تست |
-| `context/progress-tracker.md` | تاریخچه‌ی کامل تصمیمات (ADRها) و پیشرفت پروژه |
-| `docs/parsers.md` | راهنمای افزودن Parser برای پلتفرم جدید |
+| `context/project-overview.md` | Goal, scope, features, deliverables |
+| `context/architecture.md` | Stack, architecture, storage model, invariants |
+| `context/ui-context.md` | Each platform's theme, colors, typography, layout |
+| `context/code-standards.md` | Coding and testing standards |
+| `context/progress-tracker.md` | Full decision history (ADRs) and project progress |
+| `docs/parsers.md` | Guide for adding a parser for a new platform |
 
 ---
 
-## ⚠️ محدودیت‌های شناخته‌شده (v1)
+## ⚠️ Known Limitations (v1)
 
-- جستجو با کاراکترهای فارسی/عربی هم‌شکل (مثلاً ی/ي یا ک/ك) تطبیق نمی‌دهد — جستجو باید دقیقاً با همان نویسه‌ای باشد که در متن اصلی نوشته شده.
-- فقط فرمت JSON پشتیبانی می‌شود؛ فایل‌های HTML یا ZIP در این نسخه پذیرفته نمی‌شوند.
-- محدودیت ذخیره‌سازی به سقف Quota مرورگر شما بستگی دارد.
+- Search doesn't normalize visually-similar Persian/Arabic characters (e.g. ی/ي or ک/ك) — search must match the exact character used in the source text.
+- Only JSON is supported; HTML or ZIP files are not accepted in this version.
+- Storage capacity depends on your browser's quota limit.
 
 ---
 
 ## 📄 License
 
-_(تعیین‌نشده — بر اساس تصمیم صاحب پروژه تکمیل شود)_
+MIT — see [LICENSE](./LICENSE). Copyright (c) 2026 M...D.
