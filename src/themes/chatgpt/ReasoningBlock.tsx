@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from './ReasoningBlock.module.css';
 
 interface ReasoningBlockProps {
@@ -22,11 +23,12 @@ interface ReasoningBlockProps {
  * reaches here as the message's own content.
  */
 export function ReasoningBlock({ content }: ReasoningBlockProps): JSX.Element {
+  const { t } = useTranslation();
   const steps = content.split('\n').filter((line) => line.trim() !== '');
 
     return (
     <section className={styles.thinking} data-thinking="embedded">
-      <span className={styles.header}>فرآیند تفکر</span>
+      <span className={styles.header}>{t('themes.thinkingHeader')}</span>
       {steps.length > 0 && (
         <ol className={styles.steps}>
           {steps.map((step, index) => (

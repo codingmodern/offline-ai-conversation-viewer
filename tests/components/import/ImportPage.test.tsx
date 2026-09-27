@@ -317,7 +317,7 @@ describe('ImportPage — guided flow (Unit 08)', () => {
     expect(await screen.findByText('1 مکالمه جدید')).toBeInTheDocument();
     expect(screen.queryByText(/مکالمه تکراری/)).not.toBeInTheDocument();
 
-    await userEvent.click(screen.getByRole('button', { name: 'تایید و Import' }));
+    await userEvent.click(screen.getByRole('button', { name: 'تایید و واردات' }));
 
     expect(onImported).toHaveBeenCalledTimes(1);
     const firstCallArgs = onImported.mock.calls[0];
@@ -340,7 +340,7 @@ describe('ImportPage — guided flow (Unit 08)', () => {
     await userEvent.click(screen.getByRole('button', { name: 'مرحله بعد' }));
 
     expect(await screen.findByText('1 مکالمه تکراری')).toBeInTheDocument();
-    expect(screen.getByText('همه مکالمهها تکراری هستند و چیزی اضافه نمیشود.'));
+    expect(screen.getByText(/همه مکالمه.*تکراری هستند/)).toBeInTheDocument();
     expect(screen.queryByText(/مکالمه جدید/)).not.toBeInTheDocument();
   });
 
@@ -385,7 +385,7 @@ describe('ImportPage — ChatGPT through the real UI (Unit 11b AC1–AC4)', () =
     await userEvent.click(screen.getByRole('button', { name: 'مرحله بعد' }));
 
     expect(await screen.findByText('1 مکالمه جدید')).toBeInTheDocument();
-    await userEvent.click(screen.getByRole('button', { name: 'تایید و Import' }));
+    await userEvent.click(screen.getByRole('button', { name: 'تایید و واردات' }));
 
     expect(await screen.findByText('واردات انجام شد.')).toBeInTheDocument();
     expect(onImported).toHaveBeenCalledTimes(1);
@@ -418,7 +418,7 @@ describe('ImportPage — ChatGPT through the real UI (Unit 11b AC1–AC4)', () =
     await userEvent.click(screen.getByRole('button', { name: 'مرحله بعد' }));
 
     expect(await screen.findByText('1 مکالمه جدید')).toBeInTheDocument();
-    await userEvent.click(screen.getByRole('button', { name: 'تایید و Import' }));
+    await userEvent.click(screen.getByRole('button', { name: 'تایید و واردات' }));
 
     expect(await screen.findByText('واردات انجام شد.')).toBeInTheDocument();
     const batch = onImported.mock.calls[0]?.[0] as readonly UnifiedConversation[];
@@ -469,7 +469,7 @@ describe('ImportPage — ChatGPT through the real UI (Unit 11b AC1–AC4)', () =
     // 2 conversations in shard A + 1 in shard B = 3 new records; the failed
     // file contributes nothing.
     expect(await screen.findByText('3 مکالمه جدید')).toBeInTheDocument();
-    await userEvent.click(screen.getByRole('button', { name: 'تایید و Import' }));
+    await userEvent.click(screen.getByRole('button', { name: 'تایید و واردات' }));
 
     expect(await screen.findByText('واردات انجام شد.')).toBeInTheDocument();
     expect(onImported).toHaveBeenCalledTimes(1);

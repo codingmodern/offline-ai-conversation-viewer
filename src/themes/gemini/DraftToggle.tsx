@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import styles from './DraftToggle.module.css';
 
@@ -32,6 +33,7 @@ interface DraftToggleProps {
  * extra state.
  */
 export function DraftToggle({ count, activeIndex, onSelect }: DraftToggleProps): JSX.Element {
+  const { t } = useTranslation();
   const isFirst = activeIndex <= 0;
   const isLast = activeIndex >= count - 1;
 
@@ -39,13 +41,13 @@ export function DraftToggle({ count, activeIndex, onSelect }: DraftToggleProps):
     <div
       className={styles.toggle}
       role="group"
-      aria-label="انتخاب پیش‌نویس پاسخ"
+      aria-label={t('themes.draftGroupLabel')}
       data-draft-toggle="true"
     >
       <button
         type="button"
         className={styles.button}
-        aria-label="پیش‌نویس قبلی"
+        aria-label={t('themes.draftPrevious')}
         disabled={isFirst}
         onClick={(): void => {
           onSelect(activeIndex - 1);
@@ -59,12 +61,12 @@ export function DraftToggle({ count, activeIndex, onSelect }: DraftToggleProps):
         data-draft-index={activeIndex}
         data-draft-count={count}
       >
-        پیش‌نویس {activeIndex + 1}/{count}
+        {t('themes.draftPosition', { current: activeIndex + 1, total: count })}
       </span>
       <button
         type="button"
         className={styles.button}
-        aria-label="پیش‌نویس بعدی"
+        aria-label={t('themes.draftNext')}
         disabled={isLast}
         onClick={(): void => {
           onSelect(activeIndex + 1);

@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { UnifiedConversation } from '@/types/conversation';
 import { GeminiMessage } from './GeminiMessage';
 import styles from './GeminiConversationView.module.css';
@@ -29,13 +30,14 @@ interface GeminiConversationViewProps {
 export function GeminiConversationView({
   conversation,
 }: GeminiConversationViewProps): JSX.Element {
+  const { t } = useTranslation();
   const { messages } = conversation;
 
   return (
     <div className={styles.view} data-provider-theme="gemini">
       <div className={styles.column}>
         {messages.length === 0 ? (
-          <p className={styles.empty}>پیامی برای نمایش در این گفتگو نیست.</p>
+          <p className={styles.empty}>{t('themes.emptyConversation')}</p>
         ) : (
           <ol className={styles.messages}>
             {messages.map((message) => (

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { UnifiedConversation } from '@/types/conversation';
 import type { StorageResult } from '@/types/storage';
 import { getConversation } from '@/storage/conversationStore';
@@ -38,7 +39,13 @@ export interface UseActiveConversationMetadataResult {
 export function useActiveConversationMetadata(
   activeId: number | undefined,
 ): UseActiveConversationMetadataResult {
+  const { i18n } = useTranslation();
   const [fields, setFields] = useState<readonly ResolvedMetadataField[]>([]);
+  // Unit 12: date fields are formatted with `Intl` in the *active* locale, so the
+  // resolved values are language-dependent data. Re-resolving on a language
+  // change is what keeps the panel from showing Jalali dates inside an English UI
+  // — a stored ISO string would otherwise never be reformatted.
+  const language = i18n.language;
 
   useEffect(() => {
     // Reset first so switching selections never shows the previous record's
@@ -62,7 +69,7 @@ export function useActiveConversationMetadata(
     return (): void => {
       cancelled = true;
     };
-  }, [activeId]);
+  }, [activeId, language]);
 
   return { fields };
 }

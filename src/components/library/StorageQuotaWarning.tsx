@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from './StorageQuotaWarning.module.css';
 
 interface StorageQuotaWarningProps {
@@ -17,14 +18,15 @@ interface StorageQuotaWarningProps {
  * should be announced politely without interrupting the user's current task.
  */
 export function StorageQuotaWarning({ isNearLimit }: StorageQuotaWarningProps): JSX.Element | null {
+  const { t } = useTranslation();
+
   if (!isNearLimit) {
     return null;
   }
 
   return (
     <p className={styles.warning} role="status">
-      فضای ذخیره‌سازی مرورگر تقریباً پر است. برای اطمینان از ذخیره‌شدن گفتگوهای بعدی، چند گفتگوی
-      قدیمی را حذف کنید.
+      {t('library.quotaWarning')}
     </p>
   );
 }

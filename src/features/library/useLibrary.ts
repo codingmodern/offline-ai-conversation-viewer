@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { UnifiedConversation } from '@/types/conversation';
 import type { LibraryEntry } from '@/types/storage';
+import type { UserMessage } from '@/i18n/messages';
 import {
   clearLibrary,
   deleteConversation,
@@ -50,8 +51,12 @@ export interface UseLibraryResult {
   readonly isImporting: boolean;
   /** True until the first emission arrives, so the UI can avoid a false Empty State. */
   readonly isLoading: boolean;
-  /** Translated, user-facing text. Never raw `error.detail` (`code-standards.md` §5). */
-  readonly errorMessage: string | undefined;
+  /**
+   * Translatable, user-facing message; never raw `error.detail`
+   * (`code-standards.md` §5). A descriptor rather than finished text, so a
+   * language switch re-renders the banner instead of freezing it (Unit 12).
+   */
+  readonly errorMessage: UserMessage | undefined;
   /** True when storage is ≥90% full and the browser supports estimates (Decision 3). */
   readonly isStorageNearLimit: boolean;
   readonly pendingDelete: PendingDelete | undefined;
@@ -60,7 +65,7 @@ export interface UseLibraryResult {
    * `undefined` = nothing to report; a clean batch stays silent because its last
    * conversation activating already confirms the import worked.
    */
-  readonly importSummary: string | undefined;
+  readonly importSummary: UserMessage | undefined;
   /** True while the "delete everything" confirmation is on screen (ADR #14). */
   readonly isClearAllPending: boolean;
   readonly selectConversation: (id: number) => void;
@@ -82,10 +87,10 @@ export function useLibrary(): UseLibraryResult {
   const [activeId, setActiveId] = useState<number | undefined>(undefined);
   const [isImporting, setIsImporting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
+  const [errorMessage, setErrorMessage] = useState<UserMessage | undefined>(undefined);
   const [isStorageNearLimit, setIsStorageNearLimit] = useState(false);
   const [pendingDelete, setPendingDelete] = useState<PendingDelete | undefined>(undefined);
-  const [importSummary, setImportSummary] = useState<string | undefined>(undefined);
+  const [importSummary, setImportSummary] = useState<UserMessage | undefined>(undefined);
   const [isClearAllPending, setIsClearAllPending] = useState(false);
 
   /**

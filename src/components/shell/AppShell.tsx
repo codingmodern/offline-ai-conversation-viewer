@@ -1,6 +1,8 @@
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLibrary } from '@/features/library/useLibrary';
 import { useConversationSearch } from '@/features/search/useConversationSearch';
+import { translateMessage } from '@/i18n/messages';
 import { Sidebar } from '@/components/library/Sidebar';
 import { LibraryEmptyState } from '@/components/library/LibraryEmptyState';
 import { StorageQuotaWarning } from '@/components/library/StorageQuotaWarning';
@@ -36,6 +38,7 @@ import styles from './AppShell.module.css';
  * open, which an inferred condition cannot express.
  */
 export function AppShell(): JSX.Element {
+  const { t } = useTranslation();
   const {
     entries,
     activeId,
@@ -88,9 +91,11 @@ export function AppShell(): JSX.Element {
 
         {errorMessage !== undefined && (
           <p className={styles.error} role="alert">
-            {errorMessage}
+            {/* Translated at render time, so a language switch re-renders the
+                banner instead of leaving stale copy on screen (Unit 12). */}
+            {translateMessage(t, errorMessage)}
             <button type="button" className={styles.dismiss} onClick={dismissError}>
-              بستن
+              {t('shell.dismiss')}
             </button>
           </p>
         )}
@@ -100,9 +105,9 @@ export function AppShell(): JSX.Element {
             a large batch costs exactly zero clicks. */}
         {importSummary !== undefined && (
           <p className={styles.summary} role="status">
-            {importSummary}
+            {translateMessage(t, importSummary)}
             <button type="button" className={styles.dismiss} onClick={dismissImportSummary}>
-              بستن
+              {t('shell.dismiss')}
             </button>
           </p>
         )}

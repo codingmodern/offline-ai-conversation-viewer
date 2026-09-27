@@ -1,5 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 import type { UnifiedConversation } from '@/types/conversation';
+import type { UserMessage } from '@/i18n/messages';
 import { isJsonFile, isLargeFile } from '@/features/import/fileTypeGuard';
 import { importFile, type ImportedFile } from '@/features/import/importFile';
 import { logTechnicalDetail, toUserMessage } from '@/features/import/errorMessages';
@@ -19,8 +20,12 @@ export interface ImportItem {
   readonly fileName: string;
   readonly size: number;
   readonly status: ImportItemStatus;
-  /** Already user-facing (translated). Present only when `status === 'error'`. */
-  readonly message?: string;
+  /**
+   * Translatable descriptor, rendered by the list at display time. Present only
+   * when `status === 'error'`. A descriptor (not finished text) keeps the row
+   * correct when the UI language is switched while it is on screen (Unit 12).
+   */
+  readonly message?: UserMessage;
 }
 
 /** A file held back until the user confirms it is worth parsing (>50MB). */

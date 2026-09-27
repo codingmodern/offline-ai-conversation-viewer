@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from './LibraryEmptyState.module.css';
 
 interface LibraryEmptyStateProps {
@@ -15,15 +16,14 @@ interface LibraryEmptyStateProps {
  * (ADR #10).
  */
 export function LibraryEmptyState({ onImportClick }: LibraryEmptyStateProps): JSX.Element {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.empty}>
-      <h2 className={styles.title}>هنوز گفتگویی ذخیره نشده است</h2>
-      <p className={styles.text}>
-        فایل خروجی گفتگوهای خود را وارد کنید تا در همین مرورگر ذخیره شوند و هر بار بدون نیاز به
-        اینترنت در دسترس باشند.
-      </p>
+      <h2 className={styles.title}>{t('library.emptyStateTitle')}</h2>
+      <p className={styles.text}>{t('library.emptyStateText')}</p>
       <button type="button" className={styles.action} onClick={onImportClick}>
-        وارد کردن فایل گفتگو
+        {t('library.importAction')}
       </button>
     </div>
   );

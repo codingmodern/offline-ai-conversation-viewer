@@ -1,9 +1,11 @@
 import { useMemo } from 'react';
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { LibraryEntry } from '@/types/storage';
 import { ConversationListItem } from '@/components/library/ConversationListItem';
 import { SearchBar } from '@/components/library/SearchBar';
 import { SearchResultsList } from '@/components/library/SearchResultsList';
+import { LanguageToggle } from '@/components/i18n/LanguageToggle';
 import type { UseConversationSearchResult } from '@/features/search/useConversationSearch';
 import styles from './Sidebar.module.css';
 
@@ -35,6 +37,12 @@ interface SidebarProps {
  * Unit 07: while a non-empty search term is active, the list is replaced by
  * `SearchResultsList`; clearing the term (or Escape) brings this view straight
  * back — one boolean branch, no reload (FR6/FR7).
+ *
+ * Unit 12: the header row carries the `LanguageToggle`. The sidebar is the app's
+ * only settings-like surface (spec FR4 allows «تنظیمات/هدر»), and the header is
+ * always visible, so the switcher is reachable on the import screen and on an
+ * empty library too — not only while a conversation happens to be open. The
+ * toggle is the exact component the onboarding screen uses, per spec UI Behavior.
  */
 export function Sidebar({
   entries,
@@ -46,6 +54,7 @@ export function Sidebar({
   onRequestClearAll,
   onImportClick,
 }: SidebarProps): JSX.Element {
+  const { t } = useTranslation();
   const { query, isSearching, matchedIds, setQuery, clearQuery } = search;
 
   // Intersection keeps ordering/display data owned by the library emission:
@@ -55,8 +64,11 @@ export function Sidebar({
     isSearching ? entries.filter((entry) => matchedIdSet.has(entry.id)) : [];
 
   return (
-    <nav className={styles.sidebar} aria-label="کتابخانه‌ی گفتگوها">
-      <h2 className={styles.heading}>گفتگوهای ذخیره‌شده</h2>
+    <nav className={styles.sidebar} aria-label={t('sidebar.label')}>
+      <div className={styles.header}>
+        <h2 className={styles.heading}>{t('sidebar.heading')}</h2>
+        <LanguageToggle />
+      </div>
 
       {/*
         Three distinct states, never conflated: loading is not emptiness, and
@@ -64,9 +76,9 @@ export function Sidebar({
         call to action belongs to the main region).
       */}
       {isLoading ? (
-        <p className={styles.status}>در حال بارگذاری…</p>
+        <p className={styles.status}>{t('sidebar.statusLoading')}</p>
       ) : entries.length === 0 ? (
-        <p className={styles.status}>هنوز گفتگویی ذخیره نشده است.</p>
+        <p className={styles.status}>{t('sidebar.statusEmpty')}</p>
       ) : (
         <>
           {/* Hidden on an empty/loading library: searching has nothing to answer,
@@ -103,12 +115,12 @@ export function Sidebar({
           the shell-level dialog decides (FR6/FR7 pattern, ADR #14). */}
       {entries.length > 0 && (
         <button type="button" className={styles.clearAll} onClick={onRequestClearAll}>
-          حذف همه‌ی گفتگوها
+          {t('sidebar.clearAll')}
         </button>
       )}
 
       <button type="button" className={styles.import} onClick={onImportClick}>
-        + افزودن گفتگو
+        {t('sidebar.addConversation')}
       </button>
     </nav>
   );

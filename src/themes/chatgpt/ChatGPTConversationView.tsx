@@ -1,5 +1,7 @@
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { UnifiedConversation } from '@/types/conversation';
+import { activeDateLocale } from '@/i18n';
 import { ChatGPTMessage } from './ChatGPTMessage';
 import { ActivityGroup } from './ActivityGroup';
 import { groupActivityRuns } from './activityGrouping';
@@ -26,12 +28,13 @@ interface ChatGPTConversationViewProps {
  * state, not an error — an explanatory line renders (§4.4 Edge Cases).
  *
  * A centered Thread Date Line (`§4.3` 11b‑0) appears once, above the messages,
- * sourced from `createdAt` then the first message, formatted with `fa-IR`
- * (never a raw ISO string).
+ * sourced from `createdAt` then the first message, formatted in the active UI
+ * locale (never a raw ISO string).
  */
 export function ChatGPTConversationView({
   conversation,
 }: ChatGPTConversationViewProps): JSX.Element {
+  const { t } = useTranslation();
   const messages = conversation.messages ?? [];
   const sequence = groupActivityRuns(messages);
   const threadDate = formatThreadDate(conversation.createdAt, messages);
@@ -42,7 +45,7 @@ export function ChatGPTConversationView({
         <ThreadDateLine date={threadDate} />
         {sequence.length === 0 ? (
           <p className={styles.empty} data-empty="true">
-            پیامی برای نمایش در این گفتگو نیست.
+            {t('themes.emptyConversation')}
           </p>
         ) : (
           <ol className={styles.messages}>
@@ -64,7 +67,7 @@ export function ChatGPTConversationView({
   );
 }
 
-/** Thread Date Line: `createdAt` -> first message -> none, in `fa-IR`. */
+/** Thread Date Line: `createdAt` -> first message -> none, in the active locale. */
 function formatThreadDate(createdAt: string | undefined, messages: readonly { createdAt?: string }[]):
   string | undefined {
   const source =
@@ -76,7 +79,7 @@ function formatThreadDate(createdAt: string | undefined, messages: readonly { cr
   const parsedMs = Date.parse(source);
   return Number.isNaN(parsedMs)
     ? undefined
-    : new Intl.DateTimeFormat('fa-IR', {
+    : new Intl.DateTimeFormat(activeDateLocale(), {
         year: 'numeric',
         month: 'long',
         day: 'numeric',

@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Wrench } from 'lucide-react';
 import type { UnifiedToolActivity } from '@/types/conversation';
 import styles from './ToolRow.module.css';
@@ -24,7 +25,8 @@ const MAX_PAYLOAD_CHARS = 20000;
 const MAX_OUTPUT_CHARS = 4000;
 
 export function ToolRow({ activity }: ToolRowProps): JSX.Element {
-  const name = activity.toolName ?? 'ابزار';
+  const { t } = useTranslation();
+  const name = activity.toolName ?? t('themes.toolFallback');
   const hasInput = activity.toolInput !== undefined;
   const hasOutput = activity.toolOutput !== undefined;
 
@@ -36,13 +38,13 @@ export function ToolRow({ activity }: ToolRowProps): JSX.Element {
       </div>
       {hasInput && (
         <div className={styles.section}>
-          <span className={styles.caption}>ورودی</span>
+          <span className={styles.caption}>{t('themes.toolInput')}</span>
           <pre className={styles.payload}>{truncate(formatJson(activity.toolInput), MAX_PAYLOAD_CHARS)}</pre>
         </div>
       )}
       {hasOutput && (
         <div className={styles.section}>
-          <span className={styles.caption}>خروجی</span>
+          <span className={styles.caption}>{t('themes.toolOutput')}</span>
           <pre className={styles.payload}>{truncate(describeToolOutput(activity.toolOutput), MAX_OUTPUT_CHARS)}</pre>
         </div>
       )}

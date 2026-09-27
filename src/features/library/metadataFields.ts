@@ -1,4 +1,5 @@
 import type { UnifiedConversation } from '@/types/conversation';
+import { activeDateLocale } from '@/i18n';
 
 /**
  * Declarative description of ONE conversation-level metadata field
@@ -26,8 +27,18 @@ export type MetadataFieldValue = string | number;
 export interface ConversationFieldDescriptor {
   /** Stable identity for rendering keys and tests. */
   readonly key: string;
-  /** Persian display label (`ui-context.md` §2 — RTL Persian Shell). */
-  readonly label: string;
+  /**
+   * Human-readable fallback label or raw label for custom fields (FR3/NFR2).
+   * When `labelKey` is provided, i18n translates it; otherwise `label` is shown verbatim.
+   */
+  readonly label?: string;
+  /**
+   * Translation key for the display label (Unit 12) — resolved to copy by the
+   * rendering component, so the panel follows the chosen language. A key rather
+   * than Persian text keeps this module free of copy, exactly as it is free of
+   * colour and layout.
+   */
+  readonly labelKey?: string;
   /**
    * Reads the field off the conversation, returning exactly what exists —
    * verbatim values only, never derived ones (FR6). Returning `undefined`/`null`
@@ -42,16 +53,16 @@ export interface ConversationFieldDescriptor {
 }
 
 /**
- * Formats an exported timestamp for display in the Persian locale
- * (`ui-context.md` §2). Unparseable strings stay verbatim: reformatting is a
- * presentation concern, but inventing a date the export did not state is not
- * (`05-conversation-metadata.md` FR6).
+ * Formats an exported timestamp for display in the **active** UI locale
+ * (Unit 12: `fa` → Jalali/Persian digits, `en` → Gregorian). Unparseable strings
+ * stay verbatim: reformatting is a presentation concern, but inventing a date the
+ * export did not state is not (`05-conversation-metadata.md` FR6).
  */
 function formatExportTimestamp(value: MetadataFieldValue): string {
   const parsedMs = Date.parse(String(value));
   return Number.isNaN(parsedMs)
     ? String(value)
-    : new Intl.DateTimeFormat('fa-IR', { dateStyle: 'medium', timeStyle: 'short' }).format(
+    : new Intl.DateTimeFormat(activeDateLocale(), { dateStyle: 'medium', timeStyle: 'short' }).format(
         parsedMs,
       );
 }
@@ -71,18 +82,26 @@ export const CONVERSATION_METADATA_FIELDS: readonly ConversationFieldDescriptor[
   {
     key: 'summary',
     label: 'خلاصه',
+    labelKey: 'metadata.fieldSummary',
     accessor: (conversation) => conversation.summary,
   },
-  { key: 'title', label: 'عنوان', accessor: (conversation) => conversation.title },
+  {
+    key: 'title',
+    label: 'عنوان',
+    labelKey: 'metadata.fieldTitle',
+    accessor: (conversation) => conversation.title,
+  },
   {
     key: 'createdAt',
     label: 'تاریخ ایجاد',
+    labelKey: 'metadata.fieldCreatedAt',
     accessor: (conversation) => conversation.createdAt,
     format: formatExportTimestamp,
   },
   {
     key: 'updatedAt',
     label: 'آخرین به‌روزرسانی',
+    labelKey: 'metadata.fieldUpdatedAt',
     accessor: (conversation) => conversation.updatedAt,
     format: formatExportTimestamp,
   },
@@ -91,7 +110,14 @@ export const CONVERSATION_METADATA_FIELDS: readonly ConversationFieldDescriptor[
 /** One descriptor whose value actually exists on a given conversation. */
 export interface ResolvedMetadataField {
   readonly key: string;
-  readonly label: string;
+  /**
+   * The human-readable label or its raw string (preserved for custom descriptors).
+   * In standard descriptors, this holds the resolved or default Persian label so
+   * consumers not using i18n can still display a label.
+   */
+  readonly label?: string;
+  /** Translation key for the label; the panel resolves it at render time. */
+  readonly labelKey?: string;
   /** Display-ready text; absent fields never produce an entry at all. */
   readonly value: string;
 }
@@ -114,7 +140,8 @@ export function resolveMetadataFields(
     if (value !== undefined && value !== null) {
       resolved.push({
         key: field.key,
-        label: field.label,
+        ...(field.label !== undefined ? { label: field.label } : {}),
+        ...(field.labelKey !== undefined ? { labelKey: field.labelKey } : {}),
         value: field.format === undefined ? String(value) : field.format(value),
       });
     }

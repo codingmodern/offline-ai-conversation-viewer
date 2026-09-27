@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FileText } from 'lucide-react';
 import type { UnifiedAttachment } from '@/types/conversation';
 import styles from './AttachmentCard.module.css';
@@ -20,12 +21,16 @@ interface AttachmentCardProps {
 export function AttachmentCard({
   attachments,
 }: AttachmentCardProps): JSX.Element {
+  const { t } = useTranslation();
+
   return (
     <ul className={styles.list}>
       {attachments.map((file) => (
         <li key={file.fileId} className={styles.card} data-attachment={file.fileName}>
           <FileText size={18} aria-hidden="true" className={styles.icon} />
-          <span className={styles.name}>{file.fileName === '' ? 'فایل بی‌نام' : file.fileName}</span>
+          <span className={styles.name}>
+            {file.fileName === '' ? t('themes.unnamedFile') : file.fileName}
+          </span>
         </li>
       ))}
     </ul>

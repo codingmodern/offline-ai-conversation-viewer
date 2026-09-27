@@ -156,7 +156,7 @@ describe('post-import activation (ADR #12)', () => {
 
     // Step 3 preview, then confirm.
     await userEvent.click(screen.getByRole('button', { name: 'مرحله بعد' }));
-    await userEvent.click(screen.getByRole('button', { name: 'تایید و Import' }));
+    await userEvent.click(screen.getByRole('button', { name: 'تایید و واردات' }));
 
     // Unit 06: the themed conversation renderer replaces the old placeholder heading.
     expect(await screen.findByText('سلام')).toBeInTheDocument();
@@ -184,7 +184,7 @@ describe('post-import activation (ADR #12)', () => {
     ]);
     await screen.findByText('معتبر');
     await userEvent.click(screen.getByRole('button', { name: 'مرحله بعد' }));
-    await userEvent.click(screen.getByRole('button', { name: 'تایید و Import' }));
+    await userEvent.click(screen.getByRole('button', { name: 'تایید و واردات' }));
 
     // سوم closed the batch, so it owns the main region — not the file's first row.
     // Unit 06: the themed renderer's content replaces the placeholder heading.
@@ -209,7 +209,7 @@ describe('post-import activation (ADR #12)', () => {
     dropFiles([jsonFile('new.json', JSON.stringify([deepseekEntry('c-new', 'تازه')]))]);
     await screen.findByText('معتبر');
     await user.click(screen.getByRole('button', { name: 'مرحله بعد' }));
-    await user.click(screen.getByRole('button', { name: 'تایید و Import' }));
+    await user.click(screen.getByRole('button', { name: 'تایید و واردات' }));
 
     expect(await screen.findByText('سلام')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: rowName('تازه') })).toHaveAttribute(
@@ -230,8 +230,9 @@ describe('post-import activation (ADR #12)', () => {
     // Same natural key (deepseek, c-0): NO dialog ever appears — one summary
     // reports the skip instead.
     dropFiles([jsonFile('again.json', JSON.stringify([deepseekEntry('c-0', 'دوباره')]))]);
+    await screen.findByText('معتبر');
     await user.click(screen.getByRole('button', { name: 'مرحله بعد' }));
-    await user.click(screen.getByRole('button', { name: 'تایید و Import' }));
+    await user.click(screen.getByRole('button', { name: 'تایید و واردات' }));
     expect(
       await screen.findByText(/0 گفتگو اضافه شد، 1 گفتگوی تکراری نادیده گرفته شد/),
     ).toBeInTheDocument();
@@ -270,7 +271,7 @@ describe('post-import activation (ADR #12)', () => {
     ]);
     await screen.findByText('معتبر');
     await user.click(screen.getByRole('button', { name: 'مرحله بعد' }));
-    await user.click(screen.getByRole('button', { name: 'تایید و Import' }));
+    await user.click(screen.getByRole('button', { name: 'تایید و واردات' }));
 
     // ONE summary for the whole batch — never a confirm-per-item dialog.
     expect(
@@ -308,7 +309,7 @@ describe('post-import activation (ADR #12)', () => {
     ]);
     await screen.findByText('معتبر');
     await user.click(screen.getByRole('button', { name: 'مرحله بعد' }));
-    await user.click(screen.getByRole('button', { name: 'تایید و Import' }));
+    await user.click(screen.getByRole('button', { name: 'تایید و واردات' }));
 
     expect(
       await screen.findByText(/0 گفتگو اضافه شد، 2 گفتگوی تکراری نادیده گرفته شد/),

@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { UnifiedMessage } from '@/types/conversation';
+import { activeDateLocale } from '@/i18n';
 import { AttachmentCard } from './AttachmentCard';
 import { CopyButton } from './CopyButton';
 import { DraftToggle } from './DraftToggle';
@@ -33,6 +35,8 @@ interface GeminiMessageProps {
  * pre-rendered markup.
  */
 export function GeminiMessage({ message }: GeminiMessageProps): JSX.Element {
+  const { t } = useTranslation();
+
   if (message.kind === 'attachment') {
     return (
       <div className={styles.row} data-role={message.role} data-kind="attachment">
@@ -49,7 +53,7 @@ export function GeminiMessage({ message }: GeminiMessageProps): JSX.Element {
         <div className={styles.userMessage}>
           <div className={styles.userBubble}>{content}</div>
           <div className={styles.actions}>
-            <CopyButton text={content} label="کپی پیام" />
+            <CopyButton text={content} label={t('themes.copyMessage')} />
           </div>
         </div>
       </div>
@@ -76,6 +80,7 @@ export function GeminiMessage({ message }: GeminiMessageProps): JSX.Element {
  * `sanitizeMessageHtml`, which is its own documented contract.
  */
 function GeminiAnswer({ message }: GeminiMessageProps): JSX.Element {
+  const { t } = useTranslation();
   const [selected, setSelected] = useState(0);
 
   const drafts = [message.content ?? '', ...(message.alternatives ?? [])];
@@ -99,7 +104,9 @@ function GeminiAnswer({ message }: GeminiMessageProps): JSX.Element {
       data-role={message.role}
       data-kind="text"
     >
-      {isKnownRole ? null : <span className={styles.unknownBadge}>پیام با نقش ناشناخته</span>}
+      {isKnownRole ? null : (
+        <span className={styles.unknownBadge}>{t('themes.unknownRole')}</span>
+      )}
       <div className={styles.assistantBody}>
         {segments.map((segment, index) =>
           segment.kind === 'code' ? (
@@ -107,8 +114,8 @@ function GeminiAnswer({ message }: GeminiMessageProps): JSX.Element {
             // a React text child, so nothing has to be injected here at all.
             <figure key={index} className={styles.codeBlock} data-code-block="true">
               <figcaption className={styles.codeBar}>
-                <span>کد</span>
-                <CopyButton text={segment.value} label="کپی کد" />
+                <span>{t('themes.codeLabel')}</span>
+                <CopyButton text={segment.value} label={t('themes.copyCode')} />
               </figcaption>
               <pre className={styles.codePre}>
                 <code className={styles.code}>{segment.value}</code>
@@ -134,7 +141,7 @@ function GeminiAnswer({ message }: GeminiMessageProps): JSX.Element {
           ) : null}
           {/* The clipboard gets the text the user can read — not the export's
               markup (`toPlainText`) — and always the active draft. */}
-          <CopyButton text={toPlainText(sanitized)} label="کپی پاسخ" />
+          <CopyButton text={toPlainText(sanitized)} label={t('themes.copyAnswer')} />
           {actionDate === undefined ? null : (
             <span className={styles.actionDate} data-action-date="true">
               {actionDate}
@@ -151,9 +158,9 @@ function GeminiAnswer({ message }: GeminiMessageProps): JSX.Element {
  *
  * Returns `undefined` for absent or unparseable values, so the row renders
  * without a date instead of inventing one — the verbatim rule of ADR #26 and
- * `metadataFields.formatExportTimestamp`, restyled as the same short fa-IR date
- * the Claude theme shows (`Intl.DateTimeFormat('fa-IR', { day, month })`; ADR
- * #26 pins that format). What FR10's «Gregorian» rules out is calendar
+ * `metadataFields.formatExportTimestamp`, restyled as the same short date the
+ * Claude theme shows (`Intl.DateTimeFormat(activeDateLocale(), { day, month })`).
+ * What FR10's «Gregorian» rules out is calendar
  * conversion in the *data* layer: the stored string stays verbatim, and only
  * this display step formats it, in the app's own locale.
  */
@@ -164,5 +171,5 @@ function formatActionDate(createdAt: string | undefined): string | undefined {
   const parsedMs = Date.parse(createdAt);
   return Number.isNaN(parsedMs)
     ? undefined
-    : new Intl.DateTimeFormat('fa-IR', { day: 'numeric', month: 'short' }).format(parsedMs);
+    : new Intl.DateTimeFormat(activeDateLocale(), { day: 'numeric', month: 'short' }).format(parsedMs);
 }

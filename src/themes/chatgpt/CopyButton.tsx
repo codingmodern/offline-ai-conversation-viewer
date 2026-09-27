@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Check, Copy } from 'lucide-react';
 import styles from './CopyButton.module.css';
 
@@ -18,6 +19,7 @@ interface CopyButtonProps {
  * app state. A missing clipboard API degrades to a no‑op — never a crash.
  */
 export function CopyButton({ text, label }: CopyButtonProps): JSX.Element {
+  const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
 
   const handleCopy = (): void => {
@@ -41,7 +43,7 @@ export function CopyButton({ text, label }: CopyButtonProps): JSX.Element {
       type="button"
       className={styles.button}
       onClick={handleCopy}
-      aria-label={copied ? 'کپی شد' : label}
+      aria-label={copied ? t('themes.copied') : label}
     >
       {copied ? (
         <Check size={14} aria-hidden="true" />

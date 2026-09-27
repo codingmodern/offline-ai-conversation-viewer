@@ -1,6 +1,8 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { UnifiedMessage } from '@/types/conversation';
+import { activeDateLocale } from '@/i18n';
 import { splitCodeFences } from './codeFences';
 import { AttachmentCard } from './AttachmentCard';
 import { CodeBlock } from './CodeBlock';
@@ -16,6 +18,8 @@ interface ChatGPTMessageProps {
 }
 
 export function ChatGPTMessage({ message }: ChatGPTMessageProps): JSX.Element {
+  const { t } = useTranslation();
+
   if (message.kind === 'attachment') {
     return (
       <div className={styles.row} data-role={message.role} data-kind="attachment">
@@ -62,7 +66,7 @@ export function ChatGPTMessage({ message }: ChatGPTMessageProps): JSX.Element {
         data-unsupported-type={fragmentType}
       >
         <span className={styles.unsupported}>
-          محتوای پشتیبانی‌نشده: <code>{fragmentType}</code>
+          {t('themes.unsupportedContent')} <code>{fragmentType}</code>
         </span>
       </div>
     );
@@ -73,7 +77,7 @@ export function ChatGPTMessage({ message }: ChatGPTMessageProps): JSX.Element {
         <div className={styles.userMessage}>
           <ChatGPTUserBubble content={content} />
           <div className={styles.actions}>
-            <CopyButton text={content} label="کپی پیام" />
+            <CopyButton text={content} label={t('themes.copyMessage')} />
           </div>
         </div>
       </div>
@@ -91,7 +95,9 @@ export function ChatGPTMessage({ message }: ChatGPTMessageProps): JSX.Element {
       data-kind="text"
       data-fragment={fragmentType}
     >
-            {isKnownRole ? null : <span className={styles.unknownBadge}>پیام با نقش ناشناخته</span>}
+            {isKnownRole ? null : (
+              <span className={styles.unknownBadge}>{t('themes.unknownRole')}</span>
+            )}
       <div className={styles.assistantBody}>
         {segments.map((segment, index) =>
           segment.type === 'code' ? (
@@ -108,7 +114,7 @@ export function ChatGPTMessage({ message }: ChatGPTMessageProps): JSX.Element {
       </div>
       {isKnownRole && (
         <div className={styles.actions}>
-          <CopyButton text={content} label="کپی پاسخ" />
+          <CopyButton text={content} label={t('themes.copyAnswer')} />
           {actionDate === undefined ? null : (
             <span className={styles.actionDate} data-action-date="true">
               {actionDate}
@@ -136,11 +142,12 @@ function formatActionDate(createdAt: string | undefined): string | undefined {
   const parsedMs = Date.parse(createdAt);
   return Number.isNaN(parsedMs)
     ? undefined
-    : new Intl.DateTimeFormat('fa-IR', { day: 'numeric', month: 'short' }).format(parsedMs);
+    : new Intl.DateTimeFormat(activeDateLocale(), { day: 'numeric', month: 'short' }).format(parsedMs);
 }
 
 /** 6-line collapsible user bubble (11b FR-3, reused behaviour). */
 function ChatGPTUserBubble({ content }: { readonly content: string }): JSX.Element {
+  const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
   const [overflowing, setOverflowing] = useState(false);
   const [measured, setMeasured] = useState(false);
@@ -198,7 +205,7 @@ function ChatGPTUserBubble({ content }: { readonly content: string }): JSX.Eleme
             setExpanded((value) => !value);
           }}
         >
-          {expanded ? 'نمایش کمتر' : 'نمایش بیشتر'}
+          {expanded ? t('themes.showLess') : t('themes.showMore')}
         </button>
       )}
     </>

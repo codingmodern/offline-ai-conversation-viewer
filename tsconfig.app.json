@@ -9,6 +9,9 @@
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
+    /* Locale files are plain JSON (Unit 12 spec FR2 → `locales/{lng}/common.json`),
+       so JSON imports must be typed. */
+    "resolveJsonModule": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
     "noEmit": true,

@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ChevronDown, Wrench } from 'lucide-react';
 import type { ToolCardView } from './toolLinking';
 import styles from './ToolBlock.module.css';
@@ -33,6 +34,8 @@ const MAX_OUTPUT_CHARS = 4000;
  * the actual conversation off-screen.
  */
 export function ToolBlock({ card, embedded = false }: ToolBlockProps): JSX.Element {
+  const { t } = useTranslation();
+
   if (embedded) {
     return (
       <div
@@ -41,15 +44,15 @@ export function ToolBlock({ card, embedded = false }: ToolBlockProps): JSX.Eleme
       >
         <div className={`${styles.summary} ${styles.summaryEmbedded}`}>
           <Wrench size={14} aria-hidden="true" className={styles.icon} />
-          <span className={styles.name}>{card.toolName ?? 'ابزار'}</span>
+          <span className={styles.name}>{card.toolName ?? t('themes.toolFallback')}</span>
           {card.isError === true && (
-            <span className={styles.errorBadge}>خطا</span>
+            <span className={styles.errorBadge}>{t('themes.toolError')}</span>
           )}
         </div>
         <div className={styles.body}>
           {card.input !== undefined && (
             <div className={styles.section}>
-              <span className={styles.caption}>ورودی</span>
+              <span className={styles.caption}>{t('themes.toolInput')}</span>
               <pre className={styles.payload}>
                 {truncate(formatJson(card.input), MAX_PAYLOAD_CHARS)}
               </pre>
@@ -57,7 +60,7 @@ export function ToolBlock({ card, embedded = false }: ToolBlockProps): JSX.Eleme
           )}
           {card.hasResult && (
             <div className={styles.section}>
-              <span className={styles.caption}>خروجی</span>
+              <span className={styles.caption}>{t('themes.toolOutput')}</span>
               <pre className={styles.payload}>
                 {truncate(describeToolOutput(card.output), MAX_OUTPUT_CHARS)}
               </pre>
@@ -75,16 +78,16 @@ export function ToolBlock({ card, embedded = false }: ToolBlockProps): JSX.Eleme
     >
       <summary className={styles.summary}>
         <Wrench size={14} aria-hidden="true" className={styles.icon} />
-        <span className={styles.name}>{card.toolName ?? 'ابزار'}</span>
+        <span className={styles.name}>{card.toolName ?? t('themes.toolFallback')}</span>
         {card.isError === true && (
-          <span className={styles.errorBadge}>خطا</span>
+          <span className={styles.errorBadge}>{t('themes.toolError')}</span>
         )}
         <ChevronDown size={14} aria-hidden="true" className={styles.chevron} />
       </summary>
       <div className={styles.body}>
         {card.input !== undefined && (
           <div className={styles.section}>
-            <span className={styles.caption}>ورودی</span>
+            <span className={styles.caption}>{t('themes.toolInput')}</span>
             <pre className={styles.payload}>
               {truncate(formatJson(card.input), MAX_PAYLOAD_CHARS)}
             </pre>
@@ -92,7 +95,7 @@ export function ToolBlock({ card, embedded = false }: ToolBlockProps): JSX.Eleme
         )}
         {card.hasResult && (
           <div className={styles.section}>
-            <span className={styles.caption}>خروجی</span>
+            <span className={styles.caption}>{t('themes.toolOutput')}</span>
             <pre className={styles.payload}>
               {truncate(describeToolOutput(card.output), MAX_OUTPUT_CHARS)}
             </pre>

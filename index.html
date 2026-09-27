@@ -1,10 +1,48 @@
 <!doctype html>
-<!-- UI language is Persian; RTL confirmed for the Shell UI (ui-context.md §2). -->
-<html lang="fa" dir="rtl">
+<!--
+  Static pre-hydration defaults (Unit 12). They equal `DEFAULT_LANGUAGE` in
+  `src/i18n/index.ts` — the state of a user who has not chosen a language yet
+  (spec Validation). The inline script below overwrites them from
+  `localStorage` before the first paint, so a returning user sees neither a
+  wrong-direction flash nor a wrong tab title.
+-->
+<html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>نمایشگر آفلاین مکالمات هوش مصنوعی</title>
+    <title>Offline AI Conversation Viewer</title>
+    <!--
+      Pre-hydration mirror of `src/i18n/index.ts`.
+
+      A pre-paint script cannot import a module, so this table duplicates the
+      language codes, directions and tab titles on purpose: without it the
+      document would paint with the default `dir` and then jump once i18next
+      initializes (spec UI Behavior → «بدون پرش/flicker بصری»).
+
+      Rules kept identical to the module: only the two supported codes are
+      accepted, anything else falls back to English, and an unreadable
+      `localStorage` is treated as "no choice".
+    -->
+    <script>
+      (function () {
+        var STORAGE_KEY = 'app-language';
+        var TITLES = {
+          fa: 'نمایشگر آفلاین مکالمات هوش مصنوعی',
+          en: 'Offline AI Conversation Viewer',
+        };
+        var DIRS = { fa: 'rtl', en: 'ltr' };
+        var stored = null;
+        try {
+          stored = window.localStorage.getItem(STORAGE_KEY);
+        } catch (error) {
+          stored = null;
+        }
+        var language = Object.prototype.hasOwnProperty.call(TITLES, stored) ? stored : 'en';
+        document.documentElement.lang = language;
+        document.documentElement.dir = DIRS[language];
+        document.title = TITLES[language];
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

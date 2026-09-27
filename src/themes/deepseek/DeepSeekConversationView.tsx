@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { UnifiedConversation } from '@/types/conversation';
 import { DeepSeekMessage } from './DeepSeekMessage';
 import styles from './DeepSeekConversationView.module.css';
@@ -22,11 +23,13 @@ interface DeepSeekConversationViewProps {
 export function DeepSeekConversationView({
   conversation,
 }: DeepSeekConversationViewProps): JSX.Element {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.view} data-provider-theme="deepseek">
       <div className={styles.column}>
         {conversation.messages.length === 0 ? (
-          <p className={styles.empty}>پیامی برای نمایش در این گفتگو نیست.</p>
+          <p className={styles.empty}>{t('themes.emptyConversation')}</p>
         ) : (
           <ol className={styles.messages}>
             {conversation.messages.map((message) => (

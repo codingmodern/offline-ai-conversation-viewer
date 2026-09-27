@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ChevronDown } from 'lucide-react';
 import type { ProviderId } from '@/types/providers';
 import type { ResolvedMetadataField } from '@/features/library/metadataFields';
@@ -55,11 +56,12 @@ export function MetadataPanel({
   messageCount,
   platform,
 }: MetadataPanelProps): JSX.Element {
+  const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
   const listId = 'metadata-panel-list';
 
   return (
-    <section className={styles.panel} aria-label="اطلاعات مکالمه">
+    <section className={styles.panel} aria-label={t('metadata.panelLabel')}>
       <h3 className={styles.heading}>
         <button
           type="button"
@@ -75,13 +77,13 @@ export function MetadataPanel({
             aria-hidden="true"
             className={expanded ? styles.chevronOpen : styles.chevron}
           />
-          اطلاعات مکالمه
+          {t('metadata.heading')}
         </button>
       </h3>
       {expanded && (
         <dl className={styles.list} id={listId}>
           <div className={styles.row} data-field="platform">
-            <dt className={styles.label}>پلتفرم</dt>
+            <dt className={styles.label}>{t('metadata.platform')}</dt>
             <dd className={styles.value}>
               <span className={styles.platform}>
                 <PlatformIcon id={platform} size={20} />
@@ -91,12 +93,17 @@ export function MetadataPanel({
           </div>
           {fields.map((field) => (
             <div className={styles.row} key={field.key} data-field={field.key}>
-              <dt className={styles.label}>{field.label}</dt>
+              {/* Labels arrive as keys (Unit 12), so the row follows the chosen
+                  language without the descriptor module holding any copy.
+                  Falls back to `field.label` for custom descriptors added at runtime. */}
+              <dt className={styles.label}>
+                {field.labelKey !== undefined ? t(field.labelKey) : (field.label ?? field.key)}
+              </dt>
               <dd className={styles.value}>{field.value}</dd>
             </div>
           ))}
           <div className={styles.row}>
-            <dt className={styles.label}>تعداد پیام‌ها</dt>
+            <dt className={styles.label}>{t('metadata.messageCount')}</dt>
             <dd className={styles.value}>{messageCount}</dd>
           </div>
         </dl>

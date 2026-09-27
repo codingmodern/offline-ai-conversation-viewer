@@ -48,10 +48,10 @@ describe('chatgpt theme isolation (11b ADR-J)', () => {
   });
 
   it('never reaches outside the theme except for shared app modules', () => {
-    // Shared modules every theme may use: react, lucide-react, marked,
-    // dompurify, the shared types, and its own relative modules. Anything else
+    // Shared modules every theme may use: react, react-i18next, @/i18n, lucide-react,
+    // marked, dompurify, the shared types, and its own relative modules. Anything else
     // crossing the folder boundary needs an explicit allow-list here.
-    const allowedExternal = /^(react|lucide-react|marked|dompurify|@\/types\/conversation)/;
+    const allowedExternal = /^(react|react-i18next|@\/i18n|lucide-react|marked|dompurify|@\/types\/conversation)/;
     const importPattern = /(?:from|import)\s+['"]([^'"]+)['"]/g;
     for (const file of codeFiles) {
       const source = readFileSync(file, 'utf8');

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ChevronDown } from 'lucide-react';
 import styles from './ThinkingBlock.module.css';
 
@@ -36,13 +37,14 @@ interface ThinkingBlockProps {
  * (`ai-workflow-rules.md` §12 — themes never import across theme folders).
  */
 export function ThinkingBlock({ content, embedded = false }: ThinkingBlockProps): JSX.Element {
+  const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
   const steps = content.split('\n').filter((line) => line.trim() !== '');
 
   if (embedded) {
     return (
       <section className={styles.thinking} data-thinking="embedded">
-        <span className={styles.embeddedHeader}>فرآیند تفکر</span>
+        <span className={styles.embeddedHeader}>{t('themes.reasoningLabel')}</span>
         {steps.length > 0 && (
           <ol className={styles.steps}>
             {steps.map((step, index) => (
@@ -74,7 +76,7 @@ export function ThinkingBlock({ content, embedded = false }: ThinkingBlockProps)
           aria-hidden="true"
           className={expanded ? styles.chevronOpen : styles.chevron}
         />
-        فرآیند تفکر
+        {t('themes.thinkingHeader')}
       </button>
       {expanded && steps.length > 0 && (
         <ol className={styles.steps}>

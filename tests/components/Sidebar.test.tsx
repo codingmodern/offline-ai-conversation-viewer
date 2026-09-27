@@ -118,9 +118,12 @@ describe('Sidebar', () => {
     const user = userEvent.setup();
     const { onSelect } = renderSidebar();
 
-    // Tab reaches the sidebar's top-most control first — the Unit 07 search
-    // field (`ui-context.md` §3 places it above the list) — then the first row,
-    // which is a real button, and Enter activates it.
+    // Tab reaches the header's language toggle options first (Unit 12), then the
+    // Unit 07 search field, then the first row (a real button), and Enter activates it.
+    await user.tab();
+    expect(screen.getByRole('button', { name: 'فارسی' })).toHaveFocus();
+    await user.tab();
+    expect(screen.getByRole('button', { name: 'English' })).toHaveFocus();
     await user.tab();
     expect(screen.getByRole('searchbox')).toHaveFocus();
     await user.tab();

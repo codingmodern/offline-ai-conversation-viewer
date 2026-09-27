@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { UnifiedConversation } from '@/types/conversation';
 import { countDuplicates } from '@/storage/conversationStore';
 import type { DuplicateCounts } from '@/storage/conversationStore';
@@ -20,7 +21,8 @@ interface GuidedImportFlowProps {
   readonly onConfirm?: ((conversations: readonly UnifiedConversation[]) => void) | undefined;
 }
 
-const STEP_LABELS = ['انتخاب پلتفرم', 'انتخاب فایل', 'تایید و واردات'] as const;
+/** Translation keys for the three steps, in order (Unit 12). */
+const STEP_KEYS = ['import.stepPlatform', 'import.stepFile', 'import.stepConfirm'] as const;
 
 /**
  * The three-step guided import (`08-guided-import-flow.md`): pick a platform,
@@ -30,6 +32,7 @@ const STEP_LABELS = ['انتخاب پلتفرم', 'انتخاب فایل', 'تا
  * steer the parser.
  */
 export function GuidedImportFlow({ onConfirm }: GuidedImportFlowProps = {}): JSX.Element {
+  const { t } = useTranslation();
   const { items, pendingLargeFiles, importedFiles, isBusy, addFiles, confirmLargeFile, cancelLargeFile, reset } =
     useImport();
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -99,9 +102,9 @@ export function GuidedImportFlow({ onConfirm }: GuidedImportFlowProps = {}): JSX
   if (isDone) {
     return (
       <div className={styles.done} role="status">
-        <p>واردات انجام شد.</p>
+        <p>{t('import.doneTitle')}</p>
         {onConfirm === undefined && (
-          <p className={styles.doneNote}>حالت مستقل: هیچ دادهای ذخیره نشد.</p>
+          <p className={styles.doneNote}>{t('import.doneNote')}</p>
         )}
       </div>
     );
@@ -110,7 +113,7 @@ export function GuidedImportFlow({ onConfirm }: GuidedImportFlowProps = {}): JSX
   return (
     <div>
       <ol className={styles.steps}>
-        {STEP_LABELS.map((label, index) => {
+        {STEP_KEYS.map((stepKey, index) => {
           const position = (index + 1) as 1 | 2 | 3;
           const stateClass =
             position < step
@@ -119,11 +122,11 @@ export function GuidedImportFlow({ onConfirm }: GuidedImportFlowProps = {}): JSX
                 ? styles.stepCurrent
                 : styles.stepTodo;
           return (
-            <li key={label} className={stateClass} aria-current={position === step ? 'step' : undefined}>
+            <li key={stepKey} className={stateClass} aria-current={position === step ? 'step' : undefined}>
               <span className={styles.stepMark} aria-hidden="true">
                 {position < step ? '✓' : position}
               </span>
-              {label}
+              {t(stepKey)}
             </li>
           );
         })}
@@ -139,7 +142,7 @@ export function GuidedImportFlow({ onConfirm }: GuidedImportFlowProps = {}): JSX
               disabled={platform === undefined}
               onClick={() => setStep(2)}
             >
-              مرحله بعد
+              {t('import.nextStep')}
             </button>
           </div>
         </section>
@@ -157,23 +160,25 @@ export function GuidedImportFlow({ onConfirm }: GuidedImportFlowProps = {}): JSX
           {platform !== undefined && mismatchFile !== undefined && (
             <div className={styles.mismatch} role="alert">
               <p>
-                فایل انتخابی مربوط به{' '}
-                {findPlatformOption(mismatchFile.providerId)?.label ?? mismatchFile.providerId} است،
-                نه {findPlatformOption(platform)?.label ?? platform}.
+                {t('import.mismatch', {
+                  actual:
+                    findPlatformOption(mismatchFile.providerId)?.label ?? mismatchFile.providerId,
+                  expected: findPlatformOption(platform)?.label ?? platform,
+                })}
               </p>
               <div className={styles.actions}>
                 <button type="button" className={styles.secondary} onClick={reset}>
-                  انتخاب فایل دیگر
+                  {t('import.chooseAnotherFile')}
                 </button>
                 <button type="button" className={styles.secondary} onClick={() => setStep(1)}>
-                  بازگشت به انتخاب پلتفرم
+                  {t('import.backToPlatform')}
                 </button>
               </div>
             </div>
           )}
           <div className={styles.actions}>
             <button type="button" className={styles.secondary} onClick={() => setStep(1)}>
-              مرحله قبل
+              {t('import.previousStep')}
             </button>
             <button
               type="button"
@@ -181,7 +186,7 @@ export function GuidedImportFlow({ onConfirm }: GuidedImportFlowProps = {}): JSX
               disabled={!canContinueFromFiles}
               onClick={() => setStep(3)}
             >
-              مرحله بعد
+              {t('import.nextStep')}
             </button>
           </div>
         </section>
@@ -191,14 +196,18 @@ export function GuidedImportFlow({ onConfirm }: GuidedImportFlowProps = {}): JSX
         <section className={styles.body}>
           <div className={styles.preview} aria-live="polite">
             {preview === undefined ? (
-              <p>در حال بررسی تکراریها...</p>
+              <p>{t('import.checkingDuplicates')}</p>
             ) : (
               <>
-                {preview.newCount > 0 && <p>{preview.newCount} مکالمه جدید</p>}
-                {preview.duplicateCount > 0 && <p>{preview.duplicateCount} مکالمه تکراری</p>}
+                {preview.newCount > 0 && (
+                  <p>{t('import.newCount', { count: preview.newCount })}</p>
+                )}
+                {preview.duplicateCount > 0 && (
+                  <p>{t('import.duplicateCount', { count: preview.duplicateCount })}</p>
+                )}
                 {preview.newCount === 0 && preview.duplicateCount > 0 && (
                   <p className={styles.allDuplicates}>
-                    همه مکالمهها تکراری هستند و چیزی اضافه نمیشود.
+                    {t('import.allDuplicates')}
                   </p>
                 )}
                 <ul className={styles.fileNames}>
@@ -211,10 +220,10 @@ export function GuidedImportFlow({ onConfirm }: GuidedImportFlowProps = {}): JSX
           </div>
           <div className={styles.actions}>
             <button type="button" className={styles.secondary} onClick={() => setStep(2)}>
-              مرحله قبل
+              {t('import.previousStep')}
             </button>
             <button type="button" className={styles.primary} onClick={handleConfirm}>
-              تایید و Import
+              {t('import.confirmImport')}
             </button>
           </div>
         </section>

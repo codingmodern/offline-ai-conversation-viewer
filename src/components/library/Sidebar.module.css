@@ -8,9 +8,20 @@
   border-inline-end: 1px solid var(--shell-border-default);
 }
 
-.heading {
-  margin: 0 0 0.75rem;
+/* Header row: the list title and the language switcher share one line, so the
+   switcher sits in the sidebar's "header" exactly as the spec allows
+   («تنظیمات/هدر») without costing the list any vertical space. */
+.header {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
   padding-inline: 0.25rem;
+}
+
+.heading {
+  margin: 0;
   color: var(--shell-text-secondary);
   font-size: 0.8125rem;
   font-weight: 600;

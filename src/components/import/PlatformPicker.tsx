@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import { PLATFORM_OPTIONS } from './platformOptions';
 import type { PlatformOptionId } from './platformOptions';
 import { PlatformIcon } from './PlatformIcons';
@@ -15,22 +16,27 @@ interface PlatformPickerProps {
  * as toggle cards. Unavailable platforms answer with an inline notice instead
  * of being hidden, so the roadmap stays visible (spec §2). The Continue button
  * lives in `GuidedImportFlow` — this component only owns the choice.
+ *
+ * Unit 12: the notice is held as a translation **key**, because it is a message
+ * that can stay on screen across a language switch — storing the finished sentence
+ * would leave it frozen in the language that was active when it appeared.
  */
 export function PlatformPicker({ selected, onSelect }: PlatformPickerProps): JSX.Element {
-  const [notice, setNotice] = useState<string | undefined>(undefined);
+  const { t } = useTranslation();
+  const [noticeKey, setNoticeKey] = useState<string | undefined>(undefined);
 
   const handleClick = (id: PlatformOptionId, available: boolean): void => {
     if (!available) {
-      setNotice('واردات از این پلتفرم به‌زودی اضافه می‌شود.');
+      setNoticeKey('import.comingSoonNotice');
       return;
     }
-    setNotice(undefined);
+    setNoticeKey(undefined);
     onSelect(id);
   };
 
   return (
-    <section aria-label="انتخاب پلتفرم">
-      <div className={styles.grid} role="group" aria-label="پلتفرم گفتگوها">
+    <section aria-label={t('import.platformPickerLabel')}>
+      <div className={styles.grid} role="group" aria-label={t('import.platformGroupLabel')}>
         {PLATFORM_OPTIONS.map((option) => {
           const isSelected = option.id === selected;
           return (
@@ -45,14 +51,14 @@ export function PlatformPicker({ selected, onSelect }: PlatformPickerProps): JSX
                 <PlatformIcon id={option.id} />
               </span>
               <span className={styles.label}>{option.label}</span>
-              {!option.available && <span className={styles.badge}>به‌زودی</span>}
+              {!option.available && <span className={styles.badge}>{t('import.comingSoon')}</span>}
             </button>
           );
         })}
       </div>
-      {notice !== undefined && (
+      {noticeKey !== undefined && (
         <p className={styles.notice} role="status">
-          {notice}
+          {t(noticeKey)}
         </p>
       )}
     </section>

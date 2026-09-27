@@ -1,5 +1,7 @@
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { LibraryEntry } from '@/types/storage';
+import { activeDateLocale } from '@/i18n';
 import { PLATFORM_LABEL } from './platformLabels';
 import styles from './ConversationListItem.module.css';
 
@@ -10,19 +12,17 @@ interface ConversationListItemProps {
   readonly onRequestDelete: (id: number) => void;
 }
 
-/** Fallback label when the export carried no title. */
-const UNTITLED_LABEL = 'گفتگوی بی‌عنوان';
-
-
 /**
  * Formats the import date for display.
  *
- * Uses the Persian calendar to match the app's RTL Persian UI (`ui-context.md`
- * §2), and shows date + time because several conversations are often imported on
- * the same day, which would otherwise make the ordering look arbitrary.
+ * Uses the **active UI locale** (Unit 12): Persian shows the Jalali calendar with
+ * Persian digits, English shows Gregorian — the same split `ui-context.md` §2
+ * describes for the shell, now applied per chosen language instead of being
+ * hardcoded. Date + time, because several conversations are often imported on the
+ * same day, which would otherwise make the ordering look arbitrary.
  */
 function formatImportedAt(importedAt: number): string {
-  return new Intl.DateTimeFormat('fa-IR', {
+  return new Intl.DateTimeFormat(activeDateLocale(), {
     dateStyle: 'short',
     timeStyle: 'short',
   }).format(new Date(importedAt));
@@ -46,7 +46,8 @@ export function ConversationListItem({
   onSelect,
   onRequestDelete,
 }: ConversationListItemProps): JSX.Element {
-  const label = entry.title ?? UNTITLED_LABEL;
+  const { t } = useTranslation();
+  const label = entry.title ?? t('library.untitled');
 
   return (
     <li className={styles.item} data-active={isActive}>
@@ -62,7 +63,7 @@ export function ConversationListItem({
         <span className={styles.meta}>
           <span className={styles.platform}>{PLATFORM_LABEL[entry.platform]}</span>
           <span aria-hidden="true">·</span>
-          <span>{entry.messageCount} پیام</span>
+          <span>{t('library.messageCount', { count: entry.messageCount })}</span>
           <span aria-hidden="true">·</span>
           <time dateTime={new Date(entry.importedAt).toISOString()}>
             {formatImportedAt(entry.importedAt)}
@@ -74,7 +75,7 @@ export function ConversationListItem({
         className={styles.delete}
         // Names the target, so a screen-reader user hears which row this deletes
         // instead of a row of identical "delete" buttons.
-        aria-label={`حذف ${label}`}
+        aria-label={t('library.deleteRowLabel', { label })}
         onClick={() => {
           // Only *requests* the delete; the dialog decides (FR6/FR7).
           onRequestDelete(entry.id);

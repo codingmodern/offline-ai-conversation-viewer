@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FileText, Image } from 'lucide-react';
 import type { UnifiedAttachment } from '@/types/conversation';
 import styles from './AttachmentCard.module.css';
@@ -23,6 +24,8 @@ interface AttachmentCardProps {
  * simply keeps the document icon.
  */
 export function AttachmentCard({ attachments }: AttachmentCardProps): JSX.Element {
+  const { t } = useTranslation();
+
   return (
     <ul className={styles.list} data-attachments="true">
       {attachments.map((file) => (
@@ -33,7 +36,7 @@ export function AttachmentCard({ attachments }: AttachmentCardProps): JSX.Elemen
             <FileText size={18} aria-hidden="true" className={styles.icon} />
           )}
           <span className={styles.name}>
-            {file.fileName === '' ? 'فایل بی‌نام' : file.fileName}
+            {file.fileName === '' ? t('themes.unnamedFile') : file.fileName}
           </span>
         </li>
       ))}

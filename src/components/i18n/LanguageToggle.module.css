@@ -1,0 +1,41 @@
+.toggle {
+  display: inline-flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  background: var(--shell-bg-base);
+  border: 1px solid var(--shell-border-default);
+  border-radius: var(--shell-radius-pill);
+}
+
+.option,
+.optionActive {
+  padding: 0.375rem 0.875rem;
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-radius: var(--shell-radius-pill);
+  transition:
+    background 120ms ease,
+    color 120ms ease;
+}
+
+.option {
+  color: var(--shell-text-secondary);
+}
+
+.option:hover {
+  background: var(--shell-bg-hover);
+  color: var(--shell-text-primary);
+}
+
+/*
+ * The active state is carried by background AND color, never colour alone
+ * (`ui-context.md` §6 — the same reason the ARIA pressed state exists).
+ */
+.optionActive {
+  color: var(--shell-bg-base);
+  background: var(--shell-state-info);
+  font-weight: 600;
+}

@@ -1,4 +1,5 @@
 import type { UnifiedMessage } from '@/types/conversation';
+import i18n from '@/i18n';
 
 /**
  * ChatGPT's reasoning and tool‑activity values (11b FR‑4 / Q2).
@@ -20,11 +21,18 @@ export const REASONING_FRAGMENT_TYPES: ReadonlySet<string> = new Set([
   'commentary',
 ]);
 
-/** The Persian label the collapsed summary leads with when reasoning is present. */
-export const REASONING_LABEL = 'تفکر';
+/**
+ * Translation key for the label the collapsed summary leads with when reasoning
+ * is present (Unit 12). The wording lives in `locales/{lng}/common.json`; the
+ * summary is resolved **per render** through the i18next singleton, which is what
+ * lets an already-grouped run re-read its label when the language changes —
+ * `groupActivityRuns` runs in the view's render body, so switching the language
+ * rebuilds every summary on the next render.
+ */
+export const REASONING_LABEL_KEY = 'themes.reasoningLabel';
 
-/** The row's display name when the export carried none — shared with ToolRow. */
-export const FALLBACK_TOOL_NAME = 'ابزار';
+/** Translation key for the row's name when the export carried none — shared with ToolRow. */
+export const FALLBACK_TOOL_NAME_KEY = 'themes.toolFallback';
 
 /** A message renders as background activity (tool call + reasoning). */
 function isActivityMessage(message: UnifiedMessage): boolean {
@@ -42,15 +50,15 @@ function isActivityMessage(message: UnifiedMessage): boolean {
  */
 function toolNameFor(message: UnifiedMessage): string {
   if (message.kind !== 'tool_activity') {
-    return FALLBACK_TOOL_NAME;
+    return i18n.t(FALLBACK_TOOL_NAME_KEY);
   }
-  return message.toolActivity?.toolName ?? FALLBACK_TOOL_NAME;
+  return message.toolActivity?.toolName ?? i18n.t(FALLBACK_TOOL_NAME_KEY);
 }
 
 function buildSummary(hasReasoning: boolean, toolNames: readonly string[]): string {
   const parts: string[] = [];
   if (hasReasoning) {
-    parts.push(REASONING_LABEL);
+    parts.push(i18n.t(REASONING_LABEL_KEY));
   }
   parts.push(...toolNames);
   return parts.join(', ');

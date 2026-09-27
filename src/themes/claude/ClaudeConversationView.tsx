@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { UnifiedConversation } from '@/types/conversation';
 import { ClaudeMessage } from './ClaudeMessage';
 import { ActivityGroup } from './ActivityGroup';
@@ -33,6 +34,7 @@ interface ClaudeConversationViewProps {
 export function ClaudeConversationView({
   conversation,
 }: ClaudeConversationViewProps): JSX.Element {
+  const { t } = useTranslation();
   const { cards, mergedOrders } = linkToolActivity(conversation.messages);
 
   const visibleMessages = conversation.messages.filter(
@@ -45,7 +47,7 @@ export function ClaudeConversationView({
     <div className={styles.view} data-provider-theme="claude">
       <div className={styles.column}>
         {sequence.length === 0 ? (
-          <p className={styles.empty}>پیامی برای نمایش در این گفتگو نیست.</p>
+          <p className={styles.empty}>{t('themes.emptyConversation')}</p>
         ) : (
           <ol className={styles.messages}>
             {sequence.map((item) =>

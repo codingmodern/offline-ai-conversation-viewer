@@ -1,7 +1,15 @@
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FileText } from 'lucide-react';
 import type { UnifiedAttachment } from '@/types/conversation';
 import styles from './AttachmentCard.module.css';
+
+/**
+ * The translator `useTranslation` hands out, derived here instead of imported
+ * from `i18next`: the theme folder may only reach shared modules on the
+ * isolation allow-list (11b ADR-J), and `react-i18next` is on it.
+ */
+type Translator = ReturnType<typeof useTranslation>['t'];
 
 interface AttachmentCardProps {
   readonly attachments: readonly UnifiedAttachment[];
@@ -20,7 +28,9 @@ interface AttachmentCardProps {
  * broken image — visual only, no preview/open affordance.
  */
 export function AttachmentCard({ attachments }: AttachmentCardProps): JSX.Element {
-    return (
+  const { t } = useTranslation();
+
+  return (
     <ul className={styles.list}>
       {attachments.map((file) => (
         <li
@@ -29,8 +39,12 @@ export function AttachmentCard({ attachments }: AttachmentCardProps): JSX.Elemen
           data-attachment={file.fileName}
         >
           <FileText size={18} aria-hidden="true" className={styles.icon} />
-          <span className={styles.name}>{file.fileName === '' ? 'فایل بی‌نام' : file.fileName}</span>
-          {file.fileSize !== undefined && <span className={styles.size}>{formatSize(file.fileSize)}</span>}
+          <span className={styles.name}>
+            {file.fileName === '' ? t('themes.unnamedFile') : file.fileName}
+          </span>
+          {file.fileSize !== undefined && (
+            <span className={styles.size}>{formatSize(file.fileSize, t)}</span>
+          )}
         </li>
       ))}
     </ul>
@@ -38,12 +52,12 @@ export function AttachmentCard({ attachments }: AttachmentCardProps): JSX.Elemen
 }
 
 /** Humanises a byte count the way the existing metadata panel does. */
-function formatSize(bytes: number): string {
+function formatSize(bytes: number, t: Translator): string {
   if (bytes < 1024) {
-    return `${bytes} بایت`;
+    return t('themes.attachmentBytes', { value: bytes });
   }
   if (bytes < 1024 * 1024) {
-    return `${(bytes / 1024).toFixed(1)} ک.ب`;
+    return t('themes.attachmentKb', { value: (bytes / 1024).toFixed(1) });
   }
-  return `${(bytes / (1024 * 1024)).toFixed(1)} م.ب`;
+  return t('themes.attachmentMb', { value: (bytes / (1024 * 1024)).toFixed(1) });
 }

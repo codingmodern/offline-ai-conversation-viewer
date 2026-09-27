@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from './SearchBar.module.css';
 
 interface SearchBarProps {
@@ -20,13 +21,15 @@ interface SearchBarProps {
  * name (`ui-context.md` §6), matching how the import dropzone labels itself.
  */
 export function SearchBar({ value, onChange, onClear }: SearchBarProps): JSX.Element {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.wrap}>
       <input
         type="search"
         className={styles.input}
-        aria-label="جستجو در عنوان و متن گفتگوها"
-        placeholder="جستجو…"
+        aria-label={t('search.inputLabel')}
+        placeholder={t('search.placeholder')}
         value={value}
         onChange={(event) => {
           onChange(event.target.value);
@@ -43,7 +46,7 @@ export function SearchBar({ value, onChange, onClear }: SearchBarProps): JSX.Ele
         <button
           type="button"
           className={styles.clear}
-          aria-label="پاک کردن جستجو"
+          aria-label={t('search.clearLabel')}
           onClick={onClear}
         >
           <span aria-hidden="true">✕</span>

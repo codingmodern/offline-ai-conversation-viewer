@@ -1,0 +1,38 @@
+/*
+ * First-run gate. A centred card on the base background — deliberately plain and
+ * shell-neutral, because it is shown before the user has any library to look at.
+ */
+.screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 1.5rem;
+  background: var(--shell-bg-base);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+  max-width: 26rem;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  background: var(--shell-bg-surface);
+  border: 1px solid var(--shell-border-default);
+  border-radius: var(--shell-radius-modal);
+}
+
+.title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--shell-text-primary);
+}
+
+.description {
+  margin: 0 0 0.5rem;
+  font-size: 0.9375rem;
+  color: var(--shell-text-secondary);
+}

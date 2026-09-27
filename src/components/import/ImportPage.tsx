@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { UnifiedConversation } from '@/types/conversation';
 import { GuidedImportFlow } from '@/components/import/GuidedImportFlow';
 import styles from './ImportPage.module.css';
@@ -25,16 +26,18 @@ interface ImportPageProps {
  * FR9 / Invariant #4) and parsing shows no separate progress of its own.
  */
 export function ImportPage({ onImported, onCancel }: ImportPageProps = {}): JSX.Element {
+  const { t } = useTranslation();
+
   return (
     <main className={styles.page}>
       {onCancel !== undefined && (
         <button type="button" className={styles.back} onClick={onCancel}>
-          بازگشت به کتابخانه
+          {t('import.backToLibrary')}
         </button>
       )}
-      <h1 className={styles.heading}>ورود فایل گفتگو</h1>
+      <h1 className={styles.heading}>{t('import.pageHeading')}</h1>
       <p className={styles.subheading}>
-        همهی پردازشها روی همین دستگاه انجام میشود و هیچ دادهای به اینترنت ارسال نمیشود.
+        {t('import.pageSubheading')}
       </p>
 
       <GuidedImportFlow onConfirm={onImported} />

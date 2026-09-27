@@ -1,4 +1,5 @@
 import { useId, useRef, useState, type DragEvent, type ChangeEvent, type JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from './ImportDropzone.module.css';
 
 interface ImportDropzoneProps {
@@ -13,6 +14,7 @@ interface ImportDropzoneProps {
  * feature is fully operable without a pointer (`ui-context.md` §6).
  */
 export function ImportDropzone({ onFilesSelected }: ImportDropzoneProps): JSX.Element {
+  const { t } = useTranslation();
   const [isDragging, setIsDragging] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const descriptionId = useId();
@@ -58,9 +60,9 @@ export function ImportDropzone({ onFilesSelected }: ImportDropzoneProps): JSX.El
       onDrop={handleDrop}
       data-dragging={isDragging}
     >
-      <p className={styles.title}>فایل خروجی گفتگو را وارد کنید</p>
+      <p className={styles.title}>{t('import.dropzoneTitle')}</p>
       <p className={styles.hint} id={descriptionId}>
-        فایل JSON را اینجا رها کنید یا از دکمه‌ی زیر انتخاب کنید.
+        {t('import.dropzoneHint')}
       </p>
       <button
         type="button"
@@ -70,7 +72,7 @@ export function ImportDropzone({ onFilesSelected }: ImportDropzoneProps): JSX.El
         }}
         aria-describedby={descriptionId}
       >
-        انتخاب فایل
+        {t('import.chooseFile')}
       </button>
       <input
         ref={inputRef}
@@ -79,7 +81,7 @@ export function ImportDropzone({ onFilesSelected }: ImportDropzoneProps): JSX.El
         accept="application/json,.json"
         multiple
         onChange={handleChange}
-        aria-label="انتخاب فایل JSON"
+        aria-label={t('import.fileInputLabel')}
       />
     </div>
   );

@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { UnifiedMessage } from '@/types/conversation';
 import { splitCodeFences } from './codeFences';
 import { AttachmentCard } from './AttachmentCard';
@@ -36,6 +37,8 @@ interface DeepSeekMessageProps {
  * here has an empty fallback: a malformed message degrades, it never throws.
  */
 export function DeepSeekMessage({ message }: DeepSeekMessageProps): JSX.Element {
+  const { t } = useTranslation();
+
   if (message.kind === 'attachment') {
     return (
       <div className={styles.row} data-role={message.role} data-kind="attachment">
@@ -75,7 +78,7 @@ export function DeepSeekMessage({ message }: DeepSeekMessageProps): JSX.Element 
         <div className={styles.userMessage}>
           <DeepSeekUserBubble content={content} />
           <div className={styles.actions}>
-            <CopyButton text={content} label="کپی پیام" />
+            <CopyButton text={content} label={t('themes.copyMessage')} />
           </div>
         </div>
       </div>
@@ -97,7 +100,9 @@ export function DeepSeekMessage({ message }: DeepSeekMessageProps): JSX.Element 
       data-role={message.role}
       data-kind="text"
     >
-      {isKnownRole ? null : <span className={styles.unknownBadge}>پیام با نقش ناشناخته</span>}
+      {isKnownRole ? null : (
+        <span className={styles.unknownBadge}>{t('themes.unknownRole')}</span>
+      )}
       <div className={styles.assistantBody}>
         {segments.map((segment, index) =>
           segment.type === 'code' ? (
@@ -119,7 +124,7 @@ export function DeepSeekMessage({ message }: DeepSeekMessageProps): JSX.Element 
       </div>
       {isKnownRole && (
         <div className={styles.actions}>
-          <CopyButton text={content} label="کپی پاسخ" />
+          <CopyButton text={content} label={t('themes.copyAnswer')} />
         </div>
       )}
     </div>
@@ -137,6 +142,7 @@ export function DeepSeekMessage({ message }: DeepSeekMessageProps): JSX.Element 
  * independent.
  */
 function DeepSeekUserBubble({ content }: { readonly content: string }): JSX.Element {
+  const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
   const [overflowing, setOverflowing] = useState(false);
   const [measured, setMeasured] = useState(false);
@@ -201,7 +207,7 @@ function DeepSeekUserBubble({ content }: { readonly content: string }): JSX.Elem
             setExpanded((value) => !value);
           }}
         >
-          {expanded ? 'نمایش کمتر' : 'نمایش بیشتر'}
+          {expanded ? t('themes.showLess') : t('themes.showMore')}
         </button>
       )}
     </>

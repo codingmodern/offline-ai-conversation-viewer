@@ -1,6 +1,8 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { UnifiedMessage } from '@/types/conversation';
+import { activeDateLocale } from '@/i18n';
 import { splitCodeFences } from './codeFences';
 import type { ToolCardView } from './toolLinking';
 import { AttachmentCard } from './AttachmentCard';
@@ -42,6 +44,8 @@ interface ClaudeMessageProps {
  * here has an empty fallback: a malformed message degrades, it never throws.
  */
 export function ClaudeMessage({ message, toolCards }: ClaudeMessageProps): JSX.Element {
+  const { t } = useTranslation();
+
   if (message.kind === 'attachment') {
     return (
       <div className={styles.row} data-role={message.role} data-kind="attachment">
@@ -86,7 +90,7 @@ export function ClaudeMessage({ message, toolCards }: ClaudeMessageProps): JSX.E
         <div className={styles.userMessage}>
           <ClaudeUserBubble content={content} />
           <div className={styles.actions}>
-            <CopyButton text={content} label="کپی پیام" />
+            <CopyButton text={content} label={t('themes.copyMessage')} />
           </div>
         </div>
       </div>
@@ -111,7 +115,9 @@ export function ClaudeMessage({ message, toolCards }: ClaudeMessageProps): JSX.E
       data-role={message.role}
       data-kind="text"
     >
-      {isKnownRole ? null : <span className={styles.unknownBadge}>پیام با نقش ناشناخته</span>}
+      {isKnownRole ? null : (
+        <span className={styles.unknownBadge}>{t('themes.unknownRole')}</span>
+      )}
       <div className={styles.assistantBody}>
         {segments.map((segment, index) =>
           segment.type === 'code' ? (
@@ -132,7 +138,7 @@ export function ClaudeMessage({ message, toolCards }: ClaudeMessageProps): JSX.E
       </div>
       {isKnownRole && (
         <div className={styles.actions}>
-          <CopyButton text={content} label="کپی پاسخ" />
+          <CopyButton text={content} label={t('themes.copyAnswer')} />
           {actionDate === undefined ? null : (
             <span className={styles.actionDate} data-action-date="true">
               {actionDate}
@@ -149,8 +155,9 @@ export function ClaudeMessage({ message, toolCards }: ClaudeMessageProps): JSX.E
  * (`09b-claude-theme-visual-fix.md` row 4). Returns `undefined` for absent or
  * unparseable values, so the row renders without a date instead of inventing
  * one — the same verbatim rule as the metadata panel's `formatExportTimestamp`,
- * restyled here as a short fa-IR date (claude.ai shows a small date beside the
- * icons). The stored string itself is never altered (`types/conversation.ts`).
+ * restyled here as a short date in the active locale (claude.ai shows a small
+ * date beside the icons). The stored string itself is never altered
+ * (`types/conversation.ts`).
  */
 function formatActionDate(createdAt: string | undefined): string | undefined {
   if (createdAt === undefined) {
@@ -159,7 +166,7 @@ function formatActionDate(createdAt: string | undefined): string | undefined {
   const parsedMs = Date.parse(createdAt);
   return Number.isNaN(parsedMs)
     ? undefined
-    : new Intl.DateTimeFormat('fa-IR', { day: 'numeric', month: 'short' }).format(parsedMs);
+    : new Intl.DateTimeFormat(activeDateLocale(), { day: 'numeric', month: 'short' }).format(parsedMs);
 }
 
 /**
@@ -175,6 +182,7 @@ function formatActionDate(createdAt: string | undefined): string | undefined {
  * never interferes with horizontal wrapping).
  */
 function ClaudeUserBubble({ content }: { readonly content: string }): JSX.Element {
+  const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
   const [overflowing, setOverflowing] = useState(false);
   const [measured, setMeasured] = useState(false);
@@ -239,7 +247,7 @@ function ClaudeUserBubble({ content }: { readonly content: string }): JSX.Elemen
             setExpanded((value) => !value);
           }}
         >
-          {expanded ? 'نمایش کمتر' : 'نمایش بیشتر'}
+          {expanded ? t('themes.showLess') : t('themes.showMore')}
         </button>
       )}
     </>

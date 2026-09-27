@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { PendingDelete } from '@/features/library/useLibrary';
 import { ConfirmDialog } from '@/components/common/ConfirmDialog';
 
@@ -9,9 +10,6 @@ interface DeleteConversationDialogProps {
   readonly onCancel: () => void;
 }
 
-/** Fallback label for an export that carried no title (`ui-context.md` §4). */
-const UNTITLED_LABEL = 'گفتگوی بی‌عنوان';
-
 /**
  * Delete confirmation (FR6/FR7).
  *
@@ -21,24 +19,31 @@ const UNTITLED_LABEL = 'گفتگوی بی‌عنوان';
  * option. The dialog names the conversation so the user can see *which* record is
  * at stake, and states plainly that the action cannot be undone, since there is no
  * backend and no trash to recover from.
+ *
+ * Unit 12: both the title and the question are translated here; the conversation
+ * label travels as an interpolation parameter, never as concatenated sentences —
+ * Persian and English order the clause differently, so only the whole sentence can
+ * be translated correctly.
  */
 export function DeleteConversationDialog({
   pendingDelete,
   onConfirm,
   onCancel,
 }: DeleteConversationDialogProps): JSX.Element | null {
+  const { t } = useTranslation();
+
   if (pendingDelete === undefined) {
     return null;
   }
 
-  const label = pendingDelete.title ?? UNTITLED_LABEL;
+  const label = pendingDelete.title ?? t('library.untitled');
 
   return (
     <ConfirmDialog
-      title="حذف گفتگو"
-      description={`«${label}» برای همیشه از کتابخانه‌ی این مرورگر حذف می‌شود و بازگرداندن آن ممکن نیست. فایل اصلی روی دستگاه شما تغییری نمی‌کند.`}
-      confirmLabel="حذف گفتگو"
-      cancelLabel="انصراف"
+      title={t('dialogs.deleteTitle')}
+      description={t('dialogs.deleteDescription', { label })}
+      confirmLabel={t('dialogs.deleteConfirm')}
+      cancelLabel={t('dialogs.cancel')}
       isDestructive
       onConfirm={onConfirm}
       onCancel={onCancel}

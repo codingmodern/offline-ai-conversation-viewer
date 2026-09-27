@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { logTechnicalDetail, toUserMessage } from '@/features/import/errorMessages';
+import { translateMessage } from '@/i18n';
 import type { ParseError, ParseErrorCode } from '@/types/errors';
 
 const ALL_CODES: readonly ParseErrorCode[] = [
@@ -16,7 +17,8 @@ describe('toUserMessage', () => {
   it.each(ALL_CODES)('returns a non-empty Persian message for %s', (code) => {
     const error: ParseError = { code };
 
-    const message = toUserMessage(error);
+    const descriptor = toUserMessage(error);
+    const message = translateMessage(descriptor);
 
     expect(message.length).toBeGreaterThan(0);
     // Guards the rule that raw technical wording never reaches the user.
@@ -29,7 +31,8 @@ describe('toUserMessage', () => {
       detail: 'Unexpected token } in JSON at position 42',
     };
 
-    expect(toUserMessage(error)).not.toContain('position 42');
+    const message = translateMessage(toUserMessage(error));
+    expect(message).not.toContain('position 42');
   });
 
   it('keeps the ambiguous-format message generic (no parser names)', () => {
@@ -38,7 +41,7 @@ describe('toUserMessage', () => {
       detail: 'Multiple providers matched: deepseek, chatgpt.',
     };
 
-    const message = toUserMessage(error);
+    const message = translateMessage(toUserMessage(error));
 
     // `02-platform-detection.md`: which parsers matched is console-only detail.
     expect(message).not.toMatch(/deepseek|chatgpt/i);

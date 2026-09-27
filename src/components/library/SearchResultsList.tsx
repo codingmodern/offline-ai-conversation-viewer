@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { LibraryEntry } from '@/types/storage';
 import { ConversationListItem } from '@/components/library/ConversationListItem';
 import styles from './SearchResultsList.module.css';
@@ -33,21 +34,21 @@ export function SearchResultsList({
   onSelect,
   onRequestDelete,
 }: SearchResultsListProps): JSX.Element {
+  const { t } = useTranslation();
+
   if (entries.length === 0) {
     return (
       <div className={styles.noResults} role="status">
-        <p className={styles.noResultsTitle}>نتیجه‌ای برای «{query}» پیدا نشد.</p>
-        <p className={styles.noResultsHint}>عبارت دیگری را امتحان کنید.</p>
+        <p className={styles.noResultsTitle}>{t('search.noResultsTitle', { query })}</p>
+        <p className={styles.noResultsHint}>{t('search.noResultsHint')}</p>
       </div>
     );
   }
 
   return (
-    <section className={styles.results} aria-label="نتایج جستجو">
+    <section className={styles.results} aria-label={t('search.resultsLabel')}>
       {/* Confirmation that the term applied — NFR1-visible feedback without a spinner. */}
-      <p className={styles.meta}>
-        {entries.length} نتیجه برای «{query}»
-      </p>
+      <p className={styles.meta}>{t('search.resultsMeta', { count: entries.length, query })}</p>
       <ul className={styles.list}>
         {entries.map((entry) => (
           <ConversationListItem

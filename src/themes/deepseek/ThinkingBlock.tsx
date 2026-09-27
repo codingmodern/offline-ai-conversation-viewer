@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ChevronDown } from 'lucide-react';
 import styles from './ThinkingBlock.module.css';
 
@@ -20,11 +21,12 @@ interface ThinkingBlockProps {
  * it is applied generally here because a viewer gains nothing from expanding
  * reasoning the user hasn't asked for, and the real UI starts collapsed too.
  *
- * The header reads «فرآیند تفکر» because the unified model carries no thinking
+ * The header reads «فرآیند تفکر» (`themes.thinkingHeader`) because the unified model carries no thinking
  * duration — fabricating "Thought for N seconds" without a source would invent
  * data (approved decision D2).
  */
 export function ThinkingBlock({ content }: ThinkingBlockProps): JSX.Element {
+  const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
   const steps = content.split('\n').filter((line) => line.trim() !== '');
 
@@ -46,7 +48,7 @@ export function ThinkingBlock({ content }: ThinkingBlockProps): JSX.Element {
           aria-hidden="true"
           className={expanded ? styles.chevronOpen : styles.chevron}
         />
-        فرآیند تفکر
+        {t('themes.thinkingHeader')}
       </button>
       {expanded && steps.length > 0 && (
         <ol className={styles.steps}>

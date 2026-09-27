@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { CodeSegment } from './codeFences';
 import { CopyButton } from './CopyButton';
 import styles from './CodeBlock.module.css';
@@ -14,6 +15,8 @@ interface CodeBlockProps {
  * and nothing else. Visual only — the code is never executed or highlighted.
  */
 export function CodeBlock({ segment }: CodeBlockProps): JSX.Element {
+  const { t } = useTranslation();
+
   return (
     <figure
       className={styles.block}
@@ -21,8 +24,8 @@ export function CodeBlock({ segment }: CodeBlockProps): JSX.Element {
       data-language={segment.language ?? 'text'}
     >
       <figcaption className={styles.bar}>
-        <span className={styles.language}>{segment.language ?? 'کد'}</span>
-        <CopyButton text={segment.value} label="کپی کد" />
+        <span className={styles.language}>{segment.language ?? t('themes.codeLabel')}</span>
+        <CopyButton text={segment.value} label={t('themes.copyCode')} />
       </figcaption>
       <pre className={styles.pre}>
         <code className={styles.code}>{segment.value}</code>

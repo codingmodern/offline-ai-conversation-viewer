@@ -1,4 +1,5 @@
 import type { UnifiedMessage } from '@/types/conversation';
+import i18n from '@/i18n';
 import type { ToolCardView } from './toolLinking';
 
 /**
@@ -41,8 +42,16 @@ export type ActivitySequenceItem =
   | { readonly kind: 'message'; readonly message: UnifiedMessage }
   | { readonly kind: 'run'; readonly run: ActivityRun };
 
-/** The summary's label for a reasoning block, first when thinking is present. */
-const THINKING_LABEL = 'تفکر';
+/**
+ * Translation key for the summary's label on a reasoning block, first when
+ * thinking is present (Unit 12). Resolved through the i18next singleton at each
+ * build, so a language switch re-renders the view and every summary rebuilds in
+ * the new language.
+ */
+const THINKING_LABEL_KEY = 'themes.reasoningLabel';
+
+/** Translation key for the generic tool name, when the export carried none. */
+const FALLBACK_TOOL_NAME_KEY = 'themes.toolFallback';
 
 function isActivityMessage(message: UnifiedMessage): boolean {
   return (
@@ -65,13 +74,13 @@ function toolNameFor(
     return undefined;
   }
   const card = toolCards.get(message.order);
-  return card === undefined ? undefined : (card.toolName ?? 'ابزار');
+  return card === undefined ? undefined : (card.toolName ?? i18n.t(FALLBACK_TOOL_NAME_KEY));
 }
 
 function buildSummary(hasThinking: boolean, toolNames: readonly string[]): string {
   const parts: string[] = [];
   if (hasThinking) {
-    parts.push(THINKING_LABEL);
+    parts.push(i18n.t(THINKING_LABEL_KEY));
   }
   parts.push(...toolNames);
   return parts.join(', ');
