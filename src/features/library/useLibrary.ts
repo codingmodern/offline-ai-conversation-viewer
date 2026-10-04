@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { UnifiedConversation } from '@/types/conversation';
 import type { LibraryEntry } from '@/types/storage';
+import type { ProviderId } from '@/types/providers';
 import type { UserMessage } from '@/i18n/messages';
 import {
   clearLibrary,
@@ -49,6 +50,16 @@ export interface UseLibraryResult {
    * action a no-op whenever nothing happened to be selected.
    */
   readonly isImporting: boolean;
+  /**
+   * The platform the open import screen should start pre-selected with (Unit 13
+   * FR6), or `undefined` for the generic entry points, which begin at Step 1.
+   *
+   * Paired with `isImporting` rather than merged into it for the same reason
+   * `isImporting` is its own flag: "show import" and "show import *for ChatGPT*"
+   * are two different requests, and only one of them skips Step 1. Read by
+   * `AppShell` at the moment the import screen mounts.
+   */
+  readonly importPlatform: ProviderId | undefined;
   /** True until the first emission arrives, so the UI can avoid a false Empty State. */
   readonly isLoading: boolean;
   /**
@@ -69,7 +80,7 @@ export interface UseLibraryResult {
   /** True while the "delete everything" confirmation is on screen (ADR #14). */
   readonly isClearAllPending: boolean;
   readonly selectConversation: (id: number) => void;
-  readonly openImport: () => void;
+  readonly openImport: (platform?: ProviderId) => void;
   readonly closeImport: () => void;
   readonly requestDelete: (id: number) => void;
   readonly confirmDelete: () => void;
@@ -86,6 +97,7 @@ export function useLibrary(): UseLibraryResult {
   const [entries, setEntries] = useState<readonly LibraryEntry[]>([]);
   const [activeId, setActiveId] = useState<number | undefined>(undefined);
   const [isImporting, setIsImporting] = useState(false);
+  const [importPlatform, setImportPlatform] = useState<ProviderId | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<UserMessage | undefined>(undefined);
   const [isStorageNearLimit, setIsStorageNearLimit] = useState(false);
@@ -159,14 +171,23 @@ export function useLibrary(): UseLibraryResult {
     setIsImporting(false);
   }, []);
 
-  const openImport = useCallback((): void => {
+  const openImport = useCallback((platform?: ProviderId): void => {
     // An explicit flag, so the request works no matter what is selected — and
     // regardless of whether the library is empty.
+    //
+    // Unit 13 (FR6): both setters run in one event handler, so they batch into a
+    // single render — `AppShell` never sees `isImporting` true alongside a stale
+    // `importPlatform`, which is what lets the flow rely on reading the platform
+    // once, at mount.
+    setImportPlatform(platform);
     setIsImporting(true);
   }, []);
 
   const closeImport = useCallback((): void => {
     setIsImporting(false);
+    // Leaving the screen retires the platform too, so a later generic open
+    // cannot inherit this one's choice.
+    setImportPlatform(undefined);
     // Cancelling has to land somewhere real: with nothing selected, fall back to
     // the first conversation in Sidebar order rather than leaving a blank pane.
     setActiveId((current) => current ?? entriesRef.current[0]?.id);
@@ -288,6 +309,7 @@ export function useLibrary(): UseLibraryResult {
     entries,
     activeId,
     isImporting,
+    importPlatform,
     isLoading,
     errorMessage,
     isStorageNearLimit,

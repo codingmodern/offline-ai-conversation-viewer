@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Sidebar } from '@/components/library/Sidebar';
@@ -74,6 +74,14 @@ function renderSidebar(overrides: Partial<Parameters<typeof Sidebar>[0]> = {}): 
 }
 
 describe('Sidebar', () => {
+  beforeEach(() => {
+    // Unit 13: group collapse is a real localStorage preference, and jsdom keeps
+    // it for the whole file. Without this, whichever test collapsed a group
+    // first would hide its rows from every test after it — and the suite would
+    // be testing storage rather than the Sidebar.
+    window.localStorage.clear();
+  });
+
   it('lists every stored conversation by title', () => {
     renderSidebar();
 
@@ -84,7 +92,11 @@ describe('Sidebar', () => {
   it('shows the platform and message count for each row (FR4)', () => {
     renderSidebar();
 
-    expect(screen.getAllByText('DeepSeek')).toHaveLength(2);
+    // Three now, not two: the Unit 13 group header states the platform once for
+    // the bucket, and each row's meta line still states it for itself. The header
+    // is the reason grouping is legible; the meta is why a row still makes sense
+    // read on its own.
+    expect(screen.getAllByText('DeepSeek')).toHaveLength(3);
     expect(screen.getByText('3 پیام')).toBeInTheDocument();
   });
 
@@ -119,13 +131,18 @@ describe('Sidebar', () => {
     const { onSelect } = renderSidebar();
 
     // Tab reaches the header's language toggle options first (Unit 12), then the
-    // Unit 07 search field, then the first row (a real button), and Enter activates it.
+    // Unit 07 search field, then the platform group's header — a real toggle
+    // button since Unit 13 (FR4) — and then the first row, which Enter activates.
+    // Asserting the group header explicitly matters: a stop that is *not* there
+    // (or not a button) would shift every later stop by one and mask a break.
     await user.tab();
     expect(screen.getByRole('button', { name: 'فارسی' })).toHaveFocus();
     await user.tab();
     expect(screen.getByRole('button', { name: 'English' })).toHaveFocus();
     await user.tab();
     expect(screen.getByRole('searchbox')).toHaveFocus();
+    await user.tab();
+    expect(screen.getByRole('button', { name: /^DeepSeek/ })).toHaveFocus();
     await user.tab();
     await user.keyboard('{Enter}');
 
@@ -226,5 +243,86 @@ describe('Sidebar', () => {
 
     expect(screen.getByRole('navigation', { name: 'کتابخانه‌ی گفتگوها' })).toBeInTheDocument();
     expect(screen.getByRole('list')).toBeInTheDocument();
+  });
+
+  // --- Unit 13: platform-grouped sidebar ---
+
+  it('shows all four platform groups even when the library is empty (FR1)', () => {
+    renderSidebar({ entries: [] });
+
+    // Each group is a labelled `<section>`, so counting regions is counting
+    // groups — including the four that have nothing in them yet.
+    for (const platform of ['ChatGPT', 'Claude', 'DeepSeek', 'Gemini']) {
+      expect(screen.getByRole('region', { name: platform })).toBeInTheDocument();
+    }
+
+    // FR2: an empty group still states its count instead of hiding it.
+    expect(screen.getAllByText('0')).toHaveLength(4);
+  });
+
+  it('toggles a group from its header and remembers the choice (FR4)', async () => {
+    const user = userEvent.setup();
+    renderSidebar();
+
+    const header = screen.getByRole('button', { name: /^DeepSeek/ });
+    expect(header).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByRole('button', { name: rowName('گفتگوی اول') })).toBeInTheDocument();
+
+    await user.click(header);
+
+    // ARIA state, not just a class — and the rows leave the accessibility tree
+    // with it, because a collapsed body is `hidden`.
+    expect(screen.getByRole('button', { name: /^DeepSeek/ })).toHaveAttribute(
+      'aria-expanded',
+      'false',
+    );
+    expect(screen.queryByRole('button', { name: rowName('گفتگوی اول') })).not.toBeInTheDocument();
+    expect(JSON.parse(window.localStorage.getItem('app-library-group-collapse') ?? '{}')).toEqual({
+      deepseek: true,
+    });
+  });
+
+  it('restores a collapsed group on the next visit (FR4)', () => {
+    window.localStorage.setItem('app-library-group-collapse', JSON.stringify({ deepseek: true }));
+
+    renderSidebar();
+
+    expect(screen.getByRole('button', { name: /^DeepSeek/ })).toHaveAttribute(
+      'aria-expanded',
+      'false',
+    );
+    expect(screen.queryByRole('button', { name: rowName('گفتگوی اول') })).not.toBeInTheDocument();
+  });
+
+  it('opens every group when the stored collapse state is corrupt (spec Validation)', () => {
+    window.localStorage.setItem('app-library-group-collapse', '{not json');
+
+    renderSidebar();
+
+    expect(screen.getByRole('button', { name: /^DeepSeek/ })).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    );
+    expect(screen.getByRole('button', { name: rowName('گفتگوی اول') })).toBeInTheDocument();
+  });
+
+  it('offers that platform\'s import flow from an empty group (FR6)', async () => {
+    const user = userEvent.setup();
+    const { onImportClick } = renderSidebar();
+
+    await user.click(screen.getByRole('button', { name: 'وارد کردن گفتگو از Gemini' }));
+
+    // The platform travels with the request — that is what lets the flow skip
+    // Step 1 instead of asking the user a question the click already answered.
+    expect(onImportClick).toHaveBeenCalledWith('gemini');
+  });
+
+  it('keeps the footer action generic, so it still starts at Step 1 (FR6)', async () => {
+    const user = userEvent.setup();
+    const { onImportClick } = renderSidebar();
+
+    await user.click(screen.getByRole('button', { name: '+ افزودن گفتگو' }));
+
+    expect(onImportClick).toHaveBeenCalledWith();
   });
 });

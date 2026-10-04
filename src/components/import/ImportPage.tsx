@@ -2,6 +2,7 @@ import type { JSX } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { UnifiedConversation } from '@/types/conversation';
 import { GuidedImportFlow } from '@/components/import/GuidedImportFlow';
+import type { PlatformOptionId } from '@/components/import/platformOptions';
 import styles from './ImportPage.module.css';
 
 interface ImportPageProps {
@@ -16,6 +17,12 @@ interface ImportPageProps {
    * return to), and because this screen must still stand alone.
    */
   readonly onCancel?: () => void;
+  /**
+   * Unit 13 (FR6): platform to open the flow pre-selected with, which also
+   * skips Step 1. `undefined` keeps Step 1 as the entry point — the answer to
+   * *which* platform in front of everything else matters here.
+   */
+  readonly initialPlatform?: PlatformOptionId | undefined;
 }
 
 /**
@@ -24,8 +31,16 @@ interface ImportPageProps {
  * Thin presentational shell — the three-step guided flow (Unit 08) owns the
  * interaction; the platform choice never steers detection (`02-platform-detection.md`
  * FR9 / Invariant #4) and parsing shows no separate progress of its own.
+ *
+ * Unit 13: this file is a pure pass-through for `initialPlatform`. The decision
+ * of *when* an import is platform-specific belongs to whoever pressed the button,
+ * not to the screen that receives it.
  */
-export function ImportPage({ onImported, onCancel }: ImportPageProps = {}): JSX.Element {
+export function ImportPage({
+  onImported,
+  onCancel,
+  initialPlatform,
+}: ImportPageProps = {}): JSX.Element {
   const { t } = useTranslation();
 
   return (
@@ -40,7 +55,7 @@ export function ImportPage({ onImported, onCancel }: ImportPageProps = {}): JSX.
         {t('import.pageSubheading')}
       </p>
 
-      <GuidedImportFlow onConfirm={onImported} />
+      <GuidedImportFlow onConfirm={onImported} initialPlatform={initialPlatform} />
     </main>
   );
 }

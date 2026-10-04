@@ -40,6 +40,21 @@
   text-overflow: ellipsis;
 }
 
+/* FR5 (Unit 13): the platform mark rides the title's line in search results.
+   `min-width: 0` on both keeps the title ellipsizing inside a flex row — without
+   it a long title would push the mark out instead of truncating. */
+.titleRow {
+  display: flex;
+  gap: 0.375rem;
+  align-items: center;
+  min-width: 0;
+}
+
+.titleRow .title {
+  flex: 1;
+  min-width: 0;
+}
+
 .item[data-active='true'] .title {
   font-weight: 600;
 }

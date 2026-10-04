@@ -34,14 +34,13 @@
   font-size: 0.875rem;
 }
 
-.list {
+/* The grouped regions: one scroll container holds all four platform groups, so
+   the footer actions stay reachable however long the library gets. */
+.groups {
   flex: 1;
   min-height: 0;
-  margin: 0;
-  padding: 0;
-  /* Only the list scrolls, so the import button stays reachable. */
+  /* Only the groups scroll, so the import button stays reachable. */
   overflow-y: auto;
-  list-style: none;
 }
 
 .clearAll {

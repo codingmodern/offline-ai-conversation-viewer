@@ -43,6 +43,7 @@ export function AppShell(): JSX.Element {
     entries,
     activeId,
     isImporting,
+    importPlatform,
     isLoading,
     errorMessage,
     isStorageNearLimit,
@@ -118,6 +119,9 @@ export function AppShell(): JSX.Element {
           {isLoading ? null : isImporting ? (
             <ImportPage
               onImported={addConversations}
+              // Unit 13 (FR6): set only when the screen was asked for from a
+              // platform group, so only then does Step 1 get skipped.
+              initialPlatform={importPlatform}
               // Only offered when there is something to go back to.
               {...(entries.length > 0 ? { onCancel: closeImport } : {})}
             />

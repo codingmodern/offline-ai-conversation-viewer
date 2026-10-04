@@ -19,6 +19,18 @@ interface GuidedImportFlowProps {
    * Optional so the flow still works standalone, without a library to save into.
    */
   readonly onConfirm?: ((conversations: readonly UnifiedConversation[]) => void) | undefined;
+  /**
+   * Unit 13 (FR6): the platform the flow opens pre-selected with, which skips
+   * Step 1 — this is how an empty platform group in the Sidebar opens an import
+   * that is already *for that platform* rather than a generic one.
+   *
+   * Read once, in the state initializer: `AppShell` sets the platform in the same
+   * event handler that sets `isImporting`, so the screen containing this flow
+   * always mounts with the right value already there (see `useLibrary.openImport`).
+   * The user can still reach Step 1 at any time via «قبلی» — the choice is a
+   * starting point, never a lock.
+   */
+  readonly initialPlatform?: PlatformOptionId | undefined;
 }
 
 /** Translation keys for the three steps, in order (Unit 12). */
@@ -31,12 +43,16 @@ const STEP_KEYS = ['import.stepPlatform', 'import.stepFile', 'import.stepConfirm
  * only *compared* against what the files turn out to be (FR7/FR8), never used to
  * steer the parser.
  */
-export function GuidedImportFlow({ onConfirm }: GuidedImportFlowProps = {}): JSX.Element {
+export function GuidedImportFlow({
+  onConfirm,
+  initialPlatform,
+}: GuidedImportFlowProps = {}): JSX.Element {
   const { t } = useTranslation();
   const { items, pendingLargeFiles, importedFiles, isBusy, addFiles, confirmLargeFile, cancelLargeFile, reset } =
     useImport();
-  const [step, setStep] = useState<1 | 2 | 3>(1);
-  const [platform, setPlatform] = useState<PlatformOptionId | undefined>(undefined);
+  // FR6: a platform arriving from the Sidebar starts the user one step further on.
+  const [step, setStep] = useState<1 | 2 | 3>(initialPlatform === undefined ? 1 : 2);
+  const [platform, setPlatform] = useState<PlatformOptionId | undefined>(initialPlatform);
   const [preview, setPreview] = useState<DuplicateCounts | undefined>(undefined);
   const [isDone, setIsDone] = useState(false);
 

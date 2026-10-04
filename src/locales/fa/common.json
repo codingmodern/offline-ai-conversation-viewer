@@ -17,7 +17,9 @@
     "statusLoading": "در حال بارگذاری…",
     "statusEmpty": "هنوز گفتگویی ذخیره نشده است.",
     "clearAll": "حذف همه‌ی گفتگوها",
-    "addConversation": "+ افزودن گفتگو"
+    "addConversation": "+ افزودن گفتگو",
+    "importFrom": "وارد کردن گفتگو از {{platform}}",
+    "groupEmpty": "هنوز گفتگویی از {{platform}} وارد نشده."
   },
   "search": {
     "inputLabel": "جستجو در عنوان و متن گفتگوها",

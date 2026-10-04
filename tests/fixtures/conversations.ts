@@ -1,4 +1,5 @@
 import type { LibraryEntry } from '@/types/storage';
+import type { ProviderId } from '@/types/providers';
 import type { UnifiedConversation, UnifiedMessage } from '@/types/conversation';
 
 /**
@@ -46,12 +47,17 @@ interface EntryOptions {
   readonly title?: string;
   readonly importedAt?: number;
   readonly messageCount?: number;
+  /**
+   * Defaults to DeepSeek because every suite predating Unit 13 assumed a
+   * single-platform library; platform-grouping tests opt in explicitly.
+   */
+  readonly platform?: ProviderId;
 }
 
 export function makeEntry(options: EntryOptions): LibraryEntry {
   return {
     id: options.id,
-    platform: 'deepseek',
+    platform: options.platform ?? 'deepseek',
     importedAt: options.importedAt ?? 1_700_000_000_000,
     messageCount: options.messageCount ?? 1,
     ...(options.title === undefined ? {} : { title: options.title }),

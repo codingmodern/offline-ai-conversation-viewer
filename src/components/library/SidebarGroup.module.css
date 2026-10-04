@@ -1,0 +1,100 @@
+/* One platform section of the grouped Sidebar (Unit 13).
+   Values are shared with Sidebar.module.css: the header, the name and the count
+   keep their exact pre-unit-13 look, so grouping only re-shapes where rows sit. */
+
+.group {
+  margin-bottom: 0.5rem;
+}
+
+/* Same class on both shapes, so a full and an empty group read as the same kind
+   of object (FR2): mark, display name, count, same geometry. */
+.header {
+  display: flex;
+  gap: 0.375rem;
+  align-items: center;
+  width: 100%;
+  padding: 0.375rem 0.25rem;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--shell-text-secondary);
+  text-align: start;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  border-radius: var(--shell-radius-inline);
+}
+
+.header:hover {
+  background: var(--shell-bg-hover);
+}
+
+/* An empty group has no chevron: there is nothing to expand, and a disclosure
+   affordance would promise a body that does not exist (FR6). The platform mark
+   plus the importFrom accessible name carry what this header is for. */
+.emptyHeader {
+  color: var(--shell-text-primary);
+}
+
+/* Rotating the chevron is the group open/close animation: it reads as the body
+   sliding open and always animates, unlike a first-mount-only expand keyframe.
+   shell.css neutralises every transition under prefers-reduced-motion: reduce. */
+.chevron {
+  flex-shrink: 0;
+  font-size: 0.625rem;
+  line-height: 1;
+  transform: rotate(0deg);
+  transition: transform 150ms ease;
+}
+
+.header[data-collapsed='true'] .chevron {
+  transform: rotate(-90deg);
+}
+
+.name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-weight: 500;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.count {
+  flex-shrink: 0;
+  min-width: 1.25rem;
+  color: var(--shell-text-muted);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+/* FR6: the message stands in for the rows an empty group has to show. */
+.emptyMessage {
+  margin: 0.25rem 0 0;
+  padding-inline: 0.25rem;
+  color: var(--shell-text-muted);
+  font-size: 0.8125rem;
+}
+
+/* Runs whenever the element becomes visible, so it plays on every reopen; the
+   UA display: none of the hidden attribute cancels it while collapsed. */
+.body {
+  animation: groupExpand 150ms ease-out;
+}
+
+@keyframes groupExpand {
+  from {
+    opacity: 0;
+    transform: translateY(-0.25rem);
+  }
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

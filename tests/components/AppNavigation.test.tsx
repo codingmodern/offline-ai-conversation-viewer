@@ -177,4 +177,32 @@ describe('App navigation to the import screen', () => {
     // backwards.
     expect(screen.queryByText(EMPTY_STATE_TITLE)).not.toBeInTheDocument();
   });
+
+  // --- Unit 13: the Sidebar's platform groups ---
+
+  it('lands on Step 2 with the platform chosen when an empty group is clicked (FR6)', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await screen.findByText(EMPTY_STATE_TITLE);
+
+    await user.click(screen.getByRole('button', { name: 'وارد کردن گفتگو از Gemini' }));
+
+    // The heading proves the import screen opened; the absent Gemini chip proves
+    // Step 1 was skipped — this click already answered "which platform?".
+    expect(await screen.findByRole('heading', { name: IMPORT_HEADING })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Gemini' })).not.toBeInTheDocument();
+    expect(screen.getByText('فایل خروجی گفتگو را وارد کنید')).toBeInTheDocument();
+  });
+
+  it('still opens at Step 1 from the footer action, which names no platform', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await screen.findByText(EMPTY_STATE_TITLE);
+
+    await user.click(addButton());
+
+    expect(await screen.findByRole('heading', { name: IMPORT_HEADING })).toBeInTheDocument();
+    // The generic entry has no platform to assume, so choosing one is Step 1.
+    expect(screen.getByRole('button', { name: 'Gemini' })).toBeInTheDocument();
+  });
 });

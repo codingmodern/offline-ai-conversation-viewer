@@ -55,6 +55,9 @@ export function SearchResultsList({
             key={entry.id}
             entry={entry}
             isActive={entry.id === activeId}
+            // FR5 (Unit 13): results are the rows with no platform header above
+            // them, so the mark goes on the row itself.
+            showPlatformIcon
             onSelect={onSelect}
             onRequestDelete={onRequestDelete}
           />

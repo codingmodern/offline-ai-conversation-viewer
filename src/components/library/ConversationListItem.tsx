@@ -2,12 +2,27 @@ import type { JSX } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { LibraryEntry } from '@/types/storage';
 import { activeDateLocale } from '@/i18n';
+import { PlatformIcon } from '@/components/import/PlatformIcons';
 import { PLATFORM_LABEL } from './platformLabels';
 import styles from './ConversationListItem.module.css';
 
 interface ConversationListItemProps {
   readonly entry: LibraryEntry;
   readonly isActive: boolean;
+  /**
+   * Unit 13 (FR5): renders the platform mark on the row's title line.
+   *
+   * Off for the Sidebar's grouped rows — the platform is already the header the
+   * row sits under, so repeating it per row would state the same thing once per
+   * line. On for search results, the one view whose rows are deliberately *not*
+   * under a platform header (Unit 07 abandoned grouping there); the row is the
+   * only place left to say which platform a match came from.
+   *
+   * The mark is `aria-hidden` (see `PlatformIcon`), so it adds a picture to rows
+   * whose meta line already names the platform in text — never a second utterance
+   * of it for a screen reader.
+   */
+  readonly showPlatformIcon?: boolean;
   readonly onSelect: (id: number) => void;
   readonly onRequestDelete: (id: number) => void;
 }
@@ -43,6 +58,7 @@ function formatImportedAt(importedAt: number): string {
 export function ConversationListItem({
   entry,
   isActive,
+  showPlatformIcon,
   onSelect,
   onRequestDelete,
 }: ConversationListItemProps): JSX.Element {
@@ -59,7 +75,17 @@ export function ConversationListItem({
           onSelect(entry.id);
         }}
       >
-        <span className={styles.title}>{label}</span>
+        {/* Two shapes rather than a conditionally-present child, so `.title` keeps
+            owning the ellipsis either way — the mark is a prefix, not a wrapper
+            that has to re-implement it. */}
+        {showPlatformIcon === true ? (
+          <span className={styles.titleRow}>
+            <PlatformIcon id={entry.platform} size={16} />
+            <span className={styles.title}>{label}</span>
+          </span>
+        ) : (
+          <span className={styles.title}>{label}</span>
+        )}
         <span className={styles.meta}>
           <span className={styles.platform}>{PLATFORM_LABEL[entry.platform]}</span>
           <span aria-hidden="true">·</span>

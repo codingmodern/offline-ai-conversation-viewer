@@ -139,4 +139,26 @@ describe('Sidebar → in-chat search (Unit 07)', () => {
 
     expect(clearQuery).toHaveBeenCalledTimes(1);
   });
+
+  // --- Unit 13 (FR5): results stay flat, but each one carries its platform ---
+
+  it('marks every result row with its platform icon', () => {
+    renderSidebar({ search: makeSearch({ query: 'اول', isSearching: true, matchedIds: [1] }) });
+
+    const row = screen.getByRole('button', { name: /^گفتگوی اول/ });
+    // `PlatformIcon` is aria-hidden: the mark pictures what the row's meta line
+    // already says in text, so it is decoration for eyes, never a second utterance.
+    expect(row.querySelector('svg[aria-hidden="true"]')).not.toBeNull();
+  });
+
+  it('never groups results — one flat list, no platform headers (FR5)', () => {
+    renderSidebar({
+      search: makeSearch({ query: 'گفتگوی', isSearching: true, matchedIds: [1, 2] }),
+    });
+
+    // Grouping would have made results depend on bucket order; Unit 07's flat
+    // result view is what this unit deliberately leaves alone.
+    expect(screen.getAllByRole('list')).toHaveLength(1);
+    expect(screen.queryByRole('region', { name: 'DeepSeek' })).not.toBeInTheDocument();
+  });
 });

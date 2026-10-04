@@ -17,7 +17,9 @@
     "statusLoading": "Loading…",
     "statusEmpty": "No conversations saved yet.",
     "clearAll": "Delete all conversations",
-    "addConversation": "+ Add conversation"
+    "addConversation": "+ Add conversation",
+    "importFrom": "Import a conversation from {{platform}}",
+    "groupEmpty": "No {{platform}} conversations imported yet."
   },
   "search": {
     "inputLabel": "Search conversation titles and text",

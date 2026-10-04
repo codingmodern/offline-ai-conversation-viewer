@@ -9,7 +9,7 @@
 ## 1. Current Phase
 
 - **Phase:** Development
-- **Current Goal:** Unit 11 (ChatGPT Platform) تکمیل شد — **11a ✅** (provider module، normalization، registry، فیکسچرها، تستها، ADRها)، **11b ✅** (Theme + رندر + فعالسازی picker + پذیرش UI برای AC 1–4 + مستندات و ADRهای 37–39). ChatGPT در picker `available: true` است ولی همچنان **Unverified** می‌ماند تا نمونه‌ی Export واقعی همین سوئیت را پاس کند (ADR-A).
+- **Current Goal:** Unit 13 (Platform-Grouped Sidebar) تکمیل شد — سایدبار به ۴ گروه همیشه‌حاضر (ChatGPT / Claude / DeepSeek / Gemini) با آیکون، نام و شمارنده تقسیم شد: ترتیب گروه‌های غیرخالی بر اساس آخرین import (با ترتیب ثابت به‌عنوان tie-break) و گروه‌های خالی بعد از آن‌ها (FR1/FR3)، collapse هر گروه در `localStorage` با fallback «همه باز» هنگام خرابی (FR4)، نشان پلتفرم کنار نتایج جستجو (FR5)، و ورود به import از گروه خالی با پلتفرم ازپیش‌انتخاب‌شده که Step 1 را رد می‌کند (FR6). ADR **#41**. ChatGPT همچنان **Unverified** تا نمونه‌ی Export واقعی همین سوئیت را پاس کند (ADR-A).
 
 ---
 
@@ -31,6 +31,8 @@
 | 10   | Gemini Platform Parser & Renderer | ✅ Completed | `10-gemini-platform-parser-renderer.md` |
 | 11   | ChatGPT Platform (Parser, Normalization, Rendering) | ✅ Completed | `11-chatgpt-platform.md` + `11b-chatgpt-theme-renderer.md` (11a provider/normalization + 11b-0 §4.3 docs + 11b-1 theme + 11b-2 picker/stage/UI acceptance AC1–AC4 + 11b-3 README/parsers/ADRs 37–39; ChatGPT **Unverified** — synthetic fixtures only) |
 | 12   | Bilingual UI (Persian/English i18n) | ✅ Completed | `12-bilingual-ui.md` (react-i18next setup, LanguageOnboarding, LanguageToggle, full UI translation keys, dir=rtl/ltr switching) |
+| 13   | Platform-Grouped Sidebar | ✅ Completed | `13-platform-grouped-sidebar.md` (FR1–FR6: 4 always-present groups with icon/name/count, `localStorage` collapse, platform mark on search results, empty-group import entry that skips the Platform Selection step) |
+
 
 **Status Legend:** ✅ Completed · 🔄 In Progress · ⏳ Pending · ❌ Blocked
 
@@ -72,6 +74,8 @@
 | 11a | ChatGPT provider module, normalization, registry, fixtures, tests, ADRs (spec 11 §8) | 2026-09-21 | Third-party + provisional provider (ADR #27/A, **Unverified**): structure-only `detect()` (≥1 matching node + file-wide absence of DeepSeek's `fragments`, ADR #32/F), FR-3 conversation isolation with skip-and-record (`ChatGptRawData.skipped`, ADR #35/J — an all-skipped file still fails loudly), FR-4 active-branch walk (`current_node` → last-child → time-ordered, cycle/dangling-parent tolerant), FR-6 content-type map, FR-7 citation stripping (message text only), ADR #34/I Unix-seconds→ISO. ChatGPT stays `available: false` in the picker (11b). Synthetic fixtures under `tests/fixtures/chatgpt/` + gitignored slot for the real export (`context/fixtures/chatgpt/README.md`) |
 | 11b | ChatGPT theme, picker activation, UI acceptance, docs (spec 11b §8: 11b-0 → 11b-3) | 2026-09-22 | **765 tests / 78 files green; lint + build clean** · 11b-0: §4.3 amendments (Session 20) — avatar rows removed from Color Palette/Chat Bubble Pattern/Icons, Message Actions Copy-only with hover/focus reveal + touch fallback, Thread Date Line subsection, neutral-grey bubble (no blue token), `--chatgpt-text-primary/-text-muted/-code-text/-code-inline-bg` rows, Spacing values pinned. 11b-1: `src/themes/chatgpt/` (20 files, each a copy-and-restyle of its Claude twin, no cross-theme imports — ADR #37) + mapped test set (8 files, incl. the new isolation scan) · Copy-only actions (ADR #38). 11b-2: `platformOptions.ts` `available: true`, `ConversationStage` `case 'chatgpt'` (same loading→view contract), `ImportPage.test.tsx` coming-soon removal + real-UI acceptance AC1–AC4 (ChatGPT dispatch case in `ConversationStage.test.tsx`). 11b-3: `README.md` + `docs/parsers.md` (ChatGPT present, **Unverified**), ADR log #37/#38/#39 (FR-5-in-two-places already present as ADR #35 — not duplicated). ChatGPT stays **Unverified** until a real export passes the suite |
 | 12   | Bilingual UI (Persian/English i18n) | 2026-09-27 | react-i18next setup, LanguageOnboarding, LanguageToggle, full UI translation keys, pure Persian button labels («تایید و واردات», ADR #40), dir=rtl/ltr switching. All tests and lint clean. |
+| 13   | Platform-Grouped Sidebar | 2026-10-04 | Four always-present platform groups derived from the **single** Unit 04 emission (no new field — NFR2; no second query — NFR3); non-empty groups ordered by newest import with the fixed order as tie-break, empties after them in fixed order; per-group collapse persisted in `localStorage` with a corrupt-value fallback to all-open; search rows carry their platform mark (FR5); an empty group's header is the import entry that pre-selects its platform and skips Step 1 (FR6, ADR #41). **796 tests / 81 files green; lint + build clean** |
+
 
 ---
 
@@ -85,7 +89,7 @@
 
 ## 6. Next Up
 
-- **Next:** Unit 12 is complete. All planned units (01 through 12) are fully implemented and verified. The provisional ChatGPT shape must be re-checked against the first real export (`context/fixtures/chatgpt/README.md` → Verification gate); until then ChatGPT stays **Unverified**.
+- **Next:** Unit 13 is complete. All units (01 through 13) are fully implemented and verified. The provisional ChatGPT shape must be re-checked against the first real export (`context/fixtures/chatgpt/README.md` → Verification gate); until then ChatGPT stays **Unverified**.
 
 ### Closing note — Sessions 13–18 (Claude/DeepSeek visual & functional stabilization pass, closed 2026-09-13)
 
@@ -154,6 +158,8 @@ Sessions 13–18 were the full stabilization pass for the Claude experience, wit
 | 39  | **اسکرینشاتهای واقعی §4.3 را فقط برای حقایق ساختاری اصلاح میکنند (بر اساس ADR #17)؛ رنگ accent شخصی پذیرفته نمیشود (spec 11b ADR-M / FR-1)** | ‎§4.3 آواتار مدل، خط تاریخ و آیکونهای Decorative را پیشبینی میکرد اما اسکرینشاتهای واقعی نشان دادند آواتار وجود ندارد؛ در مقابل، آبی حباب کاربر در اسکرینشاتها یک تنظیم شخصی accent است نه پیشفرض محصول | آواتار از Color Palette/Chat Bubble Pattern/Icons حذف شد و هیچ آیکون جایگزینی ساخته نشد؛ خط تاریخ، توکن inline-code و مقادیر Spacing به §4.3 اضافه شدند؛ توکن خنثی حباب کاربر ماند و هیچ توکن آبی اضافه نشد — تست توکنها این را قفل میکند | پذیرش کورکورانهی §4.3 با آواتار (رد: خلاف شواهد واقعی)؛ افزودن توکن آبی از اسکرینشات (رد: accent شخصی، نه پیشفرض محصول — همان اشتباه tint آبی DeepSeek در ADR #17) | 2026-09-22 |
 
 | 40  | **جداسازی کامل کلمات فارسی از انگلیسی در برچسب‌های UI («تایید و واردات» به‌جای «تایید و Import»)، کنترل وضعیت همگام‌سازی ناهمگام در تست‌ها و یکپارچه‌سازی i18n (Unit 12)** | استفاده از رشته‌های ترکیبی دوزبانه در برچسب دکمه‌های پایانی فلو منجر به ناهماهنگی تجربه کاربری و عدم قطعیت در تست‌های اکتیویشن می‌شد. | تمام متون و دکمه‌های UI فارسی کاملاً یکدست‌سازی شدند؛ متناظر تست‌های کامپوننت با متون جدید منطبق و وضعیت استپ سوم فلو از طریق `findByText('معتبر')` همگام‌سازی شد تا هیچ race condition ناهمگامی رخ ندهد. | نگه‌داشتن کلمه انگلیسی Import در رشته فارسی (رد: نقض یکپارچگی زبانی رابط کاربری)؛ استفاده از waitFor بدون بررسی وضعیت اعتبارسنجی فایل (رد: پایداری ضعیف تست‌ها) | 2026-09-27 |
+| 41  | **گروه‌بندی سایدبار از همان تک emission واحد ۰۴ مشتق می‌شود؛ شکلِ هدرِ گروه از روی `count` تصمیم می‌گیرد — گروه پُر آکاردئون، گروه خالی یک دکمه‌ی ورود به import با همان پلتفرم (Unit 13 / FR4 در برابر FR6)** | FR1 می‌خواهد سایدبار همیشه ۴ گروه نشان دهد، و FR4 (کلیک روی هدر = باز/بسته) و FR6 (کلیک روی گروه خالی = رفتن به import) هر دو روی «هدر گروه» ادعا دارند. تعارض فقط وقتی پیش می‌آید که گروه خالی باشد: چیزی برای بازشدن وجود ندارد. NFR3 هم کوئری جداگانه را ممنوع می‌کند | تعداد گفتگوهای گروه تفکیک‌کننده‌ی منطقی است، چون دقیقاً همان چیزی است که تعیین می‌کند بدنه‌ای در کار هست یا نه. اگر `count > 0` باشد همان هدر یک آکاردئون واقعی است (`aria-expanded`، شورون، بدنه‌ی `hidden`)؛ اگر نه، همان هدر به‌تنهایی دکمه‌ی «وارد کردن گفتگو از X» می‌شود و `openImport(platform)` را با همان پلتفرم صدا می‌زند تا Step 1 رد شود. گروه‌بندی فقط از `entry.platform` و `entry.importedAt` ساخته می‌شود، پس نه مدل داده تغییر می‌کند (NFR2) و نه کوئری دومی باز می‌شود (NFR3) | دادن بدنه‌ی خالی به گروه خالی و نگه‌داشتن آکاردئون (رد: کنترلی که هیچ‌کاری نمی‌کند گمراه‌کننده است و `aria-expanded` بدون محتوا معنای درستی ندارد)؛ دکمه‌ی import جداگانه داخل هر گروه خالی (رد: دو کنترل با یک هدف در فضای باریک سایدبار)؛ کوئری جداگانه‌ی گروه‌بندی روی Dexie (رد: NFR3)؛ افزودن فیلد گروه به `LibraryEntry` (رد: NFR2) | 2026-10-04 |
+
 
 ### ADR #35 — ChatGPT visibility filter runs in parser and normalization; hidden ancestors still feed FR-9 (Unit 11a)
 
@@ -420,6 +426,14 @@ contain but rendering would silently lose.
 
 > Context needed to resume work in the next session. Updated by the agent at the end of each session.
 > Older notes (Sessions 1-20) are archived verbatim in `context/session-archive.md`.
+
+### Session 22 - 2026-10-04 (Unit 13 closed)
+
+- **Work Done:** Platform-grouped Sidebar (spec `13-platform-grouped-sidebar.md`), FR1–FR6. A pure `buildPlatformGroups` in `features/library/sidebarGroups.ts` buckets the **single** Unit 04 `liveQuery` emission into `PLATFORM_GROUP_ORDER` (chatgpt → claude → deepseek → gemini): non-empty groups first by `latestImportedAt` desc with the fixed order as tie-break, empties appended in fixed order — so no new data-model field (NFR2) and no second query (NFR3), and selection cannot reshuffle groups because selection emits nothing. `groupCollapseState.ts` + `useGroupCollapse.ts` own FR4's `localStorage` preference under one key, guarding both the read and the parse so a corrupt value degrades to *all open* instead of crashing (spec Validation). `SidebarGroup.tsx` renders the two shapes the spec separates: a non-empty group is a real accordion (`aria-expanded` / `aria-controls` / chevron / `hidden` body, chevron rotation as the always-running open-close animation under the existing global reduced-motion rule), while an **empty group's whole header is one button** naming its platform that calls `onImportClick(platform)` — no chevron, because there is no body to expand (ADR #41). FR5: `ConversationListItem` gained an optional `showPlatformIcon`, switched on only in `SearchResultsList`. FR6: `openImport(platform?)` → `importPlatform` → `AppShell` → `ImportPage` → `GuidedImportFlow`, whose `useState(initialPlatform === undefined ? 1 : 2)` lands on Step 2 pre-selected, with «قبلی» still reaching Step 1.
+- **Bug the suite caught:** `LibraryEmptyState` passed `onImportClick` straight to `onClick`, so React handed it the event; once `openImport` took an optional platform, that `MouseEvent` *became* the platform and FR6 skipped Step 1 for an event. Fixed at the source (wrapped in an arrow) rather than by validating inside `openImport` — a guard there would have hidden the next caller's mistake instead of this one.
+- **Files Modified:** new — `src/features/library/sidebarGroups.ts`, `src/features/library/groupCollapseState.ts`, `src/features/library/useGroupCollapse.ts`, `src/components/library/SidebarGroup.tsx`, `src/components/library/SidebarGroup.module.css`, `tests/features/sidebarGroups.test.ts`, `tests/features/groupCollapseState.test.ts`. Changed — `Sidebar.tsx`, `Sidebar.module.css`, `ConversationListItem.tsx` + `.module.css`, `SearchResultsList.tsx`, `LibraryEmptyState.tsx`, `useLibrary.ts`, `AppShell.tsx`, `ImportPage.tsx`, `GuidedImportFlow.tsx`, both `src/locales/*/common.json`, `tests/fixtures/conversations.ts` (`makeEntry({ platform })`), `Sidebar.test.tsx`, `SidebarSearch.test.tsx`, `AppNavigation.test.tsx`. **Not touched:** `storage/`, `types/`, parsers, themes; no new dependency.
+- **Verification:** `npx tsc -b` ✅ · `npm run lint` ✅ 0 problems · `npm run test` ✅ **796/796 (81 files)** · `npm run build` ✅ (`tsc -b && vite build`, 13.1s). ADR log gained **#41**.
+
 
 ### Session 21 - 2026-09-22 (Unit 11 closed)
 

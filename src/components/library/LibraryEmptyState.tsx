@@ -22,7 +22,18 @@ export function LibraryEmptyState({ onImportClick }: LibraryEmptyStateProps): JS
     <div className={styles.empty}>
       <h2 className={styles.title}>{t('library.emptyStateTitle')}</h2>
       <p className={styles.text}>{t('library.emptyStateText')}</p>
-      <button type="button" className={styles.action} onClick={onImportClick}>
+      <button
+        type="button"
+        className={styles.action}
+        // Wrapped rather than passed straight through: React hands `onClick` the
+        // event object, so forwarding the prop silently widens a `() => void`
+        // handler into `(event) => void`. Unit 13 made that observable — the
+        // shell's `openImport(platform?)` would have received a MouseEvent as
+        // its platform and skipped Step 1 for an event.
+        onClick={() => {
+          onImportClick();
+        }}
+      >
         {t('library.importAction')}
       </button>
     </div>
