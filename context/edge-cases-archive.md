@@ -1,7 +1,7 @@
 # Edge Cases Archive
 
 > Verbatim archive of edge cases formerly kept in `progress-tracker.md` Section §10.
-> The oldest entries are preserved here verbatim, oldest first; the 5 most recent
+> The oldest entries are preserved here verbatim, oldest first; the 3 most recent
 > entries remain in `progress-tracker.md`.
 
 ---
@@ -56,3 +56,5 @@
 | `liveQuery`-driven hook under `fake-indexeddb` seems to miss a follow-on write                        | Unit 07        | **Real root cause was the duplicate-key natural key (`sourceProvider`, `sourceConversationId`) silently dropping the second save via `saveConversation` returning `status: 'duplicate'` (Unit 04 / ADR #13)**, not a `liveQuery` race. The test's `makeConversation` defaulted `sourceConversationId` to `'conv-1'`, so the second fixture in the test collided with the first and was rejected. The fix is per-test `sourceConversationId: 't-...'`, never the fixture default. Recorded here so future search-index tests do not chase a phantom timing issue |
 | An in-memory search index could drift from the underlying store if multiple subscribers race          | Unit 07        | Single source of truth: the index is built **inside** the same `liveQuery` projection Unit 04's `subscribeToLibrary` uses, so the live query itself is the synchronisation point. Two subscribers cannot see divergent snapshots because Dexie runs the query against the same storage state |
 | The hidden+summary thinking variant cannot be exercised through the real-export fixture                               | Unit 09        | A real export shows that variant only on *dead* regenerate branches, which ADR #22's walk never visits. Pinned instead by an inline live-line fixture in `claude.parse.test.ts`; the shared fixture keeps the visible-body variant only |
+| Claude's export omits `file_size` on most attachments (unlike DeepSeek)                                                | Unit 09        | The attachment size chip renders only when a size exists — never a fabricated `0 B`; `deepseek/AttachmentCard.tsx` gained the same conditional so both themes share the rule |
+| Gemini's answer is stored as raw HTML, so the search haystack contains markup too                                       | Unit 10        | FR7 keeps the answer verbatim and the search layer reads the shared model provider-agnostically, so tags are searchable v1 behaviour — documented, not special-cased per provider |

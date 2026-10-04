@@ -1,9 +1,9 @@
 # Session Archive
 
 > Verbatim archive of the session notes formerly kept in `progress-tracker.md` (Section 9).
-> Contains Sessions 1-20, including the two 2026-08-26 entries that reuse the
+> Contains Sessions 1-21, including the two 2026-08-26 entries that reuse the
 > "Session 6" heading and the "Session 6 Follow-up" entry, preserved as written.
-> The most recent note (Session 21 - 2026-09-22) remains in `progress-tracker.md`.
+> The most recent note (Session 22 - 2026-10-04) remains in `progress-tracker.md`.
 
 ---
 
@@ -598,3 +598,10 @@
 - **Files Modified:** `context/ui-context.md` (§4.3), this tracker. **Superseded by 11b-2 in this same session (Session 21):** `components/import/platformOptions.ts`, `components/shell/ConversationStage.tsx` and `ImportPage.test.tsx` below are now wired and ChatGPT is `available: true` in the picker.
 - **Decisions Made:** user bubble stays a **neutral grey** (`#F4F4F4`/`#2F2F2F`) — the blue in the owner's screenshots is a personal accent setting, not a product default, so no blue token exists (FR-1/ADR-M); **no model avatar** anywhere (doc gap #4 — the screenshots show none, so no compensating icon was invented); actions are **Copy only** (ADR-L: Edit/Regenerate/Like-Dislike are decorative in a read-only viewer and were removed outright, revealed on hover/focus with the `@media (hover: none)` always-visible fallback); the inline-code chip **intentionally reuses** the user-bubble neutral (documented non-collision, unlike Claude's tool card) but is locked distinct from the dark code slab; the group summary falls back to the same `ابزار` label `ToolRow` renders so a collapsed line never names nothing; per-message date = the export's own timestamp only (FR-7), Thread Date Line = `createdAt` → first message → nothing, always `fa-IR`. ADR-log rows landed in 11b-3 as #37/#38/#39 (Session 21).
 - **Verification:** `npx vitest run tests/themes/chatgpt tests/components/ChatGPT` ✅ 63/63 (8 files) · `npm run test` ✅ 760/760 (78 files) · `npm run lint` ✅ exit 0 / 0 warnings · `npm run build` ✅ exit 0 (`tsc -b && vite build`, 1934 modules)
+
+### Session 21 - 2026-09-22 (Unit 11 closed)
+
+- **Work Done:** 11b-2 + 11b-3, closing Unit 11. 11b-2: `platformOptions.ts` → ChatGPT `available: true` (FR-10); the 11a placeholder branch in `ConversationStage.tsx` replaced with `case 'chatgpt'` rendering `ChatGPTConversationView` under the same loading→view contract as the other three (FR-2, ADR #18 — other themes untouched); `ImportPage.test.tsx` coming-soon assertions removed (no «به‌زودی» badge anywhere, stale "future ChatGPT module" seam comment corrected) with the ChatGPT dispatch case added to `ConversationStage.test.tsx` (FR-10); the deferred UI acceptance AC1–AC4 committed as 5 tests over the real guided flow with the real pipeline (`chooseChatGptAndContinue`, fixture JSONs dropped → preview → confirm → `onImported`): minimal.json → 1 conversation / 3 messages / title intact; structure.json → only the 3 live messages, no system/hidden/context leak; both shards → 3 records (`shard-a1/a2/b1`) with the manifest rejected on its own; the mismatch banner names both platforms in **both** directions with Continue disabled. 11b-3: `README.md` + `docs/parsers.md` document ChatGPT as supported-**Unverified** (provider row, "ChatGPT content types" census table, provisional ADR-A banner); ADR log gained **#37/#38/#39** for ADR-K/L/M (the FR-5-in-two-places entry already existed as ADR #35 — deliberately not duplicated); this tracker marks Unit 11 ✅ complete.
+- **Files Modified (11b-2 + 11b-3):** `src/components/import/platformOptions.ts`, `src/components/shell/ConversationStage.tsx`, `tests/components/import/ImportPage.test.tsx` (+5 acceptance tests, coming-soon removal), `tests/components/ConversationStage.test.tsx` (ChatGPT dispatch case), `README.md`, `docs/parsers.md`, `context/adr-log.md` (#37/#38/#39), this tracker (Unit 11 ✅, 11b Completed-Units row, Session 21). **Not touched:** `src/types/conversation.ts`, parsers, normalization, the other three themes; no new dependencies.
+- **Verification:** `npx vitest run tests/themes/chatgpt tests/components/ChatGPT` ✅ 63/63 (8 files) · full `npm run test` ✅ 765/765 (78 files — the lone `ImportActivation` line-item is the documented load-sensitive flake, green 8/8 in isolation with the changes present) · `npm run lint` ✅ exit 0 / 0 warnings · `npm run build` ✅ exit 0 (`tsc -b && vite build`, 1954 modules, `index-GcDOk4Gg.js` / `index-BTq7w9YG.css`).
+
