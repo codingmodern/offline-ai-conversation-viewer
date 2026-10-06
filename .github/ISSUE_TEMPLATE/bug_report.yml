@@ -1,0 +1,92 @@
+name: Bug Report
+description: Report something that isn't working as expected.
+title: '[Bug]: '
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug!
+
+        **Privacy warning:** this project works with personal AI chat exports.
+        Never paste real conversation content, JSON payloads, or personal data
+        into this issue. Describe the structure of the problem instead.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the bug.
+      placeholder: When I import a valid export file, the app...
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Minimal steps someone else can follow.
+      placeholder: |
+        1. Go to '...'
+        2. Import a file '...'
+        3. Click on '...'
+        4. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What you expected to happen instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What actually happened. Include the exact error message if one was shown.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform affected
+      description: Which platform's export triggers the bug, or "Not platform-specific" if it isn't tied to one.
+      options:
+        - Claude
+        - ChatGPT
+        - Gemini
+        - DeepSeek
+        - Not platform-specific
+    validations:
+      required: true
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser
+      description: Which browser and version you used.
+      placeholder: 'e.g. Firefox 142, Chrome 140, Safari 18'
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating System
+      description: Your OS and version.
+      placeholder: 'e.g. Windows 11, macOS 15, Ubuntu 24.04'
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: >
+        Anything else that might help — screenshots (with private content
+        redacted), error console output, or a description of your export's
+        structure (never the export content itself).

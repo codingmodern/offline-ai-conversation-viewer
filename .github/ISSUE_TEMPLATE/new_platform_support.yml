@@ -1,0 +1,87 @@
+name: New Platform Support
+description: Request support for importing exports from a new AI chat platform.
+title: '[Platform]: '
+labels: ['new-platform']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Please read before filing
+
+        This project follows a **real-fixture-first** rule for platform parsers
+        (see CONTRIBUTING.md §2 and ADR #1 / ADR #5 in `context/adr-log.md`):
+        **no parser or detection logic is ever written from a guessed or
+        assumed export structure.** A real export sample must be censused first.
+
+        If you don't have a real export, please don't guess at the format —
+        fill in as much as you can below and the issue will serve as a starting
+        point until an export is available.
+
+  - type: input
+    id: platform-name
+    attributes:
+      label: Platform name
+      description: The AI chat platform you want supported.
+      placeholder: 'e.g. Copilot Chat, Mistral Le Chat, ...'
+    validations:
+      required: true
+
+  - type: dropdown
+    id: has-real-export
+    attributes:
+      label: Do you have a real export sample from this platform?
+      description: >
+        A real export file (the JSON file the platform itself produces) is
+        required before any parser work can begin.
+      options:
+        - 'Yes — I have a real export file and can describe/census its structure'
+        - "Yes — I have one but I'm not sure how to share it safely"
+        - "No — I don't have one"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: willing-to-share
+    attributes:
+      label: Are you willing to help (run a census, test an implementation)?
+      options:
+        - 'Yes — willing to help however needed'
+        - 'Yes — but only with private/structured summaries'
+        - 'No'
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: scrub-confirmation
+    attributes:
+      label: Privacy confirmation
+      description: >
+        Real exports contain private conversation content and must never be
+        committed to the repository. The established convention lives in
+        context/fixtures/*/README.md (Claude, Gemini, ChatGPT): the real file
+        stays outside the repo (git-ignored), only a structural census and
+        scrubbed/synthetic fixtures are committed.
+      options:
+        - label: >
+            I understand that any export I share must be scrubbed of personal
+            content first (conversation text, titles, account identifiers), and
+            that only the structural census / synthetic fixtures — never the
+            real file — may be committed. I'll follow the
+            context/fixtures/*/README.md convention.
+          required: true
+
+  - type: textarea
+    id: export-details
+    attributes:
+      label: Export details
+      description: >
+        How the export is obtained (menu path, settings page, Takeout, etc.),
+        file name/format, approximate size, and anything you know about its
+        structure — WITHOUT pasting actual conversation content.
+      placeholder: 'e.g. Settings → Export data → produces conversations.json, an array of objects with keys: id, title, messages[]...'
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Screenshots of the platform UI (no private content), links to docs, etc.

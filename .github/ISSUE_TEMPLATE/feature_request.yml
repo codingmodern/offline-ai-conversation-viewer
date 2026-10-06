@@ -1,0 +1,57 @@
+name: Feature Request
+description: Suggest an idea or improvement for the project.
+title: '[Feature]: '
+labels: ['enhancement']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement!
+
+        Note: features are built **spec-first** — if accepted, your request will
+        become a spec under `context/feature-specs/` before any code is written
+        (see CONTRIBUTING.md).
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem it solves
+      description: What problem, friction, or limitation does this address?
+      placeholder: 'As a user with exports from several platforms, I find it hard to...'
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: What you would like to happen. Be as specific as you can.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Any alternative solutions or workarounds you've tried.
+
+  - type: dropdown
+    id: willing-to-help
+    attributes:
+      label: Are you willing to help implement it?
+      description: >
+        Contributors are welcome to write the spec and the implementation after
+        review and approval.
+      options:
+        - 'Yes — I can write the spec and/or the implementation'
+        - 'Yes — but I need guidance getting started'
+        - 'No — I can only test/review'
+        - 'No'
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Screenshots, mockups, or links to related issues.
