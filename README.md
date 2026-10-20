@@ -35,6 +35,14 @@ This project was built **unit-by-unit** using Spec-Driven Development. Every uni
 
 ---
 
+## 📸 Screenshots
+
+| Library | Conversation |
+|---|---|
+| ![Library view with imported conversations in the sidebar](docs/screenshots/en-library.png) | ![Conversation view rendered in the source platform's authentic theme](docs/screenshots/en-chat.png) |
+
+---
+
 ## 🚫 Out of Scope
 
 - Editing or sending new messages (this is a **viewer** only, not a chat client)
