@@ -126,6 +126,12 @@ Sessions 13–18 were the full stabilization pass for the Claude experience, wit
 - **Files Modified:** new — `src/features/library/sidebarGroups.ts`, `src/features/library/groupCollapseState.ts`, `src/features/library/useGroupCollapse.ts`, `src/components/library/SidebarGroup.tsx`, `src/components/library/SidebarGroup.module.css`, `tests/features/sidebarGroups.test.ts`, `tests/features/groupCollapseState.test.ts`. Changed — `Sidebar.tsx`, `Sidebar.module.css`, `ConversationListItem.tsx` + `.module.css`, `SearchResultsList.tsx`, `LibraryEmptyState.tsx`, `useLibrary.ts`, `AppShell.tsx`, `ImportPage.tsx`, `GuidedImportFlow.tsx`, both `src/locales/*/common.json`, `tests/fixtures/conversations.ts` (`makeEntry({ platform })`), `Sidebar.test.tsx`, `SidebarSearch.test.tsx`, `AppNavigation.test.tsx`. **Not touched:** `storage/`, `types/`, parsers, themes; no new dependency.
 - **Verification:** `npx tsc -b` ✅ · `npm run lint` ✅ 0 problems · `npm run test` ✅ **796/796 (81 files)** · `npm run build` ✅ (`tsc -b && vite build`, 13.1s). ADR log gained **#41**.
 
+### Session 23 - 2026-10-04 (Unit 12 bug fix)
+
+- **Work Done:** Fixed the first-launch "English" button no-op in `src/components/i18n/LanguageToggle.tsx`. Removed the `if (isActive) return;` guard from `onClick` so clicking the active language now calls `setLanguage(language.code)` + `onChange?.(language.code)` like any other language pick. This makes the English button on the first-run onboarding screen enter the app. Verified both `LanguageOnboarding` (`onComplete = setHasChosenLanguage(true)`, idempotent) and `Sidebar` (no `onChange`) are safe with the guard removed.
+- **Files Modified:** `src/components/i18n/LanguageToggle.tsx` (removed guard); `tests/i18n/bilingualUi.test.tsx` (added "choosing English on first launch saves preference and opens the shell" test; Persian first-launch test kept as regression).
+- **Verification:** `npm run build` ✅ (`tsc -b && vite build`) · `npm run lint` ✅ 0 problems · `npm run test` ✅ **797/797 (81 files)**.
+
 ---
 
 ## 10. Edge Cases Encountered

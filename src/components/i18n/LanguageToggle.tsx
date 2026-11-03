@@ -59,12 +59,6 @@ export function LanguageToggle({ onChange }: LanguageToggleProps = {}): JSX.Elem
             lang={language.code}
             dir={language.dir}
             onClick={(): void => {
-              if (isActive) {
-                // Re-picking the current language is a no-op: persisting it again
-                // is harmless, but firing `onChange` would wrongly tell the
-                // onboarding screen that a choice was just made.
-                return;
-              }
               setLanguage(language.code);
               onChange?.(language.code);
             }}

@@ -39,6 +39,22 @@ describe('Unit 12: Bilingual UI Support', () => {
       expect(document.documentElement.lang).toBe('fa');
       expect(document.documentElement.dir).toBe('rtl');
     });
+    it('choosing English on first launch saves preference and opens the shell', async () => {
+      const user = userEvent.setup();
+      render(<App />);
+
+      const enButton = screen.getByRole('button', { name: 'English' });
+      await user.click(enButton);
+
+      expect(window.localStorage.getItem(LANGUAGE_STORAGE_KEY)).toBe('en');
+      expect(readStoredLanguage()).toBe('en');
+      expect(document.documentElement.lang).toBe('en');
+      expect(document.documentElement.dir).toBe('ltr');
+      // Onboarding card is gone; shell navigation is present
+      expect(screen.queryByRole('heading', { level: 1 })).not.toBeInTheDocument();
+      expect(screen.getByRole('navigation')).toBeInTheDocument();
+    });
+
 
     it('skips onboarding and boots directly to shell when preference is already stored', () => {
       window.localStorage.setItem(LANGUAGE_STORAGE_KEY, 'fa');
